@@ -1,0 +1,88 @@
+@extends('FrontEnd.layouts.main')
+@section('main-container')
+
+<main>
+  <section id="all-products" class="product-category">
+    <h2 id="all-products-heading">All Products</h2>
+
+    <!-- Cameras Category -->
+    <div id="camera-category" class="category-group">
+      <h3>Cameras</h3>
+      <div class="product-row">
+        <div class="product-item camera">
+          <h4>4K Mini Cam</h4>
+          <a href="/minicam">
+            <img src="Frontend/images/avt_emv4kminicam_1000.jpg" alt="4K Mini Cam" />
+          </a>
+          <p>High resolution (UHD) Camera especially for EMC- und test laboratories and general applications.</p>
+        </div>
+        <div class="product-item camera">
+          <h4>Thermal Cam</h4>
+          <a href="/thermocam">
+            <img src="Frontend/images/thermocam_1000-768x488.jpg" alt="Thermal Cam" />
+          </a>
+          <p>LWIR Thermography Camera especially for EMC and test laboratories.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LED Category -->
+    <div id="led-category" class="category-group">
+      <h3>LED</h3>
+      <div class="product-row">
+        <div class="product-item led">
+          <h4>Lamp EMVLED 100</h4>
+          <a href="/lamp100">
+          <img src="Frontend/images/emvled100_2_2000-768x698.jpg" alt="Lamp EMVLED 100" />
+          </a>
+          <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
+        </div>
+        <div class="product-item led">
+          <h4>Lamp EMVLED 75</h4>
+          <img src="Frontend/images/emvled75_1000.jpg" alt="Lamp EMVLED 75" />
+          <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
+        </div>
+        <div class="product-item led">
+                <h4>Lamp EMVLED 24/40</h4>
+                <img src="Frontend/images/emvled024_800-768x844.jpg" alt="Lamp EMVLED 24/40" />
+                <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
+            </div>
+            <div class="product-item led">
+                <h4>EMC LED Driver</h4>
+                <img src="Frontend/images/AVT_EMVTLED070-1024x892.jpg" alt="EMC LED Driver" />
+                <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
+            </div>
+      </div>
+    </div>
+
+    <!-- Software Category -->
+    <div id="software-category" class="category-group">
+      <h3>Software</h3>
+      <div class="product-row">
+        <div class="product-item software">
+          <h4>Software Product 1</h4>
+          <p>Description of Software Product 1.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Category -->
+    <div id="other-category" class="category-group">
+      <h3>Other</h3>
+      <div class="product-row">
+        <div class="product-item other">
+          <h4>EMC USB Converter</h4>
+          <img src="Frontend/images/usb.jpg" alt="EMC USB Converter" />
+          <p>Electro-optical USB-Converter especially for EMC and test laboratories, as well as general applications.</p>
+        </div>
+        <div class="product-item other">
+          <h4>Sequenzer AVT NT01</h4>
+          <img src="Frontend/images/sequenzer.jpg" alt="Sequenzer AVT NT01" />
+          <p>Sequenzer AVT NT01 – For EMC measuring and testing technology.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+@endsection
