@@ -7,7 +7,7 @@
 
 <div class="mySlides fade">
   <div class="numbertext">1 / 3</div>
-  <img src="Frontend\images\Lamp EMVLED 100 – AVT GmbH.png" style="width:85%">
+  <img src="Frontend\images\emvled75_1000.jpg" style="width:100%">
    <br>
         <br>
         <br>
@@ -17,7 +17,7 @@
 <div class="mySlides fade">
   <div class="numbertext">2 / 3</div>
   <br>
-  <img src="Frontend\images\Lamp EMVLED 100 – AVT GmbH.png" style="width:85%">
+  <img src="Frontend\images\lamp75.png" style="width:100%">
   <br>
         <br>
         <br>
@@ -48,7 +48,7 @@
 </div>
 
         <div>
-        <h2>Lamp EMVLED 100</h2>
+        <h2>Lamp EMVLED 75</h2>
           <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments. With a wide performance range, very high color rendering quality and low heat generation, this LED lighting system already stands out from the conventional mass of LED lamps.</p>
       </div>
 
@@ -56,15 +56,16 @@
         <h3>Features:</h3>
         <ul>
           <li>LED lights or spotlights for EMC laboratories, test fields and general environments</li>
-          <li>power 100 W</li>
-          <li>Pan/Tilt/Zoom inside camera controled by software</li>
+          <li>power 75W</li>
+          <li>high luminous flux up to bis 10000lm per lamp</li>
           <li>high luminous flux from 9600 lm per lamp</li>
-          <li>very high color rendering value Ra (CRI) of 97 typ</li>
+          <li>very high color rendering value Ra (CRI) 90 – 97 (option)</li>
           <li>high efficiency, thus lower heat load</li>
           <li>minimal electrical and electromagnetic interference</li>
           <li>selectable color temperature (2700K – 4000K)</li>
           <li>selectable opening angle (15° – 80°) of the reflectors</li>
-          <li>wide input voltage range (110V – 240V~ / 50/60Hz)</li>
+          <li>wide input voltage range (220V – 240V~ / 50Hz, other optional)</li>
+          <li>slim design – perfect fluorescent lamp replacement </li>
           <li>developed and manufactured in Germany</li>
         </ul>
       </div>
@@ -72,10 +73,10 @@
       <div>
         <h3>Options:</h3>
         <ul>
-          <li>Integrated rechargeable battery (5 Ah)</li>
-          <li>Optic lens for different angles</li>
-          <li>Pan/Tilt/Zoom inside camera controled by software</li>
-          <li>Higher interference immunity</li>
+          <li>dimmable (10% … 100%)</li>
+          <li>higher power (>100W … 200W / 10000lm … 25000lm)</li>
+          <li>different color temperatures can be mixed (2700K … 4000K)</li>
+          <li>different housing colors possible (black as standard)</li>
         </ul>
       </div>
 
@@ -184,39 +185,28 @@
 
         <h1>Variant</h1>
         <div class="variant-options">
-          <p> Please select an variant:</p>
+         
        
 
 <!-- Radio buttons -->
 
 <label>
-    <input type="radio" name="options" value="option1" onclick="showSection('section1')"> Variant 2
+    <input type="radio" name="options" value="option1" checked> Variant 1
 </label>
 
 
-<label>
-    <input type="radio" name="options" value="option2" onclick="showSection('section2')"> Variant 3
-</label>
 
 
-<div id="section1" class="hidden-sectionlamp100">
+<div id="section1" class="hidden-sectionlamp75">
 <ul>
-      <li>Length-210 mm</li>
+      <li>Length without/with brackets-620/630 mm</li>
       <li>Width-250 mm</li>
-      <li>Height (with/without retaining bracket 95/190 mm)</li>
-      <li>Weight (without retaining bracket 4,4 kg) <br> Light only, Driver separate</li>
+      <li>Height-75 mm</li>
+      <li>Weight (TBD) <br> Light only, Driver separate</li>
     </ul>
     <!-- Add more content here -->
 </div>
-<div id="section2" class="hidden-sectionlamp100">
-    <ul>
-      <li>Length-210 mm</li>
-      <li>Width- 270mm</li>
-      <li>Height (without / with retaining bracket 295 mm)</li>
-      <li>Weight (without retaining bracket 10,6 kg) <br> Including Light and Driver</li>
-    </ul>
-    <!-- Add more content here -->
-</div>
+
 
         </div>
         <h1>Geographic area for power</h1>
@@ -262,7 +252,7 @@
 
       <h1>Price</h1>
 
-      <h4>List Price for System AVT-EMVLED-100 + driver <SPan> 1350€</SPan></h4>
+      <h4>List Price for System AVT-EMVLED-075 + driver <SPan> 1290€</SPan></h4>
 
         <button class="basket-button">Add To Basket</button>
       </div>

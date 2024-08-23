@@ -39,7 +39,9 @@
         </div>
         <div class="product-item led">
           <h4>Lamp EMVLED 75</h4>
+          <a href="/lamp75">
           <img src="Frontend/images/emvled75_1000.jpg" alt="Lamp EMVLED 75" />
+          </a>
           <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
         </div>
         <div class="product-item led">

@@ -174,3 +174,16 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   }
 });
+
+
+ // Function to show the selected section and hide others
+ function showSection(sectionId) {
+    // Hide all sections
+    var sections = document.querySelectorAll('.hidden-section');
+    sections.forEach(function(section) {
+        section.classList.remove('active'); // Remove the active class
+    });
+
+    // Show the selected section
+    document.getElementById(sectionId).classList.add('active');
+}
