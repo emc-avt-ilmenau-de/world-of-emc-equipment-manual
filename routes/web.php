@@ -6,6 +6,12 @@ use App\Http\Controllers\FrontEnd\downloadscontroller;
 use App\Http\Controllers\FrontEnd\thermocamcontroller;
 use App\Http\Controllers\FrontEnd\lamp100controller;
 use App\Http\Controllers\FrontEnd\lamp75controller;
+use App\Http\Controllers\FrontEnd\lamp24controller;
+use App\Http\Controllers\FrontEnd\emcusbcontroller;
+use App\Http\Controllers\FrontEnd\leddrivercontroller;
+use App\Http\Controllers\FrontEnd\sequenzercontroller;
+
+
 
 
 
@@ -19,5 +25,11 @@ Route::get('/downloads', [downloadscontroller::class, 'index']);
 Route::get('/thermocam', [thermocamcontroller::class, 'index']);
 Route::get('/lamp100',[lamp100controller::class, 'index']);
 Route::get('/lamp75',[lamp75controller::class, 'index']);
+Route::get('/lamp24',[lamp24controller::class, 'index']);
+Route::get('/emcusb',[emcusbcontroller::class, 'index']);
+Route::get('/leddriver',[leddrivercontroller::class, 'index']);
+Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
+
+
 
  

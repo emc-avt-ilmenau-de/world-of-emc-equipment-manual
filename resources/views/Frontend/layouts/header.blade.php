@@ -26,9 +26,27 @@
                     <a href="/thermocam">Thermal Cam</a>
                   </div>
                   </div>
+                  <!-- Led Dropdown with Submenu -->
+                  <div class="dropdown-submenu">
                 <a href="/?category=led">LED</a>
+                <div class="dropdown-subcontent">
+                    <a href="/lamp100">Lamp EMVLED 100</a>
+                    <a href="/lamp75">Lamp EMVLED 75</a>
+                    <a href="/lamp24">Lamp EMVLED 24/40</a>
+                    <a href="/leddriver">EMC LED Driver</a>
+                  </div>
+                </div>
                 <a href="/?category=software">Software</a>
+                 <!-- Led Dropdown with Submenu -->
+                 <div class="dropdown-submenu">
                 <a href="/?category=other">Other</a>
+                <div class="dropdown-subcontent">
+                    <a href="/emcusb">EMC USB Converter</a>
+                    <a href="/sequenzer">Sequenzer AVT NT01</a>
+                    
+                  </div>
+                </div>
+                
               </div>
             </li>
             <li><a href="/downloads">Download</a></li>

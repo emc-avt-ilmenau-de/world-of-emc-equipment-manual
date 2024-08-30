@@ -46,12 +46,16 @@
         </div>
         <div class="product-item led">
                 <h4>Lamp EMVLED 24/40</h4>
+                <a href="/lamp24">
                 <img src="Frontend/images/emvled024_800-768x844.jpg" alt="Lamp EMVLED 24/40" />
+                </a>
                 <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
             </div>
             <div class="product-item led">
                 <h4>EMC LED Driver</h4>
+                <a href="/leddriver">
                 <img src="Frontend/images/AVT_EMVTLED070-1024x892.jpg" alt="EMC LED Driver" />
+                </a>
                 <p>The EMC-resistant, dimmable (optional) and low-emission LED lights and drivers are the ideal LED lighting system for EMC and test labs, as well as generally interference-sensitive environments.</p>
             </div>
       </div>
@@ -74,12 +78,16 @@
       <div class="product-row">
         <div class="product-item other">
           <h4>EMC USB Converter</h4>
+          <a href="/emcusb">
           <img src="Frontend/images/usb.jpg" alt="EMC USB Converter" />
+          </a>
           <p>Electro-optical USB-Converter especially for EMC and test laboratories, as well as general applications.</p>
         </div>
         <div class="product-item other">
           <h4>Sequenzer AVT NT01</h4>
+          <a href="/sequenzer">
           <img src="Frontend/images/sequenzer.jpg" alt="Sequenzer AVT NT01" />
+          </a>
           <p>Sequenzer AVT NT01 – For EMC measuring and testing technology.</p>
         </div>
       </div>

@@ -2,7 +2,7 @@
 @section('main-container')
 
 <main class="main-content">
-      <div class="minicam-image">
+      <div class="product-image">
       <div class="slideshow-container">
 
 <div class="mySlides fade">
@@ -90,9 +90,9 @@
 
       </div>
      
-      <div class="cam-details">
+      <div class="product-details">
         <h1>Color temperature</h1>
-        <h2>No Influence on Price</h2>
+        <h4>No Influence on Price</h4>
         <div class="lens-stats">        
 
         <form>
@@ -113,7 +113,7 @@
         
         <h3></h3>
         <h1>Reflector</h1>
-        <h2>No Influence on Price</h2>
+        <h4>No Influence on Price</h4>
         <div class="refelector-options">
         <p>Please choose an opening angles:</p>
         <input type="radio" id="option1" name="option" value="Option 1" >
@@ -163,7 +163,7 @@
 
         </div>
         <h1>Power Plug</h1>
-        <h2>No Influence on Price</h2>
+        <h4>No Influence on Price</h4>
         <div class="accessories-options">
           <input
             type="radio"
@@ -220,7 +220,7 @@
 
         </div>
         <h1>Geographic area for power</h1>
-        <h2>No Influence on Price</h2>
+        <h4>No Influence on Price</h4>
         <div class="interior-options">
           <input
             type="radio"

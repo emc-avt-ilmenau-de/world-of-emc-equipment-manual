@@ -2,7 +2,7 @@
 @section('main-container')
 
 <main class="main-content">
-      <div class="minicam-image">
+      <div class="product-image">
       <div class="slideshow-container">
 
 <div class="mySlides fade">
@@ -73,7 +73,7 @@
 
       </div>
      
-      <div class="cam-details">
+      <div class="product-details">
         <h1>Lens</h1>
         <h2>No Influence on Price</h2>
         <div class="lens-stats">        

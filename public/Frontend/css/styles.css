@@ -246,13 +246,14 @@ body {
     
   }
   
-  .cam-details{
+  .product-details{
     
     padding-right: 5%;
+    max-width: 40%;
     
   }
  
-  .minicam-image  {
+  .product-image  {
     max-width: 60%;
     height: auto;
   
@@ -284,26 +285,61 @@ body {
   
 
   
-  .software-list {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+/* Expand the container to take more space */
+.software-table {
+  max-width: 90%;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* Soft rounded corners */
 }
-.software-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: right;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+
+/* Full width table with spacing between cells */
+table {
+  width: 100%;
+  border-collapse: separate; /* Allows the use of border-spacing */
+  border-spacing: 10px 10px; /* 10px space between cells horizontally and vertically */
+  margin-bottom: 20px;
 }
-.software-item:last-child {
-    border-bottom: none;
+
+/* Styling table headers */
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 12px;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
 }
-.software-title {
-    flex-grow: 1;
-    padding-right: 10%;
+
+/* Styling table rows and cells */
+td {
+  padding: 12px;
+  background-color: #f9f9f9; /* Optional: light background for cells */
+  border: 1px solid #ddd;
+  border-radius: 5px; /* Optional: soft rounded corners for cells */
+}
+
+/* Style links */
+td a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive table: Adjust for smaller screens */
+@media (max-width: 768px) {
+  .software-table {
+      max-width: 100%;
+      padding: 10px;
+  }
+
+  table, th, td {
+      font-size: 14px;
+  }
 }
 
 
@@ -447,6 +483,37 @@ a:hover {
   position: relative;
 }
 
+#openPopupBtn {
+  background: linear-gradient(135deg, #6e8efb, #a777e3); /* Gradient background */
+  color: white;
+  padding: 15px 24px;
+  font-size: 22px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ 
+  
+}
+
+/* Hover effect */
+#openPopupBtn:hover {
+  background: linear-gradient(135deg, #a777e3, #6e8efb);
+  transform: scale(1.05); /* Slight zoom */
+}
+
+/* Active (click) effect */
+#openPopupBtn:active {
+  background: linear-gradient(135deg, #5a73db, #9665c7);
+  transform: scale(0.98);
+}
+
+/* Focus effect for accessibility */
+#openPopupBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(110, 142, 251, 0.5);
+}
 /* Close button */
 .popup-close {
   color: #aaa;
@@ -520,13 +587,7 @@ a:hover {
   background-color: #717171;
 }
 
-/* Hide the sections, but maintain their space */
-.hidden-sectionlamp100 {
-  visibility: hidden; /* Make it invisible but still take up space */
-  height: 0; /* Collapse height */
-  overflow: hidden; /* Hide overflow */
-  transition: visibility 0.2s, height 0.2s; /* Smooth transition */
-}
+
 
 .variant-options
 {
@@ -538,6 +599,15 @@ a:hover {
   width: 100%; /* Span across the width */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for separation */
 }
+
+/* Hide the sections, but maintain their space */
+.hidden-sectionlamp100 {
+  visibility: hidden; /* Make it invisible but still take up space */
+  height: 0; /* Collapse height */
+  overflow: hidden; /* Hide overflow */
+  transition: visibility 0.2s, height 0.2s; /* Smooth transition */
+}
+
 /* When active, show the section */
 .hidden-sectionlamp100.active {
   visibility: visible;
@@ -556,4 +626,28 @@ a:hover {
   height: auto; /* Default: height auto */
   overflow: visible; /* Ensure contents are visible */
   background-color: transparent; /* No background color */
+}
+
+.lamp-options
+{
+  position: flex; /* Flex the position at the top */
+  top: 20px; /* Adjust the top margin if needed */
+  background-color: white; /* Set a background color to avoid overlap */
+  padding: 10px; /* Add some padding for aesthetics */
+  z-index: 1000; /* Make sure it's on top of other elements */
+  width: 100%; /* Span across the width */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for separation */
+}
+.hidden-sectionlamp24 {
+  visibility: hidden; /* Make it invisible but still take up space */
+  height: 0; /* Collapse height */
+  overflow: hidden; /* Hide overflow */
+  transition: visibility 0.2s, height 0.2s; /* Smooth transition */
+}
+
+.hidden-sectionlamp24.active {
+  visibility: visible;
+  height: auto; /* Restore height */
+  overflow: visible; /* Ensure contents are visible */
+  background-color: transparent; /* Keep the background transparent */
 }

@@ -176,14 +176,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
- // Function to show the selected section and hide others
- function showSection(sectionId) {
-    // Hide all sections
-    var sections = document.querySelectorAll('.hidden-section');
+ // Function to show the selected section and hide others for both lamp100 and lamp24
+function showSection(sectionId) {
+    // Query all hidden sections with either lamp100 or lamp24 class
+    var sections = document.querySelectorAll('.hidden-sectionlamp100, .hidden-sectionlamp24');
+    
+    // Hide all sections by removing the 'active' class
     sections.forEach(function(section) {
-        section.classList.remove('active'); // Remove the active class
+        section.classList.remove('active');
     });
 
-    // Show the selected section
+    // Show the selected section by adding 'active' class
     document.getElementById(sectionId).classList.add('active');
 }
