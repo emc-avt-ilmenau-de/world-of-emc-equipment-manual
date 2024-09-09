@@ -484,9 +484,9 @@ a:hover {
 }
 
 #openPopupBtn {
-  background: linear-gradient(135deg, #6e8efb, #a777e3); /* Gradient background */
+  background: linear-gradient(135deg, #323438, #747375fb); /* Gradient background */
   color: white;
-  padding: 15px 24px;
+  padding: 12px 20px;
   font-size: 22px;
   border: none;
   border-radius: 30px;
@@ -499,7 +499,7 @@ a:hover {
 
 /* Hover effect */
 #openPopupBtn:hover {
-  background: linear-gradient(135deg, #a777e3, #6e8efb);
+  background: linear-gradient(135deg, #111111, #508299);
   transform: scale(1.05); /* Slight zoom */
 }
 
