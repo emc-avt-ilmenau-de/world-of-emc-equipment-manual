@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+        Schema::create('Component', function (Blueprint $table) {
+            $table->mediumIncrements('ComponentID');
+            $table->string('ComponentName', 255);             // by dafault not null
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('components');
     }
 };
