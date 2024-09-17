@@ -9,5 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table = 'products';   // actual table name
+    protected $table = 'Product';   // actual table name
+    protected $PrimaryKey = 'ProductId';
+
+    protected $fillable = ['ProductName', 'ProductPrice', 'ProductCurrency'];
+
+    // Relationship: Product has many components
+    public function Component()
+    {
+        return $this->hasMany(Component::class);
+    }
 }

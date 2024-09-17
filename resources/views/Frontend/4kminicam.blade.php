@@ -79,7 +79,7 @@
         <div class="lens-stats">        
 
         <form>
-    <p>Please choose an Lens:</p>
+    <p>Please choose a Lens:</p>
 
     <input type="radio" id="option1" name="option" value="Option 1" onclick="checkOther()">
     <label for="option1">3.2 mm</label>

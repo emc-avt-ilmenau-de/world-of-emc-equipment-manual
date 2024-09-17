@@ -14,7 +14,7 @@
         <nav>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="#about">About Us</a></li>
+            <li><a href="/about">About Us</a></li>
             <li class="dropdown">
               <a href="/" class="dropbtn">Product</a>
               <div class="dropdown-content">

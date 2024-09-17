@@ -10,10 +10,7 @@ use App\Http\Controllers\FrontEnd\lamp24controller;
 use App\Http\Controllers\FrontEnd\emcusbcontroller;
 use App\Http\Controllers\FrontEnd\leddrivercontroller;
 use App\Http\Controllers\FrontEnd\sequenzercontroller;
-
-
-
-
+use App\Http\Controllers\Productcontroller;
 
 Route::get('/', function () {
     return view('Frontend.index');
@@ -29,6 +26,7 @@ Route::get('/lamp24',[lamp24controller::class, 'index']);
 Route::get('/emcusb',[emcusbcontroller::class, 'index']);
 Route::get('/leddriver',[leddrivercontroller::class, 'index']);
 Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
+Route::get('/about',[Productcontroller::class, 'index']);
 
 
 
