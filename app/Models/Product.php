@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    protected $table = 'Product';   // actual table name
-    protected $PrimaryKey = 'ProductId';
-
-    protected $fillable = ['ProductName', 'ProductPrice', 'ProductCurrency'];
-
-    // Relationship: Product has many components
-    public function Component()
+    protected $table = 'Product';
+    protected $casts = [
+        'ProductMiniDescription' => 'array',
+        'ProductDescription' => 'array', // Tell Laravel to treat this as an array
+        'ProductMultimediaPath' => 'array',
+    ];
+    public function components()
     {
         return $this->hasMany(Component::class);
     }

@@ -3,11 +3,19 @@
 
 <main>
   <section id="all-products" class="product-category">
-    <h2 id="all-products-heading">All Products</h2>
+    <h2 id="all-products-heading">{{ __('messages.all-product') }}</h2>
+    <!-- Debugging: Display Current Locale -->
+    <div>
+    Current Locale: {{ App::getLocale() }}<br>
+    Session Locale: {{ session('locale', 'en') }}<br>
+    Cookie Locale: {{ Cookie::get('locale', 'en') }} <!-- If using cookies -->
+    <p>Session Data: {{ print_r(session()->all()) }}</p>
+   
+</div>
 
     <!-- Cameras Category -->
     <div id="camera-category" class="category-group">
-      <h3>Cameras</h3>
+      <h3>{{ __('messages.camera') }}</h3>
       <div class="product-row">
         <div class="product-item camera">
           <h4>4K Mini Cam</h4>
@@ -74,7 +82,7 @@
 
     <!-- Other Category -->
     <div id="other-category" class="category-group">
-      <h3>Other</h3>
+      <h3>{{ __('messages.other') }}</h3>
       <div class="product-row">
         <div class="product-item other">
           <h4>EMC USB Converter</h4>

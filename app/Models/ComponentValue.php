@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComponentValue extends Model
 {
-    use HasFactory;
+    public function component()
+    {
+        return $this->belongsTo(Component::class);
+    }
 }

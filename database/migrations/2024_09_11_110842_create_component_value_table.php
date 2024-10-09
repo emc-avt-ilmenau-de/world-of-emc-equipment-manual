@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('ComponentValueName', 255);             // by dafault not null
             $table->decimal('ComponentValuePrice', 8, 2)->nullable();
             $table->string('ComponentValueCurrency', 10)->default('EUR')->nullable();
+           
             $table->timestamps();
         });
     }

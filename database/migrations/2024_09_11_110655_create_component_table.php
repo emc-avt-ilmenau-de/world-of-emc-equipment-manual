@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('Component', function (Blueprint $table) {
             $table->mediumIncrements('ComponentID');
             $table->string('ComponentName', 255);             // by dafault not null
+            $table->string('ComponentMultimediaPath')->nullable();     // Store image path
             $table->timestamps();
         });
     }

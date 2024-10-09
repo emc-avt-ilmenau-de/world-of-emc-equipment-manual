@@ -57,7 +57,7 @@
           <li>Easy to use in hardware and software</li>
           <li>data transmission with optical fibers (USB 3.0)</li>
           <li>Small housing in slim design</li>
-          <li>High field immunity > 100 V/m</li>
+          <li>High field immunity > 200 V/m</li>
         </ol>
       </div>
 
@@ -74,12 +74,15 @@
       </div>
      
       <div class="product-details">
+
+      <h2>Most of the components are included on the base price, except some.</h2>
+      <h4>Please choose  Components:</h4>
         <h1>Lens</h1>
-        <h2>No Influence on Price</h2>
+        
         <div class="lens-stats">        
 
         <form>
-    <p>Please choose a Lens:</p>
+    
 
     <input type="radio" id="option1" name="option" value="Option 1" onclick="checkOther()">
     <label for="option1">3.2 mm</label>
@@ -116,7 +119,7 @@
     <label for="option2">20m</label>
 
     <input type="radio" id="option3" name="choice" value="Option 3">
-    <label for="option3">30m</label>   <span>(Same Price)</span><br>
+    <label for="option3">30m</label>   <br>
     <br>
 
     <input type="radio" id="option4" name="choice" value="Option 1">
@@ -134,7 +137,7 @@
         </div>
         <h3></h3>
         <h1>Power supply</h1>
-        <h2>No Influence on Price</h2>
+      
         <div class="charging-options">
           <input
             type="radio"
@@ -202,7 +205,7 @@
 
         </div>
         <h1>Power Plug</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="accessories-options">
           <input
             type="radio"
@@ -221,7 +224,7 @@
           <label for="all-weather-mats">UK</label>
         </div>
         <h1>Geographic area for power</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="interior-options">
           <input
             type="radio"
@@ -246,7 +249,7 @@
           id="all-weather-mats"
           name="accessories"
           value="all-weather-mats"
-         checked/>
+          checked disabled/>
         <label for="all-weather-mats">Basic (Free)</label>
         <br>
         <input

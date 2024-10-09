@@ -249,12 +249,12 @@ body {
   .product-details{
     
     padding-right: 5%;
-    max-width: 40%;
+    max-width: 30%;
     
   }
  
   .product-image  {
-    max-width: 60%;
+    max-width: 70%;
     height: auto;
   
   }
@@ -650,4 +650,59 @@ a:hover {
   height: auto; /* Restore height */
   overflow: visible; /* Ensure contents are visible */
   background-color: transparent; /* Keep the background transparent */
+}
+
+/* Container to hold the language switcher and align it to the right */
+.language-switcher {
+  display: flex;             /* Flexbox layout */
+  justify-content: flex-end; /* Align items to the right */
+  list-style-type: none;     /* Remove list style (bullets) */
+  padding: 0;
+  margin: 0;
+                /* Make the switcher span the full width */
+}
+
+/* Spacing between buttons */
+.language-switcher li {
+  margin-left: 10px;
+}
+
+/* Button styles */
+.lang-button {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #d1a411b0;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.lang-button:hover {
+  background-color: #baca27;
+  transform: translateY(-3px);
+}
+
+.lang-button:active {
+  background-color: #3e8e41;
+  transform: translateY(1px);
+}
+
+.lang-button:focus {
+  outline: none;
+  box-shadow: 0 0 5px #bcc909;
+}
+
+/* Color variations for the first button */
+.language-switcher li:first-child .lang-button {
+  background-color: #2196F3;
+}
+
+.language-switcher li:first-child .lang-button:hover {
+  background-color: #0b7dda;
+}
+
+.language-switcher li:first-child .lang-button:active {
+  background-color: #065a9e;
 }

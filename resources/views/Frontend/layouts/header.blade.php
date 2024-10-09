@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ App::getLocale() }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,14 +9,19 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Welcome to EMC-Web</h1>
-        <h4>We Are Not Just Sellers, We Are The Producer</h4>
+      <div class="language-switcher">
+      <a href="{{route('set-locale',  ['locale' => 'en']) }}">English</a> | <a href="{{ route('set-locale', ['locale' => 'de']) }}">Deutsch</a>
+</div>
+        <h1>{{ __('messages.welcome') }}</h1>
+        
+        <h4>{{ __('messages.tagline') }}</h4>
+        
         <nav>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About Us</a></li>
+            <li><a href="/">{{ __('messages.home') }}</a></li>
+            <li><a href="/about">{{ __('messages.about') }}</a></li>
             <li class="dropdown">
-              <a href="/" class="dropbtn">Product</a>
+              <a href="/" class="dropbtn">{{ __('messages.product') }}</a>
               <div class="dropdown-content">
                  <!-- Camera Dropdown with Submenu -->
                  <div class="dropdown-submenu">
@@ -49,9 +54,11 @@
                 
               </div>
             </li>
-            <li><a href="/downloads">Download</a></li>
-            <li><a href="#basket">Basket</a></li>
+            <li><a href="/downloads">{{ __('messages.downloads') }}</a></li>
+            <li><a href="#basket">{{ __('messages.basket') }}</a></li>
+            
           </ul>
+          
           <img src="Frontend/images/avt_logo_150.jpg" alt="AVT Logo" class="logo" />
         </nav>
       </header>

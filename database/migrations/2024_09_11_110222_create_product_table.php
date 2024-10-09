@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('Product', function (Blueprint $table) {
             $table->mediumIncrements('ProductID');
             $table->string('ProductName', 255);             // by dafault not null
+            $table->longText('ProductMiniDescription')->nullable();
+            $table->longText('ProductDescription')->nullable();
             $table->decimal('ProductPrice', 8, 2)->nullable();
             $table->string('ProductCurrency', 10)->default('EUR')->nullable();
+            $table->string('ProductHomeImagePath')->nullable();     // Store image path
+            $table->string('ProductMultimediaPath')->nullable();     // Store image path
             $table->timestamps();
         });
     }
