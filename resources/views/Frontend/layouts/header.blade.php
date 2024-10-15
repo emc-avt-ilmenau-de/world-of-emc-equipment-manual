@@ -10,9 +10,9 @@
     <div class="wrapper">
       <header>
       <div class="language-switcher">
-      <a href="{{route('set-locale',  ['locale' => 'en']) }}">English</a> | <a href="{{ route('set-locale', ['locale' => 'de']) }}">Deutsch</a>
+      <a href="{{route('set.locale',  ['locale' => 'en']) }}">English</a> | <a href="{{ route('set.locale', ['locale' => 'de']) }}">Deutsch</a>
 </div>
-        <h1>{{ __('messages.welcome') }}</h1>
+        <h1>@lang('messages.welcome')</h1>
         
         <h4>{{ __('messages.tagline') }}</h4>
         

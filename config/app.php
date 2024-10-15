@@ -79,10 +79,29 @@ return [
     */
 
     'locale' => env('APP_LOCALE', 'en'),
+    'available_locales' => ['en', 'de'],
+
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+    
+     /*
+    |--------------------------------------------------------------------------
+    | Service Providers
+    |--------------------------------------------------------------------------
+    |
+    | This array of service providers will be automatically loaded on the
+    | request to your application. Feel free to add your own services to
+    | this array to grant expanded functionality to your applications.
+    |
+    */
+
+   
+
+    // ...remaining configurations...
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +141,8 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+
+    
 
 ];

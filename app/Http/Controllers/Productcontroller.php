@@ -14,6 +14,9 @@ class Productcontroller extends Controller
     // Homepage - Display all products
     public function index()
 {
+    // Log the current application locale
+    $locale = App::getLocale(); // This should reflect the correct locale
+    Log::info('ProductController: Current application locale is ' . $locale);
     // Get the locale from session or default to 'en'
     $locale = session('locale', 'en');
 
