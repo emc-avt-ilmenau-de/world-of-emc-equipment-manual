@@ -91,6 +91,7 @@
       </div>
      
       <div class="product-details">
+      <h2>Most of the components are included on the base price, except some.</h2>
       <h1>Lamp</h1>
         <div class="lamp-options">
           <p> Please select a Lamp:</p>
@@ -124,7 +125,7 @@
 
         </div>
         <h1>Color temperature</h1>
-        <h2>No Influence on Price</h2>
+        
         <div class="lens-stats">        
 
         <form>
@@ -145,7 +146,7 @@
         
         <h3></h3>
         <h1>Reflector</h1>
-        <h4>No Influence on Price</h4>
+       
         <div class="refelector-options">
         <p>Please choose an opening angles:</p>
         <input type="radio" id="option1" name="option" value="Option 1" >
@@ -195,7 +196,7 @@
 
         </div>
         <h1>Power Plug</h1>
-        <h4>No Influence on Price</h4>
+       
         <div class="accessories-options">
           <input
             type="radio"
@@ -252,7 +253,7 @@
 
         </div>
         <h1>Geographic area for power</h1>
-        <h2>No Influence on Price</h2>
+      
         <div class="interior-options">
           <input
             type="radio"
@@ -277,7 +278,7 @@
           id="all-weather-mats"
           name="accessories"
           value="all-weather-mats"
-         checked/>
+          checked disabled/>
         <label for="all-weather-mats">2 years included</label>
         
         <input

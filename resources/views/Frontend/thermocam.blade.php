@@ -74,8 +74,9 @@
       </div>
      
       <div class="product-details">
+      <h2>Most of the components are included on the base price, except some.</h2>
         <h1>Lens</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="lens-stats">        
 
         <form>
@@ -90,15 +91,9 @@
     <input type="radio" id="option3" name="option" value="Option 3" onclick="checkOther()">
     <label for="option3">9 mm</label>
 
-    <input type="radio" id="other" name="option" value="Other" onclick="checkOther()">
-    <label for="other">Other</label>
+   
 
-    <!-- Hidden input field initially -->
-    <div id="otherFieldDiv">
-        <label for="otherField">Please specify:</label>
-        <input type="text" id="otherField" name="otherField">
-    </div>
-
+    
 </form>
 
 
@@ -131,7 +126,7 @@
         </div>
         <h3></h3>
         <h1>Power supply</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="charging-options">
           <input
             type="radio"
@@ -199,7 +194,7 @@
 
         </div>
         <h1>Power Plug</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="accessories-options">
           <input
             type="radio"
@@ -218,7 +213,7 @@
           <label for="all-weather-mats">UK</label>
         </div>
         <h1>Geographic area for power</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="interior-options">
           <input
             type="radio"
@@ -243,7 +238,7 @@
           id="all-weather-mats"
           name="accessories"
           value="all-weather-mats"
-         checked/>
+          checked disabled/>
         <label for="all-weather-mats">Basic (Free)</label>
        
        

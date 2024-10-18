@@ -80,9 +80,9 @@
       
       </div>
       <div class="product-details">
-
+      <h2>Most of the components are included on the base price, except some.</h2>
       <h1>USB-device types</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="device-type">        
 
         <input type="radio" id="option1" name="choice" value="Option 1">
@@ -123,7 +123,7 @@
         <h3></h3>
         
         <h1>Power Plug</h1>
-        <h2>No Influence on Price</h2>
+       
         <div class="accessories-options">
           <input
             type="radio"
@@ -142,7 +142,7 @@
           <label for="all-weather-mats">UK</label>
         </div>
         <h1>Geographic area for power</h1>
-        <h2>No Influence on Price</h2>
+        
         <div class="interior-options">
           <input
             type="radio"
