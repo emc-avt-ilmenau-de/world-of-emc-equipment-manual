@@ -52,18 +52,18 @@ Route::get('{locale?}', function ($locale = '') {
 // Middleware applied to all routes
 Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(function () {
    
-Route::get('/minicam', [minicamcontroller::class, 'index']);
-Route::get('/downloads', [downloadscontroller::class, 'index']);
-Route::get('/thermocam', [thermocamcontroller::class, 'index']);
-Route::get('/lamp100',[lamp100controller::class, 'index']);
-Route::get('/lamp75',[lamp75controller::class, 'index']);
-Route::get('/lamp24',[lamp24controller::class, 'index']);
-Route::get('/emcusb',[emcusbcontroller::class, 'index']);
-Route::get('/leddriver',[leddrivercontroller::class, 'index']);
-Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
-Route::get('/about', [ProductController::class, 'index'])->name('about');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-Route::post('/product/{id}/submit', [ProductController::class, 'submit'])->name('product.submit');
+    Route::get('/minicam', [minicamcontroller::class, 'index']);
+    Route::get('/downloads', [downloadscontroller::class, 'index']);
+    Route::get('/thermocam', [thermocamcontroller::class, 'index']);
+    Route::get('/lamp100',[lamp100controller::class, 'index']);
+    Route::get('/lamp75',[lamp75controller::class, 'index']);
+    Route::get('/lamp24',[lamp24controller::class, 'index']);
+    Route::get('/emcusb',[emcusbcontroller::class, 'index']);
+    Route::get('/leddriver',[leddrivercontroller::class, 'index']);
+    Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
+    Route::get('/about', [ProductController::class, 'index'])->name('about');
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::post('/product/{id}/submit', [ProductController::class, 'submit'])->name('product.submit');
  // Other routes...
 });
 

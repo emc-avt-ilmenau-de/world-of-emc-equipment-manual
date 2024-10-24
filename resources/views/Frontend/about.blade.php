@@ -3,59 +3,59 @@
 <div class="products">
     <main>
         <section id="all-products" class="product-category">
-            <h2 id="all-products-heading">All Products</h2>
+            <h2 id="all-products-heading">{{ __('messages.all-product') }}</h2>
                <!-- Debugging: Display Current Locale -->
 <p>Current Locale: {{ App::getLocale() }}</p>
 <p>Session Locale: {{ session('locale') }}</p>
+            
+             <!-- Cameras Category -->
+        <div id="camera-category" class="category-group">
+            <h3>{{ __('messages.camera') }}</h3>
+            <div class="product-row">
+            @foreach ($products->where('CategoryID', 1) as $product)
+            <div class="product-item camera">
+            <h4>{{ $product->ProductName }}</h4>
+            <a href="{{ strtolower(str_replace(' ', '', $product->ProductName)) }}">
+            <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+            </a>          
+            <p>{{ $product->minidescription }}</p>
+        </div>
+        @endforeach
+        </div>
+        </div>
+    
 
-            @foreach ($products as $product)
-                <div class="product">
-                    <h2>{{ $product->ProductName }}</h2>
+      <!-- Led Category-->
+       <div id="led-category" class="category-group">
+            <h3>LED</h3>
+            <div class="product-row">
+            @foreach ($products->where('CategoryID', "2") as $product)
+            <div class="product-item led">
+            <h4>{{ $product->ProductName }}</h4>
+            <a href="{{ strtolower(str_replace(' ', '', $product->ProductName)) }}">
+            <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+            </a>          
+            <p>{{ $product->minidescription }}</p>
+        </div>
+        @endforeach
+        </div>
+        </div>
 
-                    <!-- Display product image -->
-                    <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}">
-
-                    <!-- Display mini description -->
-                    <h1>{{ $product->minidescription }}</h1>
-
-                    <!-- Display price -->
-                    <p>Price: {{ $product->ProductPrice }} {{ $product->ProductCurrency }}</p>
-
-                    <!-- Display features only if they exist -->
-                    @if (isset($product->description['Features']))
-                        <h3>Features:</h3>
-                        <ul>
-                            @foreach ($product->description['Features'] as $feature)
-                                <li>{{ $feature }}</li>
-                            @endforeach
-                        </ul>
-                    @else
-                    <h3>Eigenschaften:</h3>
-                        <ul>
-                            @foreach ($product->description['Eigenschaften:'] as $feature)
-                                <li>{{ $feature }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-
-                    <!-- Display options only if they exist -->
-                    @if (isset($product->description['Options']))
-                        <h3>Options:</h3>
-                        <ul>
-                            @foreach ($product->description['Options'] as $option)
-                                <li>{{ $option }}</li>
-                            @endforeach
-                        </ul>
-                    @else
-                    <h3>Optionen:</h3>
-                    <ul>
-                            @foreach ($product->description['Optionen:'] as $option)
-                                <li>{{ $option }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            @endforeach
+          <!-- Other Category-->
+       <div id="other-category" class="category-group">
+            <h3>{{ __('messages.other') }}</h3>
+            <div class="product-row">
+            @foreach ($products->where('CategoryID', "3") as $product)
+            <div class="product-item led">
+            <h4>{{ $product->ProductName }}</h4>
+            <a href="{{ strtolower(str_replace(' ', '', $product->ProductName)) }}">
+            <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+            </a>          
+            <p>{{ $product->minidescription }}</p>
+        </div>
+        @endforeach
+        </div>
+        </div>
         </section>
     </main>
 </div>

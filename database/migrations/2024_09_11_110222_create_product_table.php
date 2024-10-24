@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('Product', function (Blueprint $table) {
             $table->mediumIncrements('ProductID');
+            $table->foreignId('CategoryID')->nullable()->constrained('Category');
             $table->string('ProductName', 255);             // by dafault not null
             $table->longText('ProductMiniDescription')->nullable();
             $table->longText('ProductDescription')->nullable();

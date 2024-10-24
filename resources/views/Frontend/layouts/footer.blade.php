@@ -5,7 +5,10 @@
  
   <body>   
     <footer>
-      <p>&copy; 2024 AVT GmbH. All rights reserved.</p>
+    &copy;
+    <span id="copyright">
+        <script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script>
+    </span> All rights reserved.
     </footer>
     <script src="Frontend\js\script.js"></script>
   </body>
