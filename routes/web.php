@@ -14,7 +14,7 @@ use App\Http\Controllers\FrontEnd\lamp24controller;
 use App\Http\Controllers\FrontEnd\emcusbcontroller;
 use App\Http\Controllers\FrontEnd\leddrivercontroller;
 use App\Http\Controllers\FrontEnd\sequenzercontroller;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\LanguageController;
 
 // Locale switching route
@@ -61,9 +61,9 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     Route::get('/emcusb',[emcusbcontroller::class, 'index']);
     Route::get('/leddriver',[leddrivercontroller::class, 'index']);
     Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
-    Route::get('/about', [ProductController::class, 'index'])->name('about');
-    Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-    Route::post('/product/{id}/submit', [ProductController::class, 'submit'])->name('product.submit');
+    Route::get('/about', [Productcontroller::class, 'index'])->name('about');
+    Route::get('/product/{id}', [Productcontroller::class, 'show'])->name('product.show');
+    Route::post('/product/{id}/submit', [Productcontroller::class, 'submit'])->name('product.submit');
  // Other routes...
 });
 
