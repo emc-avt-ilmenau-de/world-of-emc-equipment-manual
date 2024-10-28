@@ -892,13 +892,13 @@ WHERE ProductID IN('1');
 
 -- SQLite
 -- Insert sample data into the Component table
-INSERT INTO Component (ComponentName, created_at, updated_at) VALUES
-    ('4K Minicam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('Fiber Optics', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('Power Supply',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('Power Plug',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('Geographic area for power',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('Software',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('1','4K Minicam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2','Fiber Optics', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3','Power Supply',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4','Power Plug',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5','Geographic area for power',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('6','Software',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- SQLite

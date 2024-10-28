@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use HasFactory;
+
+    // Specify the table's primary key
+    protected $primaryKey = 'ProductID';
+
     protected $table = 'Product';
     protected $casts = [
         'ProductMiniDescription' => 'array',
@@ -16,6 +21,6 @@ class Product extends Model
     ];
     public function components()
     {
-        return $this->hasMany(Component::class);
+        return $this->belongsToMany(Component::class, 'ProductComponent', 'ProductID', 'ComponentID');
     }
 }

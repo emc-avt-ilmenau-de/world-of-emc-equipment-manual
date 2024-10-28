@@ -63,7 +63,7 @@
         </nav>
       </header>
     </div>
-    <script src="Frontend/js/script.js"></script>
+    <script src="{{ asset('Frontend/js/script.js') }}"></script>
   </body>
 </html>
 

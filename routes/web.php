@@ -68,12 +68,12 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
 });
 
 
-// Default Route Handling
+/*// Default Route Handling
 Route::get('/{any}', function () {
     return view('Frontend.index');
 })->where('any', '.*');
 
-
+*/
 /*Route::get('/switch-language/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'de'])) {
         Session::put('locale', $locale);  // Store the locale in session
