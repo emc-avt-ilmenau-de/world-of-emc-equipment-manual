@@ -52,13 +52,49 @@ class Productcontroller extends Controller
 
     // Product Page - Display the selected product and its components
     public function show($id)
-    {
-        // Retrieve the product by `ProductID`, loading `components` only if they exist
-    $product = Product::with(['components.values'])->where('ProductID', $id)->firstOrFail();
+{
+    // Retrieve the product by `ProductID`, loading `components` only if they exist
+    $product = Product::with(['components.values'])->where('ProductID', $id)->first();
+
+    // Check if product was found
+    if (!$product) {
+        abort(404); // Or you can return a specific error view
+    }
+
+    // Decode ProductMiniDescription if it's a JSON string
+    if (is_string($product->ProductMiniDescription)) {
+        $product->ProductMiniDescription = json_decode($product->ProductMiniDescription, true);
+    }
+
+    // Decode ProductDescription if it's a JSON string
+    if (is_string($product->ProductDescription)) {
+        $product->ProductDescription = json_decode($product->ProductDescription, true);
+    }
+
+    // Decode ProductMultimediaPath
+    if (is_string($product->ProductMultimediaPath)) {
+        $product->ProductMultimediaPath = json_decode($product->ProductMultimediaPath, true);
+    }
+
+
+    // Define locale if it's not set, default to 'en'
+    $locale = app()->getLocale(); // Assuming locale is determined from app settings
+
+    // Get the correct language data or fallback to 'en'
+    $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription'] ?? 
+                                $product->ProductMiniDescription['en']['ProductMiniDescription'] ?? '';
+
+    $product->description = $product->ProductDescription[$locale] ?? 
+                            $product->ProductDescription['en'] ?? '';
+    // Extract multimedia
+    $product->multimedia = $product->ProductMultimediaPath[$locale] ?? 
+                            $product->ProductMultimediaPath['en'] ?? [];
+
 
     // Pass the product to the view
     return view('Frontend.show', compact('product'));
-    }
+}
+
     
 
     // Form Submission - Handle form submission and calculate total price

@@ -987,4 +987,41 @@ foreach ($arr_media as $media):
 INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
         ('1','Camera',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
         ('2','Led', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     
+     
+     
         ('3','Other',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+UPDATE Product
+SET ProductMultimediaPath = '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\sequenzer.jpg",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\EMC_Sequencer _ AVT_GmbH1.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\sequenzer.jpg",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\EMC_Sequencer _ AVT_GmbH1.png",
+            "caption": "German caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ProductID = 8;
