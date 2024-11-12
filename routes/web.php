@@ -16,6 +16,7 @@ use App\Http\Controllers\FrontEnd\leddrivercontroller;
 use App\Http\Controllers\FrontEnd\sequenzercontroller;
 use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\Basketcontroller;
 
 // Locale switching route
 Route::get('/set-locale/{locale}', function ($locale) {
@@ -52,18 +53,27 @@ Route::get('{locale?}', function ($locale = '') {
 // Middleware applied to all routes
 Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(function () {
    
-    Route::get('/minicam', [minicamcontroller::class, 'index']);
-    Route::get('/downloads', [downloadscontroller::class, 'index']);
-    Route::get('/thermocam', [thermocamcontroller::class, 'index']);
-    Route::get('/lamp100',[lamp100controller::class, 'index']);
-    Route::get('/lamp75',[lamp75controller::class, 'index']);
-    Route::get('/lamp24',[lamp24controller::class, 'index']);
-    Route::get('/emcusb',[emcusbcontroller::class, 'index']);
-    Route::get('/leddriver',[leddrivercontroller::class, 'index']);
-    Route::get('/sequenzer',[sequenzercontroller::class, 'index']);
+    Route::get('/minicam', [MinicamController::class, 'index']);
+    Route::get('/downloads', [DownloadsController::class, 'index']);
+    Route::get('/thermocam', [ThermocamController::class, 'index']);
+    Route::get('/lamp100', [Lamp100Controller::class, 'index']);
+    Route::get('/lamp75', [Lamp75Controller::class, 'index']);
+    Route::get('/lamp24', [Lamp24Controller::class, 'index']);
+    Route::get('/emcusb', [EmcusbController::class, 'index']);
+    Route::get('/leddriver', [LeddriverController::class, 'index']);
+    Route::get('/sequenzer', [SequenzerController::class, 'index']);
     Route::get('/about', [Productcontroller::class, 'index'])->name('about');
     Route::get('/product/{id}', [Productcontroller::class, 'show'])->name('product.show');
     Route::post('/product/{id}/submit', [Productcontroller::class, 'submit'])->name('product.submit');
+    
+    Route::prefix('basket')->group(function () {
+        Route::get('/', [Basketcontroller::class, 'show'])->name('basket.show');
+        Route::post('/basket/add/{id}', [Basketcontroller::class, 'add'])->name('basket.add');
+        Route::post('/update/{productId}', [Basketcontroller::class, 'updateQuantity'])->name('basket.update');
+        Route::delete('/remove/{productId}', [Basketcontroller::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
+    });
+    
+    
  // Other routes...
 });
 

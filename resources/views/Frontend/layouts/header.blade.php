@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>EMC WEB</title>
     <!-- Corrected stylesheet link -->
     <link rel="stylesheet" href="{{ asset('Frontend/css/styles.css') }}" />
@@ -55,7 +56,7 @@
               </div>
             </li>
             <li><a href="/downloads">{{ __('messages.downloads') }}</a></li>
-            <li><a href="#basket">{{ __('messages.basket') }}</a></li>
+            <li><a href="/basket">{{ __('messages.basket') }}</a></li>
           </ul>
           
           <img src="{{ asset('Frontend/images/avt_logo_150.jpg') }}" alt="AVT Logo" class="logo" />

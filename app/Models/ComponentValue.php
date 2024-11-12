@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ComponentValue extends Model
 {
+    protected $primaryKey = 'ComponentValueID'; 
     protected $table = 'ComponentValue'; // Ensure this matches your database table name
 
     public function component()

@@ -189,3 +189,108 @@ function showSection(sectionId) {
     // Show the selected section by adding 'active' class
     document.getElementById(sectionId).classList.add('active');
 }
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    let isValid = true;
+    
+    // Check that all required inputs have values
+    const requiredFields = document.querySelectorAll('input[required]');
+    requiredFields.forEach(function(input) {
+        if (!input.value) {
+            isValid = false;
+            alert(input.name + ' is required.');
+            input.focus();
+            event.preventDefault();  // Prevent form submission
+            return false;  // Exit the loop early if validation fails
+        }
+    });
+
+    // If everything is valid, the form will be submitted
+    if (isValid) {
+        return true;
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Handle form submission before actual submission
+    const basketButton = document.querySelector('.basket-button');
+if (basketButton) {
+    basketButton.addEventListener('click', function(event)  {
+        event.preventDefault(); // Prevent default form submission
+
+        const productName = "{{ $product->ProductName }}";
+        const productPrice = "{{ $product->ProductPrice }} {{ $product->ProductCurrency }}"; // Added currency here
+        const components = [];
+
+        // Collect selected components from checkboxes or radios
+        const componentInputs = document.querySelectorAll('[name^="components["]:checked, [name="lens_option"]:checked, [name="fiber_option"]:checked, [name="power_option"]:checked, [name="software_option[]"]:checked]');
+        componentInputs.forEach(input => {
+            const componentId = input.name.match(/\[(\d+)\]/) ? input.name.match(/\[(\d+)\]/)[1] : input.id.split('_')[1];
+            const componentValue = input.value;
+            components.push({ componentId, componentValue });
+        });
+
+        // Handle "Other" field values if any
+        const lensOtherField = document.getElementById('lensOtherField') ? document.getElementById('lensOtherField').value : null;
+        if (lensOtherField) {
+            components.push({ componentId: 1, componentValue: lensOtherField }); // Assuming '1' is the ID for 4K Minicam Lens
+        }
+
+        const geoOtherField = document.getElementById('geoOtherField') ? document.getElementById('geoOtherField').value : null;
+        if (geoOtherField) {
+            components.push({ componentId: 5, componentValue: geoOtherField }); // Assuming '5' is the ID for Geographic Area for Power
+        }
+
+        // Capture the value of the Power Plug input field
+        const powerPlugValue = document.getElementById('powerPlugInput') ? document.getElementById('powerPlugInput').value : null;
+        if (powerPlugValue) {
+            components.push({ componentId: 4, componentValue: powerPlugValue }); // Assuming '4' is the ID for Power Plug
+        }
+
+        // Update modal content
+        document.getElementById('modalProductName').textContent = productName;
+        document.getElementById('modalProductPrice').textContent = productPrice;
+
+        const modalComponents = document.getElementById('modalComponents');
+        modalComponents.innerHTML = ''; // Clear previous content
+        components.forEach(comp => {
+            const componentItem = document.createElement('div');
+            componentItem.textContent = `Component: ${comp.componentValue}`; // Display the custom values in the modal
+            modalComponents.appendChild(componentItem);
+        });
+
+        // Show the modal
+        document.getElementById('productModal').style.display = 'block';
+    });
+
+    // Close the modal
+    function closeModal() {
+        document.getElementById('productModal').style.display = 'none';
+    }
+
+    // Confirm and submit the form when the "Confirm" button is clicked
+    document.getElementById('confirmAddToBasket').addEventListener('click', function() {
+        document.getElementById('addToBasketForm').submit(); // Submit the form traditionally
+    });
+}
+});
+// Show "Other" input field for 4K Minicam Lens
+function checkLensOther(value) {
+    const lensOtherFieldDiv = document.getElementById('lensOtherFieldDiv');
+    if (value === 'Other') {
+        lensOtherFieldDiv.style.display = 'block';
+    } else {
+        lensOtherFieldDiv.style.display = 'none';
+    }
+}
+
+// Show "Other" input field for Geographic Area for Power
+function checkGeoOther(value) {
+    const geoOtherFieldDiv = document.getElementById('geoOtherFieldDiv');
+    if (value === 'Other') {
+        geoOtherFieldDiv.style.display = 'block';
+    } else {
+        geoOtherFieldDiv.style.display = 'none';
+    }
+
+}

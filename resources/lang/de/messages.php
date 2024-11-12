@@ -11,6 +11,8 @@ return [
      'all-product' => 'Alle Produkte',
       'other' => 'Andere',
       'camera' => 'Kameras',
+      'price' => 'Preis',
+      
       
      
  ];

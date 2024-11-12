@@ -9,8 +9,7 @@
     Current Locale: {{ App::getLocale() }}<br>
     Session Locale: {{ session('locale', 'en') }}<br>
     Cookie Locale: {{ Cookie::get('locale', 'en') }} <!-- If using cookies -->
-    <p>Session Data: {{ print_r(session()->all()) }}</p>
-    {{ session('locale') }} <!-- Check what the session locale is -->
+   
    
 </div>
 

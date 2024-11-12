@@ -922,18 +922,17 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('6', '2','10m',NULL,'EUR'),
      ('7', '2','20m',NULL,'EUR'),
      ('8', '2','30m',NULL,'EUR'),
-     ('9', '2','40m','x.x','EUR'),
-     ('10', '2','70m','x.x','EUR'),
-     ('11', '2','100m','x.x','EUR'),
+     ('9', '2','40m','100','EUR'),
+     ('10', '2','70m','200','EUR'),
+     ('11', '2','100m','300','EUR'),
      ('12', '3','Hardened switching power supply 230V/5V ',NULL,'EUR'),
      ('13', '3','Hardened nonswitching power supply 230V/5V ',NULL,'EUR'),
      ('14', '3',' Accumulator/chargeable batterie inside camera ',NULL,'EUR'),
-     ('15', '4',' EU ',NULL,'EUR'),
-     ('16', '4',' UK ',NULL,'EUR'),
-     ('17', '5',' 230 V/ 50 Hz ',NULL,'EUR'),
-     ('18', '5',' 110 VAC @ 60Hz ',NULL,'EUR'),
-     ('19', '6',' Basic ',NULL,'EUR'),
-     ('20', '6',' Minicam Plus ','x.x','EUR');
+     ('15', '5',' 230 V/ 50 Hz ',NULL,'EUR'),
+     ('16', '5',' 110 VAC @ 60Hz ',NULL,'EUR'),
+     ('17', '5','Other',NULL,'EUR'),
+     ('18', '6',' Basic ',NULL,'EUR'),
+     ('19', '6',' Minicam Plus ','2000','EUR');
 
 
 -- Sample json data insertion
@@ -1025,3 +1024,23 @@ SET ProductMultimediaPath = '{"en":{
     }
 }'
 WHERE ProductID = 8;
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+    INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('2', '7', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '3',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
+    ('20', '7','4 mm',NULL,'EUR'),
+     ('21', '7','6 mm',NULL,'EUR'),
+     ('22', '7','9 mm',NULL,'EUR');
+    
