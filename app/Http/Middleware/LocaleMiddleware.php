@@ -19,6 +19,7 @@ class LocaleMiddleware
     
         // Set the application locale
         App::setLocale($locale);
+       
         
         // Log after setting the locale
         Log::info('LocaleMiddleware: Application Locale Set To: ' . App::getLocale());

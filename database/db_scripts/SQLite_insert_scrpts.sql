@@ -76,7 +76,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_minicam_video.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -92,7 +92,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -177,7 +176,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_thermocam_video.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -193,7 +192,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -297,7 +295,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -313,7 +311,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -416,7 +413,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -432,7 +429,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -534,7 +530,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -550,7 +546,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -648,7 +643,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -664,7 +659,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -746,7 +740,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_usb_converter.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -762,7 +756,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -857,7 +850,7 @@ INSERT INTO Product (
             "path": "Frontend\\images\\avt_usb_converter.mp4",
             "caption": "English caption"
         }
-    }
+    },
     
     "de": {
         "image1": {
@@ -873,7 +866,6 @@ INSERT INTO Product (
             "caption": "German caption"
         }
     }
-}
 }',
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
@@ -885,7 +877,7 @@ INSERT INTO Product (
      ('EMC USB Converter', 'x.x', 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('Sequenzer AVT NT01', 'x.x', 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);*/
 
-DROP TABLE IF EXISTS Component;
+DROP TABLE IF EXISTS ComponentValue;
 
 DELETE FROM Product
 WHERE ProductID IN('1');
@@ -913,26 +905,26 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
 
 -- SQLite
 -- Insert sample data into the ComponentValue table
-INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
-    ('1', '1','3.2mm',NULL,'EUR'),
-     ('2', '1','4.5mm',NULL,'EUR'),
-     ('3', '1','6.8mm',NULL,'EUR'),
-     ('4', '1','12mm',NULL,'EUR'),
-     ('5', '1','Other',NULL,'EUR'),
-     ('6', '2','10m',NULL,'EUR'),
-     ('7', '2','20m',NULL,'EUR'),
-     ('8', '2','30m',NULL,'EUR'),
-     ('9', '2','40m','100','EUR'),
-     ('10', '2','70m','200','EUR'),
-     ('11', '2','100m','300','EUR'),
-     ('12', '3','Hardened switching power supply 230V/5V ',NULL,'EUR'),
-     ('13', '3','Hardened nonswitching power supply 230V/5V ',NULL,'EUR'),
-     ('14', '3',' Accumulator/chargeable batterie inside camera ',NULL,'EUR'),
-     ('15', '5',' 230 V/ 50 Hz ',NULL,'EUR'),
-     ('16', '5',' 110 VAC @ 60Hz ',NULL,'EUR'),
-     ('17', '5','Other',NULL,'EUR'),
-     ('18', '6',' Basic ',NULL,'EUR'),
-     ('19', '6',' Minicam Plus ','2000','EUR');
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('1', '1','3.2mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '1','4.5mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '1','6.8mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4', '1','12mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '1','Other',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('6', '2','10m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('7', '2','20m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('8', '2','30m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('9', '2','40m','100','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10', '2','70m','200','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('11', '2','100m','300','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('12', '3','Hardened switching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('13', '3','Hardened nonswitching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('14', '3',' Accumulator/chargeable batterie inside camera ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('15', '5',' 230 V/ 50 Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('16', '5',' 110 VAC @ 60Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('17', '5','Other',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('18', '6',' Basic ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('19', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- Sample json data insertion
@@ -995,11 +987,11 @@ INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
 UPDATE Product
 SET ProductMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\sequenzer.jpg",
+            "path": "Frontend\\images\\usb.jpg",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMC_Sequencer _ AVT_GmbH1.png",
+            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
             "caption": "English caption"
         },
         "video1": {
@@ -1010,11 +1002,11 @@ SET ProductMultimediaPath = '{"en":{
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\sequenzer.jpg",
+            "path": "Frontend\\images\\usb.jpg",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMC_Sequencer _ AVT_GmbH1.png",
+            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
             "caption": "German caption"
         },
         "video1": {
@@ -1023,7 +1015,7 @@ SET ProductMultimediaPath = '{"en":{
         }
     }
 }'
-WHERE ProductID = 8;
+WHERE ProductID = 7;
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1039,8 +1031,28 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 
 
 
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency, created_at, updated_at) VALUES
+    ('20', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('21', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('22', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+DELETE FROM ProductComponent
+WHERE ComponentID = '5';
+
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
-    ('20', '7','4 mm',NULL,'EUR'),
-     ('21', '7','6 mm',NULL,'EUR'),
-     ('22', '7','9 mm',NULL,'EUR');
+    ('5', '1','Other',NULL,'EUR'),
+     
+     ('17', '5','Other',NULL,'EUR');
+
+
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('1', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('1', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
     
+     ('2', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+

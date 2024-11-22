@@ -190,107 +190,193 @@ function showSection(sectionId) {
     document.getElementById(sectionId).classList.add('active');
 }
 
-document.querySelector('form').addEventListener('submit', function(event) {
-    let isValid = true;
-    
-    // Check that all required inputs have values
-    const requiredFields = document.querySelectorAll('input[required]');
-    requiredFields.forEach(function(input) {
-        if (!input.value) {
-            isValid = false;
-            alert(input.name + ' is required.');
-            input.focus();
-            event.preventDefault();  // Prevent form submission
-            return false;  // Exit the loop early if validation fails
-        }
-    });
-
-    // If everything is valid, the form will be submitted
-    if (isValid) {
-        return true;
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Handle form submission before actual submission
-    const basketButton = document.querySelector('.basket-button');
-if (basketButton) {
-    basketButton.addEventListener('click', function(event)  {
-        event.preventDefault(); // Prevent default form submission
-
-        const productName = "{{ $product->ProductName }}";
-        const productPrice = "{{ $product->ProductPrice }} {{ $product->ProductCurrency }}"; // Added currency here
-        const components = [];
-
-        // Collect selected components from checkboxes or radios
-        const componentInputs = document.querySelectorAll('[name^="components["]:checked, [name="lens_option"]:checked, [name="fiber_option"]:checked, [name="power_option"]:checked, [name="software_option[]"]:checked]');
-        componentInputs.forEach(input => {
-            const componentId = input.name.match(/\[(\d+)\]/) ? input.name.match(/\[(\d+)\]/)[1] : input.id.split('_')[1];
-            const componentValue = input.value;
-            components.push({ componentId, componentValue });
-        });
-
-        // Handle "Other" field values if any
-        const lensOtherField = document.getElementById('lensOtherField') ? document.getElementById('lensOtherField').value : null;
-        if (lensOtherField) {
-            components.push({ componentId: 1, componentValue: lensOtherField }); // Assuming '1' is the ID for 4K Minicam Lens
-        }
-
-        const geoOtherField = document.getElementById('geoOtherField') ? document.getElementById('geoOtherField').value : null;
-        if (geoOtherField) {
-            components.push({ componentId: 5, componentValue: geoOtherField }); // Assuming '5' is the ID for Geographic Area for Power
-        }
-
-        // Capture the value of the Power Plug input field
-        const powerPlugValue = document.getElementById('powerPlugInput') ? document.getElementById('powerPlugInput').value : null;
-        if (powerPlugValue) {
-            components.push({ componentId: 4, componentValue: powerPlugValue }); // Assuming '4' is the ID for Power Plug
-        }
-
-        // Update modal content
-        document.getElementById('modalProductName').textContent = productName;
-        document.getElementById('modalProductPrice').textContent = productPrice;
-
-        const modalComponents = document.getElementById('modalComponents');
-        modalComponents.innerHTML = ''; // Clear previous content
-        components.forEach(comp => {
-            const componentItem = document.createElement('div');
-            componentItem.textContent = `Component: ${comp.componentValue}`; // Display the custom values in the modal
-            modalComponents.appendChild(componentItem);
-        });
-
-        // Show the modal
-        document.getElementById('productModal').style.display = 'block';
-    });
-
-    // Close the modal
-    function closeModal() {
-        document.getElementById('productModal').style.display = 'none';
-    }
-
-    // Confirm and submit the form when the "Confirm" button is clicked
-    document.getElementById('confirmAddToBasket').addEventListener('click', function() {
-        document.getElementById('addToBasketForm').submit(); // Submit the form traditionally
-    });
-}
-});
-// Show "Other" input field for 4K Minicam Lens
+// JavaScript function to update the selected components and total price
 function checkLensOther(value) {
-    const lensOtherFieldDiv = document.getElementById('lensOtherFieldDiv');
     if (value === 'Other') {
-        lensOtherFieldDiv.style.display = 'block';
+        document.getElementById('lensOtherFieldDiv').style.display = 'block';
     } else {
-        lensOtherFieldDiv.style.display = 'none';
+        document.getElementById('lensOtherFieldDiv').style.display = 'none';
     }
 }
 
-// Show "Other" input field for Geographic Area for Power
 function checkGeoOther(value) {
-    const geoOtherFieldDiv = document.getElementById('geoOtherFieldDiv');
     if (value === 'Other') {
-        geoOtherFieldDiv.style.display = 'block';
+        document.getElementById('geoOtherFieldDiv').style.display = 'block';
     } else {
-        geoOtherFieldDiv.style.display = 'none';
+        document.getElementById('geoOtherFieldDiv').style.display = 'none';
+    }
+}
+
+function validateSelection() {
+    let isValid = true;
+    let errorMessages = [];
+
+    // Loop through each component section to ensure at least one option is selected or custom value is provided
+    document.querySelectorAll('.component-section').forEach(section => {
+        const radioButtons = section.querySelectorAll('input[type="radio"]');
+        const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+        const textInput = section.querySelector('input[type="text"]');
+        
+        let isComponentValid = false;
+
+        // Check if at least one radio button or checkbox is selected
+        if (radioButtons.length > 0) {
+            const isRadioSelected = Array.from(radioButtons).some(input => input.checked);
+            if (isRadioSelected) {
+                isComponentValid = true;
+            }
+        } else if (checkboxes.length > 0) {
+            const isCheckboxSelected = Array.from(checkboxes).some(input => input.checked);
+            if (isCheckboxSelected) {
+                isComponentValid = true;
+            }
+        }
+
+        // Handle "Other" input field validation
+        if (!isComponentValid && textInput && textInput.value.trim() === '') {
+            // If "Other" is selected but no custom value is provided
+            if (section.querySelector('input[type="radio"]:checked')?.nextElementSibling.textContent === 'Other') {
+                errorMessages.push(`${section.querySelector('h2').textContent} requires a custom value.`);
+                isValid = false;
+            }
+        }
+
+        // If no selection is made and it's not an "Other" input, mark as invalid
+        if (!isComponentValid && textInput?.value.trim() === '') {
+            errorMessages.push(`${section.querySelector('h2').textContent} requires a selection.`);
+            isValid = false;
+        }
+    });
+
+    // Validate Power Plug input if it exists
+    const powerPlugValue = document.getElementById('powerPlugInput')?.value;
+    if (powerPlugValue && powerPlugValue.trim() === '') {
+        errorMessages.push('Power Plug field is required.');
+        isValid = false;
     }
 
+    // Display error messages if validation fails
+    if (!isValid) {
+        alert('Please fix the following errors:\n' + errorMessages.join('\n'));
+    }
+
+    return isValid;
 }
+
+function updateSelection() {
+    // Only update the selection if validation passes
+    if (!validateSelection()) return;
+
+    let selectedComponents = '';
+    let totalPrice = parseFloat(document.getElementById('basePrice').innerText); // Start with the base price
+
+    // Loop through selected radio buttons or checkboxes to get additional component prices
+    document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked').forEach(input => {
+        const componentName = input.closest('.component-section').querySelector('h2').textContent;
+        const componentValue = input.nextElementSibling.textContent;
+        const componentPrice = parseFloat(input.getAttribute('data-price') || 0);
+
+        // Handle "Other" fields (custom inputs)
+        if (componentValue === "Other") {
+            // Find the corresponding input field (text box) for the "Other" value
+            const customInputField = input.closest('.component-section').querySelector('input[type="text"]');
+            if (customInputField) {
+                const customValue = customInputField.value.trim();
+                if (customValue) {
+                    selectedComponents += `<p><strong>${componentName}:</strong> ${customValue}</p>`;
+                    totalPrice += parseFloat(customInputField.getAttribute('data-price') || 0); // Add price for custom value (if any)
+                }
+            }
+        } else {
+            // For regular selections, just add the name and price
+            selectedComponents += `<p><strong>${componentName}:</strong> ${componentValue}</p>`;
+            totalPrice += componentPrice; // Add the price for the selected value
+        }
+    });
+
+    // Handle power plug input (if it exists)
+    const powerPlugValue = document.getElementById('powerPlugInput')?.value;
+    if (powerPlugValue) {
+        selectedComponents += `<p><strong>Power Plug:</strong> ${powerPlugValue}</p>`;
+        // Optional: Add price for Power Plug if available (you can add logic here)
+    }
+
+    // Log selected components and total price for debugging
+    console.log("Selected Components:", selectedComponents);
+    console.log("Total Price:", totalPrice);
+
+    // Update the modal with selected components and total price
+    document.getElementById('modalComponents').innerHTML = selectedComponents;
+    document.getElementById('modalTotalPrice').textContent = totalPrice.toFixed(2) + ' EUR';
+}
+
+// Open modal function
+function openModal() {
+    updateSelection(); // Update the modal with selected components
+    document.getElementById('productModal').style.display = 'block'; // Show the modal
+}
+
+// Close modal function
+function closeModal() {
+    document.getElementById('productModal').style.display = 'none'; // Hide the modal
+}
+
+// Submit form when user confirms selection
+function submitForm() {
+    if (validateSelection()) {
+        document.getElementById('addToBasketForm').submit(); // Submit the form only if valid
+    }
+}
+
+document.getElementById('addToBasketForm').addEventListener('submit', () => {
+    alert('Form is being submitted');
+});
+// basket.js
+
+// Event listener for updating product quantity
+document.querySelectorAll('.update-quantity').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const productId = this.dataset.productId;
+        const quantity = document.querySelector(`#quantity-${productId}`).value;
+        
+        // Send AJAX request to update the quantity
+        fetch(`/basket/update/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the total price
+            document.querySelector(`#total-price-${productId}`).innerText = data.newTotalPrice;
+            document.querySelector('#total-price').innerText = data.newGrandTotal;
+        })
+        .catch(error => console.error('Error updating quantity:', error));
+    });
+});
+
+// Event listener for removing a product from the basket
+document.querySelectorAll('.remove-product').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const productId = this.dataset.productId;
+
+        // Send AJAX request to remove the product
+        fetch(`/basket/remove/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove the product from the basket UI
+            document.querySelector(`#product-${productId}`).remove();
+            document.querySelector('#total-price').innerText = data.newGrandTotal;
+        })
+        .catch(error => console.error('Error removing product:', error));
+    });
+});

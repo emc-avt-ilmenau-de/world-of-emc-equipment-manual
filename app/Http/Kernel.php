@@ -10,6 +10,7 @@ class Kernel extends HttpKernel
         'web' => [
             // Other middleware here...
             \App\Http\Middleware\LocaleMiddleware::class, // Make sure this line is present
+           
         ],
     
         'api' => [

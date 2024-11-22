@@ -21,4 +21,15 @@ class Component extends Model
         return $this->hasMany(ComponentValue::class, 'ComponentID');
     }
 
+    public function component()
+    {
+        return $this->belongsTo(Component::class, 'ComponentID');
+    }
+
+    // Define the relationship to ComponentValue
+    public function componentValues()
+    {
+        return $this->hasMany(ComponentValue::class, 'ComponentID');
+    }
+
 }

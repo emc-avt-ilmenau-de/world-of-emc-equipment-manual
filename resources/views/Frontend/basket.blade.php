@@ -1,66 +1,48 @@
 @extends('Frontend.layouts.main')
 
-@section('main-container')
-<div class="basket-container">
-    <h1>Your Basket</h1>
+@section('content')
+<div class="basket">
+    <h2>Your Basket</h2>
 
-    @if (count($basket['components']) > 0)
-        <table class="basket-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Components</th>
-                    <th>Component Values</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($basket['components'] as $productId => $item)
-                    <tr>
-                        <td>{{ $item['product']->ProductName }}</td>
-                        <td>
-                            @foreach ($item['product']->components as $component)
-                                <p>{{ $component->ComponentName }}</p>
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($item['product']->components as $component)
-                                @foreach ($item['component_values'] ?? [] as $valueId => $value)
-                                    @if ($component->ComponentID == $valueId)
-                                        <p>{{ $value->ComponentValueName }}</p>
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </td>
-                        <td>{{ number_format($item['product']->ProductPrice, 2) }} {{ $item['product']->ProductCurrency }}</td>
-                        <td>
-                            <form action="{{ route('basket.update', ['productId' => $productId]) }}" method="POST">
-                                @csrf
-                                <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1">
-                                <button type="submit">Update</button>
-                            </form>
-                        </td>
-                        <td>{{ number_format($item['totalPrice'], 2) }} {{ $item['product']->ProductCurrency }}</td>
-                        <td>
-                            <form action="{{ route('basket.remove', ['productId' => $productId]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm('Are you sure you want to remove this item?')">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="basket-summary">
-            <h3>Total Price: {{ number_format($basket['totalPrice'], 2) }} {{ $item['product']->ProductCurrency }}</h3>
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
+    @endif
+
+    {{-- Debugging Session Data --}}
+    <pre>{{ print_r(session('basket'), true) }}</pre>
+
+    @if(!empty($basket) && count($basket) > 0)
+        @foreach($basket as $item)
+            <div class="product">
+                <h3>Product: {{ $item['product_name'] }}</h3>
+                <p>Product Price: {{ number_format($item['product_price'], 2) }} {{ $item['currency'] }}</p>
+
+                @php
+                    $itemSubtotal = $item['product_price'] * $item['quantity'];
+                @endphp
+
+                @foreach($item['components'] as $component)
+                    <div class="product-details">
+                        <p>{{ $component['component_name'] }}: {{ $component['value_name'] }}</p>
+                        @if ($component['value_price'] > 0)
+                            <p>(+ {{ number_format($component['value_price'], 2) }} {{ $item['currency'] }})</p>
+                            @php
+                                $itemSubtotal += ($component['value_price'] * $item['quantity']);
+                            @endphp
+                        @endif
+                    </div>
+                @endforeach
+
+                <h4>Subtotal for {{ $item['product_name'] }}: {{ number_format($itemSubtotal, 2) }} {{ $item['currency'] }}</h4>
+                <h3>Total Price: {{ number_format($item['total_price'], 2) }} {{ $item['currency'] }}</h3>
+                <p>Quantity: {{ $item['quantity'] }}</p>
+            </div>
+        @endforeach
+
+        <h3>Grand Total: {{ number_format($totalPrice, 2) }} EUR</h3>
     @else
-  
         <p>Your basket is empty.</p>
     @endif
 </div>

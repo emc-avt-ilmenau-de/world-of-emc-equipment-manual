@@ -23,4 +23,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Component::class, 'ProductComponent', 'ProductID', 'ComponentID');
     }
+
+    public function componentValues()
+    {
+        return $this->hasMany(ComponentValue::class, 'ComponentID');
+    }
 }
