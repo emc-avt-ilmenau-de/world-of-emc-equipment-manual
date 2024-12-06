@@ -12,9 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ProductComponent', function (Blueprint $table) {
-            $table->foreignId('ProductID')->nullable()->constrained('Product');
-            $table->foreignId('ComponentID')->nullable()->constrained('Component');
+            $table->foreignId('ProductID')
+                ->constrained('Product', 'ProductID') // Ensure correct reference for the foreign key
+                ->onDelete('cascade'); // Automatically remove ProductComponent rows if the referenced Product is deleted
+
+            $table->foreignId('ComponentID')
+                ->constrained('Component', 'ComponentID') // Ensure correct reference for the foreign key
+                ->onDelete('cascade'); // Automatically remove ProductComponent rows if the referenced Component is deleted
+
             $table->timestamps();
+
+            // Composite primary key to prevent duplicate records of the same Product and Component
+            $table->primary(['ProductID', 'ComponentID']);
         });
     }
 
@@ -23,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_components');
+        Schema::dropIfExists('ProductComponent');
     }
 };

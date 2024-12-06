@@ -10,22 +10,24 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Specify the table's primary key
     protected $primaryKey = 'ProductID';
-
     protected $table = 'Product';
     protected $casts = [
         'ProductMiniDescription' => 'array',
-        'ProductDescription' => 'array', // Tell Laravel to treat this as an array
+        'ProductDescription' => 'array',
         'ProductMultimediaPath' => 'array',
     ];
+
     public function components()
     {
         return $this->belongsToMany(Component::class, 'ProductComponent', 'ProductID', 'ComponentID');
     }
 
+    // Access ComponentValues indirectly via components
     public function componentValues()
     {
-        return $this->hasMany(ComponentValue::class, 'ComponentID');
+        return $this->components->flatMap(function ($component) {
+            return $component->componentValues;
+        });
     }
 }

@@ -234,7 +234,6 @@ function validateSelection() {
 
         // Handle "Other" input field validation
         if (!isComponentValid && textInput && textInput.value.trim() === '') {
-            // If "Other" is selected but no custom value is provided
             if (section.querySelector('input[type="radio"]:checked')?.nextElementSibling.textContent === 'Other') {
                 errorMessages.push(`${section.querySelector('h2').textContent} requires a custom value.`);
                 isValid = false;
@@ -263,83 +262,107 @@ function validateSelection() {
     return isValid;
 }
 
-function updateSelection() {
-    // Only update the selection if validation passes
-    if (!validateSelection()) return;
+function updatePrice() {
+    let totalPrice = parseFloat(document.getElementById('basePrice').textContent);
+    let selectedComponents = [];
 
-    let selectedComponents = '';
-    let totalPrice = parseFloat(document.getElementById('basePrice').innerText); // Start with the base price
+    // Track components to avoid duplicates
+    let processedComponents = new Set();
 
-    // Loop through selected radio buttons or checkboxes to get additional component prices
+    // Loop through all selected components and calculate total price
     document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked').forEach(input => {
-        const componentName = input.closest('.component-section').querySelector('h2').textContent;
-        const componentValue = input.nextElementSibling.textContent;
-        const componentPrice = parseFloat(input.getAttribute('data-price') || 0);
+        let price = parseFloat(input.getAttribute('data-price')) || 0;
+        let componentName = input.closest('.component-section').querySelector('h3').textContent; // Get component name
+        let componentValue = input.getAttribute('data-name') || 'N/A';  // Default to 'N/A' if no value
 
-        // Handle "Other" fields (custom inputs)
-        if (componentValue === "Other") {
-            // Find the corresponding input field (text box) for the "Other" value
-            const customInputField = input.closest('.component-section').querySelector('input[type="text"]');
-            if (customInputField) {
-                const customValue = customInputField.value.trim();
-                if (customValue) {
-                    selectedComponents += `<p><strong>${componentName}:</strong> ${customValue}</p>`;
-                    totalPrice += parseFloat(customInputField.getAttribute('data-price') || 0); // Add price for custom value (if any)
-                }
+        // Handle if "Other" was selected
+        if (input.value === 'Other') {
+            let customValue = document.getElementById(`customField_${input.name.match(/\d+/)[0]}`).value;
+            if (customValue) {
+                componentValue = customValue;  // Use the custom value entered by the user
             }
-        } else {
-            // For regular selections, just add the name and price
-            selectedComponents += `<p><strong>${componentName}:</strong> ${componentValue}</p>`;
-            totalPrice += componentPrice; // Add the price for the selected value
+        }
+
+        // Skip if component is already processed
+        if (processedComponents.has(componentName)) return;
+
+        processedComponents.add(componentName);  // Mark the component as processed
+
+        totalPrice += price;
+
+        selectedComponents.push({
+            componentName: componentName,  // Store the component name
+            value: componentValue,  // Store the selected or custom value
+            price: price
+        });
+
+        // Hide custom field if other options are selected
+        if (input.value !== 'Other') {
+            hideCustomField(input.name.match(/\d+/)[0]);  // Hide custom field for this component
         }
     });
 
-    // Handle power plug input (if it exists)
-    const powerPlugValue = document.getElementById('powerPlugInput')?.value;
-    if (powerPlugValue) {
-        selectedComponents += `<p><strong>Power Plug:</strong> ${powerPlugValue}</p>`;
-        // Optional: Add price for Power Plug if available (you can add logic here)
-    }
+    // Add custom component values if any (for "Other" option)
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+        if (input.value) {
+            let componentName = input.closest('.component-section').querySelector('h3').textContent; // Get component name
 
-    // Log selected components and total price for debugging
-    console.log("Selected Components:", selectedComponents);
-    console.log("Total Price:", totalPrice);
+            // Skip if this component has already been processed
+            if (processedComponents.has(componentName)) return;
 
-    // Update the modal with selected components and total price
-    document.getElementById('modalComponents').innerHTML = selectedComponents;
-    document.getElementById('modalTotalPrice').textContent = totalPrice.toFixed(2) + ' EUR';
+            processedComponents.add(componentName);  // Mark the component as processed
+
+            selectedComponents.push({
+                componentName: componentName,  // Store the component name
+                value: input.value,  // Store the custom value entered by the user
+                price: 0  // No price for custom values
+            });
+        }
+    });
+
+    // Update the price in the modal
+    document.getElementById('modalTotalPrice').textContent = totalPrice.toFixed(2);
+    document.getElementById('modalComponents').innerHTML = selectedComponents.map(comp => 
+        `<p><strong>${comp.componentName}:</strong> ${comp.value} (+${comp.price})</p>`
+    ).join('');
 }
 
-// Open modal function
+// Show the custom field for the "Other" option
+function showCustomField(componentID) {
+    const customField = document.getElementById(`customField_${componentID}`);
+    if (customField) {
+        customField.style.display = 'block';
+        customField.focus();
+    }
+}
+
+// Hide the custom field if other options are selected
+function hideCustomField(componentID) {
+    const customField = document.getElementById(`customField_${componentID}`);
+    if (customField) {
+        customField.style.display = 'none';
+        customField.value = '';  // Reset custom value when hidden
+    }
+}
+
+// Open the modal and update the price and component summary
 function openModal() {
-    updateSelection(); // Update the modal with selected components
-    document.getElementById('productModal').style.display = 'block'; // Show the modal
+    updatePrice();  // Update price and components before opening the modal
+    document.getElementById('productModal').style.display = 'block';
 }
 
-// Close modal function
+// Close the modal
 function closeModal() {
-    document.getElementById('productModal').style.display = 'none'; // Hide the modal
+    document.getElementById('productModal').style.display = 'none';
 }
 
-// Submit form when user confirms selection
-function submitForm() {
-    if (validateSelection()) {
-        document.getElementById('addToBasketForm').submit(); // Submit the form only if valid
-    }
-}
 
-document.getElementById('addToBasketForm').addEventListener('submit', () => {
-    alert('Form is being submitted');
-});
-// basket.js
-
-// Event listener for updating product quantity
+// Update product quantity via AJAX
 document.querySelectorAll('.update-quantity').forEach(button => {
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function () {
         const productId = this.dataset.productId;
         const quantity = document.querySelector(`#quantity-${productId}`).value;
-        
-        // Send AJAX request to update the quantity
+
         fetch(`/basket/update/${productId}`, {
             method: 'POST',
             headers: {
@@ -350,20 +373,21 @@ document.querySelectorAll('.update-quantity').forEach(button => {
         })
         .then(response => response.json())
         .then(data => {
-            // Update the total price
             document.querySelector(`#total-price-${productId}`).innerText = data.newTotalPrice;
             document.querySelector('#total-price').innerText = data.newGrandTotal;
         })
-        .catch(error => console.error('Error updating quantity:', error));
+        .catch(error => {
+            console.error('Error updating quantity:', error);
+            alert('Failed to update quantity. Please try again.');
+        });
     });
 });
 
-// Event listener for removing a product from the basket
+// Remove product from basket via AJAX
 document.querySelectorAll('.remove-product').forEach(button => {
-    button.addEventListener('click', function(e) {
+    button.addEventListener('click', function () {
         const productId = this.dataset.productId;
 
-        // Send AJAX request to remove the product
         fetch(`/basket/remove/${productId}`, {
             method: 'DELETE',
             headers: {
@@ -373,10 +397,77 @@ document.querySelectorAll('.remove-product').forEach(button => {
         })
         .then(response => response.json())
         .then(data => {
-            // Remove the product from the basket UI
             document.querySelector(`#product-${productId}`).remove();
             document.querySelector('#total-price').innerText = data.newGrandTotal;
         })
-        .catch(error => console.error('Error removing product:', error));
+        .catch(error => {
+            console.error('Error removing product:', error);
+            alert('Failed to remove product. Please try again.');
+        });
     });
 });
+
+
+var ProductComponentModal = (function () {
+    // Private function to handle modal trigger
+    function showModal(componentId) {
+        const modalId = `#componentModal${componentId}`;
+        const modalContentId = `#modalContent${componentId}`;
+        
+        // Find the component object by ID in the productComponents array
+        const component = productComponents.find(item => item.ComponentID == componentId);
+
+        let modalContent = '';
+
+        if (component && component.localizedMultimedia) {
+            component.localizedMultimedia.forEach(media => {
+                if (media.path.includes('.mp4')) {
+                    // Add video to modal
+                    modalContent += `
+                        <video controls class="w-100">
+                            <source src="{{ asset('${media.path}') }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <p>${media.caption}</p>
+                    `;
+                } else {
+                    // Add image to modal
+                    modalContent += `
+                        <img src="{{ asset('${media.path}') }}" alt="${media.caption}" class="img-fluid">
+                        <p>${media.caption}</p>
+                    `;
+                }
+            });
+        }
+
+        // Insert the generated content into the modal body
+        document.querySelector(modalContentId).innerHTML = modalContent;
+
+        // Show the modal using Bootstrap's modal method
+        $(modalId).modal('show');
+    }
+
+    // Public function to add event listeners
+    function init() {
+        // Listen for click events on "Learn More" buttons
+        const learnMoreButtons = document.querySelectorAll('.learn-more-btn');
+        
+        learnMoreButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Get the component ID from the button's data attribute
+                const componentId = button.getAttribute('data-component-id');
+                showModal(componentId);
+            });
+        });
+    }
+
+    return {
+        init: init
+    };
+})();
+
+// Initialize the modal functionality after DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+    ProductComponentModal.init();
+});
+

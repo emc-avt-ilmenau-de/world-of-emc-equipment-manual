@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('ComponentValue', function (Blueprint $table) {
             $table->mediumIncrements('ComponentValueID');
-            $table->foreignId('ComponentID')->nullable()->constrained('Component');
-            $table->string('ComponentValueName', 255);             // by dafault not null
+            $table->foreignId('ComponentID') // Foreign key referencing ComponentID
+                  ->constrained('Component') // Ensure this references the correct table
+                  ->onDelete('cascade')     // Delete ComponentValue if the Component is deleted
+                  ->onUpdate('cascade');    // Update ComponentValue if ComponentID changes
+            
+            $table->string('ComponentValueName', 255);  // Default is NOT NULL
             $table->decimal('ComponentValuePrice', 8, 2)->nullable();
-            $table->string('ComponentValueCurrency', 10)->default('EUR')->nullable();
-           
+            $table->string('ComponentValueCurrency', 10)->default('EUR');
+    
             $table->timestamps();
         });
     }

@@ -890,7 +890,14 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
      ('3','Power Supply',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('4','Power Plug',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('5','Geographic area for power',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('6','Software',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+     ('6','Software',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+      ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('8','Color Temperature',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('9','Reflector', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10','Lamp 100 Variant',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 -- SQLite
@@ -901,7 +908,22 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
      ('1', '3',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('1', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('1', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('1', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+     ('1', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '7', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '3',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('3', '8', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '9', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '10',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 -- SQLite
 -- Insert sample data into the ComponentValue table
@@ -924,7 +946,10 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('16', '5',' 110 VAC @ 60Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('17', '5','Other',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('18', '6',' Basic ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('19', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+     ('19', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+      ('20', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('21', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('22', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- Sample json data insertion
@@ -1032,13 +1057,19 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency, created_at, updated_at) VALUES
-    ('20', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('21', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('22', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    ('23', '8','2700 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('24', '8','3000 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('25', '8','4000 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('26', '9','15°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('27', '9','30°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('28', '9','40°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('29', '9','80°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('30', '10','Variant 2',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('31', '10','Variant 3',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
-DELETE FROM ProductComponent
-WHERE ComponentID = '5';
+DELETE FROM ComponentValue
+WHERE ComponentValueID = '17';
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
     ('5', '1','Other',NULL,'EUR'),
@@ -1056,3 +1087,46 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('2', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('2', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+PRAGMA table_info(Component);
+PRAGMA table_info(ComponentValue);
+PRAGMA foreign_keys = ON;
+
+SELECT * FROM Component WHERE ComponentID = 8;
+
+SELECT sqlite_version();
+
+PRAGMA integrity_check;
+
+
+UPDATE Component
+SET ComponentMultimediaPath = '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\usb.jpg",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\usb.jpg",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "caption": "German caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ComponentID = 10;

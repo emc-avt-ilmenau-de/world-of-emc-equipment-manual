@@ -1,49 +1,61 @@
 @extends('Frontend.layouts.main')
 
-@section('content')
+@section('main-container')
 <div class="basket">
     <h2>Your Basket</h2>
 
+    {{-- Display success or error messages --}}
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
     @endif
 
-    {{-- Debugging Session Data --}}
-    <pre>{{ print_r(session('basket'), true) }}</pre>
-
+    {{-- Check if the basket is not empty --}}
     @if(!empty($basket) && count($basket) > 0)
-        @foreach($basket as $item)
-            <div class="product">
-                <h3>Product: {{ $item['product_name'] }}</h3>
-                <p>Product Price: {{ number_format($item['product_price'], 2) }} {{ $item['currency'] }}</p>
+        {{-- Loop through each product in the basket --}}
+        @foreach($basket as $index => $item)
+            <div class="basket-item">
+                <h3>Product: {{ $item['product_name'] ?? 'No Product Name' }}</h3>
+                <p><strong>Base Price:</strong> {{ number_format($item['base_price'], 2) }} EUR</p>
+                
+                {{-- Display the components for each product --}}
+                <ul>
+                    @foreach($item['components'] as $component)
+                        <li>
+                            <strong>{{ $component['name'] ?? 'Component Name Missing' }}:</strong>
+                            {{-- Handle array values for 'value' --}}
+                            @if(is_array($component['value']))
+                                {{ implode(', ', $component['value']) }}
+                            @else
+                                {{ $component['value'] }}
+                            @endif
+                            ({{ number_format($component['price'], 2) }} EUR)
+                        </li>
+                        
+                    @endforeach
 
-                @php
-                    $itemSubtotal = $item['product_price'] * $item['quantity'];
-                @endphp
+                    <p><strong>Total Price:</strong> {{ number_format($item['total_price'], 2) }} EUR</p>
 
-                @foreach($item['components'] as $component)
-                    <div class="product-details">
-                        <p>{{ $component['component_name'] }}: {{ $component['value_name'] }}</p>
-                        @if ($component['value_price'] > 0)
-                            <p>(+ {{ number_format($component['value_price'], 2) }} {{ $item['currency'] }})</p>
-                            @php
-                                $itemSubtotal += ($component['value_price'] * $item['quantity']);
-                            @endphp
-                        @endif
-                    </div>
-                @endforeach
+                </ul>
 
-                <h4>Subtotal for {{ $item['product_name'] }}: {{ number_format($itemSubtotal, 2) }} {{ $item['currency'] }}</h4>
-                <h3>Total Price: {{ number_format($item['total_price'], 2) }} {{ $item['currency'] }}</h3>
-                <p>Quantity: {{ $item['quantity'] }}</p>
+                {{-- Remove item form --}}
+                <form action="{{ route('basket.remove', ['productId' => $item['product_id']]) }}" method="POST" class="remove-item-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Remove Item</button>
+                </form>
             </div>
+            <hr>
         @endforeach
 
-        <h3>Grand Total: {{ number_format($totalPrice, 2) }} EUR</h3>
+      
     @else
-        <p>Your basket is empty.</p>
+        <p>Your basket is empty or no data is available in the session.</p>
     @endif
 </div>
 @endsection

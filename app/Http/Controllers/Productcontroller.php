@@ -8,8 +8,8 @@ use App\Models\Component;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\SubmitProductFormRequest;
 use App\Services\BasketService;
+use Illuminate\Support\Facades\DB;
 
 class Productcontroller extends Controller
 {
@@ -40,176 +40,268 @@ class Productcontroller extends Controller
     // Product Page - Display the selected product and its components
     public function show($id)
     {
+        // Retrieve product with related components and their values
         $product = Product::with(['components.componentValues'])->findOrFail($id);
-
-        if (!$product) {
-            abort(404);
+    
+        // Loop through each component to set allowsCustom and decode multimedia
+        foreach ($product->components as $component) {
+            // Add allowsCustom field dynamically
+            if (in_array($component->ComponentName, ['4K Minicam Lens', 'Geographic area for power', 'Color Temperature'])) {
+                $component->allowsCustom = true;
+            } else {
+                $component->allowsCustom = false;
+            }
+    
+            // Decode ComponentMultimediaPath if it's a string
+            if (is_string($component->ComponentMultimediaPath)) {
+                $decodedMultimedia = json_decode($component->ComponentMultimediaPath, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    // Store the decoded data
+                    $component->ComponentMultimediaPath = $decodedMultimedia;
+                }
+            }
+    
+            // Set localized values for multimedia
+            $locale = app()->getLocale();
+            if (isset($component->ComponentMultimediaPath[$locale])) {
+                $component->localizedMultimedia = $component->ComponentMultimediaPath[$locale];
+            } else {
+                // Fallback to 'en' if the specific locale is not available
+                $component->localizedMultimedia = $component->ComponentMultimediaPath['en'] ?? [];
+            }
         }
-
+    
+        // Decode and handle product fields (MiniDescription, Description, MultimediaPath) for locale
         $locale = app()->getLocale();
-
         if (is_string($product->ProductMiniDescription)) {
             $product->ProductMiniDescription = json_decode($product->ProductMiniDescription, true);
         }
-
         if (is_string($product->ProductDescription)) {
             $product->ProductDescription = json_decode($product->ProductDescription, true);
         }
-
         if (is_string($product->ProductMultimediaPath)) {
             $product->ProductMultimediaPath = json_decode($product->ProductMultimediaPath, true);
         }
-
+    
+        // Set localized values for product fields
         $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription'] ?? $product->ProductMiniDescription['en']['ProductMiniDescription'] ?? '';
         $product->description = $product->ProductDescription[$locale] ?? $product->ProductDescription['en'] ?? '';
         $product->multimedia = $product->ProductMultimediaPath[$locale] ?? $product->ProductMultimediaPath['en'] ?? [];
-
+    
+        // Return the view with product data
         return view('Frontend.show', compact('product'));
     }
-
     
-        protected $basketService;
-    
-        // Inject BasketService
-        public function __construct(BasketService $basketService)
-        {
-            $this->basketService = $basketService;
-        }
-    
+    // Inject BasketService
+    protected $basketService;
 
-    // Form Submission - Handle form submission and calculate the total price
-
-    public function submit(Request $request, $id)
-{
-    $product = Product::with(['components.componentValues'])->findOrFail($id);
-    
-    Log::info('Form submission data:', $request->all());
-    
-    // Do not clear session entirely. Optionally clear basket session:
-    // session()->forget('basket'); 
-    
-    $totalPrice = $product->ProductPrice;
-    $selectedItems = [];
-    $processedComponents = [];  // Initialize the array to track processed components
-
-    // Process all components
-    foreach ($product->components as $component) {
-        $componentId = $component->ComponentID;
-
-        // Prevent duplicate processing of components
-        if (isset($processedComponents[$componentId])) {
-            continue;
-        }
-
-        // Get user input for this component
-        $values = $request->components[$componentId] ?? [];
-
-        // If no value selected, log and create default entry
-        if (!$values) {
-            Log::warning('No value selected for component:', ['component' => $component->ComponentName]);
-            $selectedItems[] = $this->createDefaultComponentEntry($component); // Add default entry
-        } else {
-            // Process selected values for components (multiple values allowed)
-            foreach ($values as $key => $value) {
-                $processedValue = $this->processComponentValue($component, $value);
-                $selectedItems[] = $processedValue;
-                $totalPrice += $processedValue['value_price']; // Update the total price
-            }
-        }
-
-        $processedComponents[$componentId] = true;
+    public function __construct(BasketService $basketService)
+    {
+        $this->basketService = $basketService;
     }
 
-    Log::info('Selected items:', $selectedItems);
+    // Form Submission - Handle form submission and calculate the total price
+    public function submit(Request $request, $id)
+{
+    // Find the product by ID
+    $product = Product::findOrFail($id);
+    $totalPrice = $product->ProductPrice;
+    $selectedComponents = [];
 
-    // Update the basket with the selected components
-    $basket = session('basket', []);
-    $basket = $this->updateBasket($basket, $product, $totalPrice, $selectedItems);
+    // Process components selected in the form
+    foreach ($request->input('components', []) as $componentId => $value) {
+        $component = $product->components->find($componentId);
 
-    session(['basket' => $basket]);
-    Log::info('Updated basket contents: ' . json_encode(session()->get('basket')));
+        if (!$component) continue; // Skip if component not found
 
-    return redirect()->route('basket.show');
+        // Check if this component has a custom "Other" field or is a custom input like "Power Plug"
+        if ($value === 'Other') {
+            $customValue = $request->input("custom_components.{$componentId}");
+
+            if ($customValue) {
+                $selectedComponents[] = [
+                    'name' => $component->ComponentName,
+                    'value' => $customValue,
+                    'price' => 0 // No additional cost for "Other" option
+                ];
+            }
+        } else {
+            // Handle regular component values
+            $componentValue = $component->values->find($value);
+            if ($componentValue) {
+                $selectedComponents[] = [
+                    'name' => $component->ComponentName,
+                    'value' => $componentValue->ComponentValueName,
+                    'price' => $componentValue->ComponentValuePrice ?? 0
+                ];
+
+                // Add the price to the total (ensure it's numeric)
+                $totalPrice += $componentValue->ComponentValuePrice ?? 0;
+            }
+        }
+    }
+
+    // Special handling for custom "Power Plug" input
+    $powerPlugInput = $request->input('powerPlugInput');
+    if ($powerPlugInput) {
+        $selectedComponents[] = [
+            'name' => 'Power Plug',
+            'value' => $powerPlugInput,
+            'price' => 0 // Assuming no additional cost for this custom value
+        ];
+    }
+
+    // Add product with selected components to the session basket
+    $basket = session()->get('basket', []);
+    $basket[] = [
+        'product_id' => $id,
+        'product_name' => $product->ProductName,
+        'base_price' => $product->ProductPrice,
+        'total_price' => $totalPrice,
+        'components' => $selectedComponents
+    ];
+    session()->put('basket', $basket);
+    Log::info('Basket Data:', session()->get('basket'));
+
+    // Optionally, add a success message
+    return redirect()->route('basket.show')->with('success', 'Product added to basket successfully!');
 }
 
-    
 
     // Create a default entry for components with no user selection
-    protected function createDefaultComponentEntry($component)
-    {
+    public function createDefaultComponentEntry($component)
+{
+    // Enable foreign key constraints for SQLite if needed
+    DB::statement('PRAGMA foreign_keys = ON;');
+    
+    // Attempt to get the default value for the component
+    $defaultValue = $component->componentValues->firstWhere('ComponentValueName', 'Default Value');
+    
+    // If no default value is found, log the issue and return a fallback entry
+    if (!$defaultValue) {
+        Log::error('No default value found for component: ' . $component->ComponentName);
+        
         return [
             'component_id' => $component->ComponentID,
             'component_name' => $component->ComponentName,
-            'value_id' => null,
-            'value_name' => 'Default Value',
-            'value_price' => 0,
+            'value_id' => null,  // No value ID when default value is not available
+            'value_name' => 'Default Value',  // Use a fallback default name
+            'value_price' => 0,  // Default price if no default value exists
         ];
     }
+    
+    // Return the default value if found
+    return [
+        'component_id' => $component->ComponentID,
+        'component_name' => $component->ComponentName,
+        'value_id' => $defaultValue->ComponentValueID,
+        'value_name' => $defaultValue->ComponentValueName,
+        'value_price' => $defaultValue->ComponentValuePrice,
+    ];
+}
+
     
     // Process a user-provided value or match it to a predefined value
     protected function processComponentValue($component, $value)
-    {
-        if (empty($value)) {
-            $value = 'Default Value';
-        }
-    
-        // Look for the matching component value
-        $componentValue = $component->componentValues->where('ComponentValueName', $value)->first();
-    
-        // If a matching component value is found, return it with the price
-        if ($componentValue) {
-            // If price is NULL, set it to 0 by default
-            $price = $componentValue->ComponentValuePrice ?? 0;
-    
-            return [
-                'component_id' => $component->ComponentID,
-                'component_name' => $component->ComponentName,
-                'value_id' => $componentValue->ComponentValueID,
-                'value_name' => $componentValue->ComponentValueName,
-                'value_price' => $price,  // Use the price, or 0 if NULL
-            ];
-        }
-    
-        // If no predefined value is found, treat it as a custom input (still assign the value, but no price)
+{
+    // Check if the value is custom (e.g., "Other")
+    if ($value === 'Other') {
         return [
             'component_id' => $component->ComponentID,
             'component_name' => $component->ComponentName,
-            'value_id' => null,
-            'value_name' => $value,  // For custom input, the value is user-provided
-            'value_price' => 0,      // No price for custom inputs
+            'value_id' => null,  // No ID for custom values
+            'value_name' => $value,  // Custom value provided by the user
+            'value_price' => 0,  // No price for custom values
+            'is_custom' => true,  // Mark this as a custom value
         ];
     }
-    
 
-    // Update the basket session with the selected product and components
-    protected function updateBasket($basket, $product, $totalPrice, $selectedItems)
-{
-    foreach ($basket as &$item) {
-        if ($item['product_id'] === $product->ProductID) {
-            // Update the basket if the product already exists
-            $item['quantity'] += 1;
-            $item['total_price'] += $totalPrice;
-            $item['components'] = $selectedItems;
-            return $basket;
-        }
+    // Look for a predefined value in the component's available values
+    $componentValue = $component->componentValues->where('ComponentValueName', $value)->first();
+
+    // If a predefined value is found, return it with the associated price
+    if ($componentValue) {
+        return [
+            'component_id' => $component->ComponentID,
+            'component_name' => $component->ComponentName,
+            'value_id' => $componentValue->ComponentValueID,
+            'value_name' => $componentValue->ComponentValueName,
+            'value_price' => $componentValue->ComponentValuePrice,
+            'is_custom' => false,  // Mark this as not a custom value
+        ];
     }
 
-    // If the product is not found in the basket, add it
-    $basket[] = [
-        'product_id' => $product->ProductID,
-        'product_name' => $product->ProductName,
-        'product_price' => $product->ProductPrice,
-        'currency' => $product->ProductCurrency,
-        'components' => $selectedItems,
-        'total_price' => $totalPrice,
-        'quantity' => 1,
+    // If no predefined value is found, treat it as a custom value (user-provided)
+    return [
+        'component_id' => $component->ComponentID,
+        'component_name' => $component->ComponentName,
+        'value_id' => null,  // No ID for custom values
+        'value_name' => $value,  // Custom value provided by the user
+        'value_price' => 0,      // No price for custom values
+        'is_custom' => true,     // Mark this as a custom value
     ];
-
-    return $basket;
 }
 
     
-
+    // Update the basket session with the selected product and components
+    protected function updateBasket($basket, $product, $totalPrice, $selectedItems)
+    {
+        foreach ($basket as &$item) {
+            if ($item['product_id'] === $product->ProductID) {
+                // If the product is already in the basket, update its quantity and price
+                $item['quantity'] += 1;
+                $item['total_price'] += $totalPrice;
+                $item['components'] = $selectedItems;
+                return $basket;
+            }
+        }
     
+        // If the product is not found in the basket, add a new entry
+        $basket[] = [
+            'product_id' => $product->ProductID,
+            'product_name' => $product->ProductName,
+            'product_price' => $product->ProductPrice,
+            'currency' => $product->ProductCurrency,
+            'components' => $selectedItems,
+            'total_price' => $totalPrice,
+            'quantity' => 1,
+        ];
+    
+        return $basket;
+    }
+    
+
+    protected function createNewProductForCustomValue($component, $processedValue)
+{
+    // Custom products for components like "Other" that require additional pricing
+    $newProductPrice = 0;
+
+    // If the component value includes an additional price (e.g., +100 EUR)
+    if (in_array($processedValue['value_name'], ['40m', '70m', '100m'])) {
+        // Example of additional pricing logic based on the selected custom value
+        switch ($processedValue['value_name']) {
+            case '40m':
+                $newProductPrice = 100; // +100 EUR for 40m fiber optics
+                break;
+            case '70m':
+                $newProductPrice = 200; // +200 EUR for 70m fiber optics
+                break;
+            case '100m':
+                $newProductPrice = 300; // +300 EUR for 100m fiber optics
+                break;
+        }
+    }
+
+    // Return a new product for this custom component value
+    return [
+        'component_id' => $component->ComponentID,
+        'component_name' => $component->ComponentName,
+        'value_id' => null,  // No predefined value ID
+        'value_name' => $processedValue['value_name'],
+        'value_price' => $newProductPrice,  // Additional cost for this custom selection
+        'is_custom' => true,
+    ];
+}
+
     
 }
