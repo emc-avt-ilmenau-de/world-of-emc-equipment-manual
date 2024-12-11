@@ -1101,32 +1101,32 @@ PRAGMA integrity_check;
 UPDATE Component
 SET ComponentMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\usb.jpg",
+            "path": "Frontend\\images\\4kminicam1.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "path": "Frontend\\images\\4kminicam3.png",
             "caption": "English caption"
         },
         "video1": {
-            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "path": "Frontend\\images\\avt_minicam_video.mp4",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\usb.jpg",
+            "path": "Frontend\\images\\4kminicam1.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "path": "Frontend\\images\\4kminicam3.png",
             "caption": "German caption"
         },
         "video1": {
-            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "path": "Frontend\\images\\avt_minicam_video.mp4",
             "caption": "German caption"
         }
     }
 }'
-WHERE ComponentID = 10;
+WHERE ComponentID = 1;

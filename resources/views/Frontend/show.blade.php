@@ -2,6 +2,8 @@
 @extends('FrontEnd.layouts.main')
 
 @section('main-container')
+
+
 <div class="product-show">
     <div class="productname-display">
         <h1>{{ $product->ProductName }}</h1>
@@ -24,7 +26,7 @@
                             @endif
                             <div class="text">{{ $media['caption'] }}</div>
                         </div>
-                    @endforeach
+                        @endforeach
                 @else
                     <p>No multimedia available for this product.</p>
                 @endif
@@ -57,12 +59,7 @@
     @foreach($product->components as $component)
         <div class="component-section">
             <h3>{{ $component->ComponentName }}</h3>
-            @if (!empty($component->localizedMultimedia))
-                <!-- Learn More button that triggers the popup -->
-                <button class="learn-more-btn" data-product-id="{{ $component->id }}">Learn More</button>
-            @else
-                <p>No multimedia available.</p>
-            @endif
+           
             <div class="component-options">
                 
                 @foreach($component->values as $value)
@@ -109,8 +106,13 @@
                     
                 </div>
             @endif   
-           
-                <!-- Power Plug as Custom Input -->
+
+           <!-- Learn More button that triggers the popup -->
+            @if (!empty($component->localizedMultimedia))
+                <button id="learn-more-btn+{{ $component->id }}" type="button" data-product-id="{{ $component->id }}">Learn More</button>
+
+            @endif
+                            <!-- Power Plug as Custom Input -->
                 @if($component->ComponentName === 'Power Plug')
                 <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="blank">Please visit this link to learn more about power plug types </a><br><br>
                     <label for="powerPlugInput">Please specify your Power Plug choice:</label>
@@ -133,15 +135,24 @@
     <button type="button" onclick="openModal()" class="basket-button">Add To Basket</button>
 </form>
 
-<!-- Modal Structure -->
-<div id="popup-modal" class="popup-modal" style="display: none;">
+
+<!-- Popup container -->
+<div id="popup" class="popup" style="display: none;">
     <div class="popup-content">
-        <span class="popup-close">&times;</span>
-        <div id="popupSlidesContainer" class="slideshow-container"></div>
-        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        <!-- Close Button -->
+        <span class="popup-close" style="cursor: pointer;">&times;</span>
+
+        <!-- Slideshow container -->
+        <div class="popup-slideshow-container" id="popup-slideshow-container">
+            <!-- Slides will be inserted dynamically here -->
+        </div>
+
+        <!-- Navigation buttons -->
+        <a class="popup-prev" style="cursor: pointer;">&#10094;</a>
+        <a class="popup-next" style="cursor: pointer;">&#10095;</a>
     </div>
 </div>
+
 <!-- Modal for Confirmation -->
 <div id="productModal" class="modal" style="display:none;">
     <div class="modal-content">
@@ -162,6 +173,11 @@
 </div>
             <a href="{{ route('home') }}">Back to Products</a>
         </div>
+        
     </main>
 </div>
+
+
 @endsection
+
+

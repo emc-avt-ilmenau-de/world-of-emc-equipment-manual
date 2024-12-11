@@ -45,6 +45,9 @@ class Productcontroller extends Controller
     
         // Loop through each component to set allowsCustom and decode multimedia
         foreach ($product->components as $component) {
+            print($component);
+            print("<br>");
+            // dd();
             // Add allowsCustom field dynamically
             if (in_array($component->ComponentName, ['4K Minicam Lens', 'Geographic area for power', 'Color Temperature'])) {
                 $component->allowsCustom = true;
@@ -55,19 +58,27 @@ class Productcontroller extends Controller
             // Decode ComponentMultimediaPath if it's a string
             if (is_string($component->ComponentMultimediaPath)) {
                 $decodedMultimedia = json_decode($component->ComponentMultimediaPath, true);
+    
                 if (json_last_error() === JSON_ERROR_NONE) {
-                    // Store the decoded data
                     $component->ComponentMultimediaPath = $decodedMultimedia;
+                } else {
+                    $component->ComponentMultimediaPath = []; // Default to empty array if JSON decode fails
                 }
             }
     
-            // Set localized values for multimedia
+            // Set localized multimedia based on locale
             $locale = app()->getLocale();
+            // Check if multimedia exists for the given locale
             if (isset($component->ComponentMultimediaPath[$locale])) {
                 $component->localizedMultimedia = $component->ComponentMultimediaPath[$locale];
             } else {
-                // Fallback to 'en' if the specific locale is not available
+                // Fallback to default language (e.g., 'en')
                 $component->localizedMultimedia = $component->ComponentMultimediaPath['en'] ?? [];
+            }
+    
+            // Debugging output to ensure that localized multimedia is being set
+            if (empty($component->localizedMultimedia)) {
+                Log::info("No localized multimedia for component: " . $component->ComponentName);
             }
         }
     
@@ -88,9 +99,15 @@ class Productcontroller extends Controller
         $product->description = $product->ProductDescription[$locale] ?? $product->ProductDescription['en'] ?? '';
         $product->multimedia = $product->ProductMultimediaPath[$locale] ?? $product->ProductMultimediaPath['en'] ?? [];
     
+        // Debugging output to check the final multimedia path
+        if (empty($product->multimedia)) {
+            Log::info("No product multimedia available for product ID: " . $product->id);
+        }
+    
         // Return the view with product data
         return view('Frontend.show', compact('product'));
     }
+    
     
     // Inject BasketService
     protected $basketService;

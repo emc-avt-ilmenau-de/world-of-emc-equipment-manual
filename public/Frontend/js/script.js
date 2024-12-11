@@ -108,71 +108,80 @@ function checkOther() {
       otherFieldDiv.style.display = 'none';
   }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    let popupSlideIndex = 0;
 
-document.addEventListener("DOMContentLoaded", function() {
-  let popupSlideIndex = 0;
-  const slides = document.getElementsByClassName("popup-slide");
-  const dots = document.getElementsByClassName("popup-dot");
+    const popup = document.getElementById("popup");
+    const openPopupBtn = document.getElementById("openPopupBtn");
+    const closeBtn = document.querySelector(".popup-close");
+    const slides = document.getElementsByClassName("popup-slide");
+    const nextBtn = document.querySelector(".popup-next");
+    const prevBtn = document.querySelector(".popup-prev");
 
-  // Show the first slide initially
-  showPopupSlides(popupSlideIndex);
+    let slideIndex = 0;
 
-  function showPopupSlides(n) {
-      // Handle wrap-around if the index is out of bounds
-      if (n >= slides.length) {
-          popupSlideIndex = 0;
-      }
-      if (n < 0) {
-          popupSlideIndex = slides.length - 1;
-      }
+function showSlides(n) {
+    const slides = document.getElementsByClassName("popup-slide");
+    if (n >= slides.length) slideIndex = 0;
+    if (n < 0) slideIndex = slides.length - 1;
 
-      // Hide all slides and remove active class from dots
-      for (let i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-          dots[i].className = dots[i].className.replace(" popup-active", "");
-      }
+    // Hide all slides
+    for (let slide of slides) {
+        slide.style.display = "none";
+    }
 
-      // Display the current slide and activate the corresponding dot
-      slides[popupSlideIndex].style.display = "block";
-      dots[popupSlideIndex].className += " popup-active";
-  }
+    // Show the selected slide
+    slides[slideIndex].style.display = "block";
+}
 
-  // Open the popup
-  document.getElementById('openPopupBtn').onclick = function() {
-      document.getElementById('popup').style.display = 'block';
-      showPopupSlides(popupSlideIndex); // Show the first slide when opening
-  }
+document.querySelector(".popup-prev").addEventListener("click", function() {
+    showSlides(--slideIndex); // Show previous slide
+});
 
-  // Close the popup
-  document.getElementsByClassName('popup-close')[0].onclick = function() {
-      document.getElementById('popup').style.display = 'none';
-  }
+document.querySelector(".popup-next").addEventListener("click", function() {
+    showSlides(++slideIndex); // Show next slide
+});
 
-  // Close the popup if the user clicks outside of the popup content
-  window.onclick = function(event) {
-      if (event.target == document.getElementById('popup')) {
-          document.getElementById('popup').style.display = 'none';
-      }
-  }
+// Show the first slide when the popup is opened
+openPopupBtn.addEventListener("click", function() {
+    showSlides(slideIndex);
+    popup.style.display = "block"; // Show the popup
+});
 
-  // Next/previous controls
-  document.querySelector(".popup-next").onclick = function() {
-      popupSlideIndex++;
-      showPopupSlides(popupSlideIndex);
-  }
+    // Close the popup
+    if (closeBtn) {
+        closeBtn.addEventListener("click", function () {
+            console.log("Closing popup...");
+            popup.style.display = "none"; // Hide the popup
+        });
+    }
 
-  document.querySelector(".popup-prev").onclick = function() {
-      popupSlideIndex--;
-      showPopupSlides(popupSlideIndex);
-  }
+    // Close the popup if the user clicks outside of the popup content
+    window.addEventListener("click", function (event) {
+        if (event.target === popup) {
+            console.log("Clicked outside the popup. Closing...");
+            popup.style.display = "none";
+        }
+    });
 
-  // Dot controls
-  for (let i = 0; i < dots.length; i++) {
-      dots[i].onclick = function() {
-          popupSlideIndex = i;
-          showPopupSlides(popupSlideIndex);
-      }
-  }
+    // Next slide
+    if (nextBtn) {
+        nextBtn.addEventListener("click", function () {
+            popupSlideIndex++;
+            showPopupSlides(popupSlideIndex);
+        });
+    }
+
+    // Previous slide
+    if (prevBtn) {
+        prevBtn.addEventListener("click", function () {
+            popupSlideIndex--;
+            showPopupSlides(popupSlideIndex);
+        });
+    }
+
+    // Initially display the first slide (if any)
+    showPopupSlides(popupSlideIndex);
 });
 
 
@@ -408,66 +417,106 @@ document.querySelectorAll('.remove-product').forEach(button => {
 });
 
 
-var ProductComponentModal = (function () {
-    // Private function to handle modal trigger
-    function showModal(componentId) {
-        const modalId = `#componentModal${componentId}`;
-        const modalContentId = `#modalContent${componentId}`;
-        
-        // Find the component object by ID in the productComponents array
-        const component = productComponents.find(item => item.ComponentID == componentId);
+document.addEventListener("DOMContentLoaded", function () {
+    const popup = document.getElementById("popup");
+    const closeBtn = document.querySelector(".popup-close");
+    const slidesContainer = document.getElementById("popup-slideshow-container");
+    const nextBtn = document.querySelector(".popup-next");
+    const prevBtn = document.querySelector(".popup-prev");
 
-        let modalContent = '';
+    let currentComponentId = null;
+    let slideIndex = 0;
 
-        if (component && component.localizedMultimedia) {
-            component.localizedMultimedia.forEach(media => {
-                if (media.path.includes('.mp4')) {
-                    // Add video to modal
-                    modalContent += `
-                        <video controls class="w-100">
-                            <source src="{{ asset('${media.path}') }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <p>${media.caption}</p>
-                    `;
-                } else {
-                    // Add image to modal
-                    modalContent += `
-                        <img src="{{ asset('${media.path}') }}" alt="${media.caption}" class="img-fluid">
-                        <p>${media.caption}</p>
-                    `;
-                }
-            });
+    // Function to show the slides for a specific component
+    function showSlidesForComponent(componentId) {
+        // Clear previous slides
+        slidesContainer.innerHTML = "";
+
+        // Find the component by ID from the product object (pass it through a <script> tag in your blade view)
+        const component = product.components.find(c => c.id === componentId);
+
+        if (!component || !component.localizedMultimedia || component.localizedMultimedia.length === 0) {
+            slidesContainer.innerHTML = "<p>No multimedia available for this component.</p>";
+            return;
         }
 
-        // Insert the generated content into the modal body
-        document.querySelector(modalContentId).innerHTML = modalContent;
+        // Create slides dynamically based on the multimedia data
+        component.localizedMultimedia.forEach(pmedia => {
+            const slide = document.createElement("div");
+            slide.classList.add("popup-slide");
+            slide.style.display = "none";  // Hide by default
 
-        // Show the modal using Bootstrap's modal method
-        $(modalId).modal('show');
-    }
+            if (pmedia.path.endsWith('.mp4')) {
+                const video = document.createElement("video");
+                video.width = "100%";
+                video.controls = true;
 
-    // Public function to add event listeners
-    function init() {
-        // Listen for click events on "Learn More" buttons
-        const learnMoreButtons = document.querySelectorAll('.learn-more-btn');
-        
-        learnMoreButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                // Get the component ID from the button's data attribute
-                const componentId = button.getAttribute('data-component-id');
-                showModal(componentId);
-            });
+                const source = document.createElement("source");
+                source.src = pmedia.path;  // Assuming pmedia.path is the URL
+                source.type = "video/mp4";
+
+                video.appendChild(source);
+                slide.appendChild(video);
+            } else {
+                const image = document.createElement("img");
+                image.src = pmedia.path;  // Assuming pmedia.path is the URL
+                image.style.width = "80%";
+                slide.appendChild(image);
+            }
+
+            const caption = document.createElement("div");
+            caption.classList.add("text");
+            caption.textContent = pmedia.caption;
+            slide.appendChild(caption);
+
+            slidesContainer.appendChild(slide);
         });
+
+        // Show the first slide
+        showSlide(slideIndex);
     }
 
-    return {
-        init: init
-    };
-})();
+    // Function to show the slide based on index
+    function showSlide(index) {
+        const slides = document.querySelectorAll(".popup-slide");
+        if (index >= slides.length) slideIndex = 0;
+        if (index < 0) slideIndex = slides.length - 1;
 
-// Initialize the modal functionality after DOM is loaded
-document.addEventListener("DOMContentLoaded", function () {
-    ProductComponentModal.init();
+        slides.forEach(slide => slide.style.display = "none");
+        slides[slideIndex].style.display = "block";
+    }
+
+    // Handle Learn More button click for each component
+    const learnMoreButtons = document.querySelectorAll(".learn-more-btn");
+    learnMoreButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            currentComponentId = parseInt(button.getAttribute("data-component-id"));
+            showSlidesForComponent(currentComponentId);
+            popup.style.display = "block";  // Show the popup
+        });
+    });
+
+    // Close the popup
+    closeBtn.addEventListener("click", function () {
+        popup.style.display = "none";
+    });
+
+    // Close the popup if the user clicks outside the popup content
+    window.addEventListener("click", function (event) {
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    });
+
+    // Next slide
+    nextBtn.addEventListener("click", function () {
+        slideIndex++;
+        showSlide(slideIndex);
+    });
+
+    // Previous slide
+    prevBtn.addEventListener("click", function () {
+        slideIndex--;
+        showSlide(slideIndex);
+    });
 });
-
