@@ -418,105 +418,65 @@ document.querySelectorAll('.remove-product').forEach(button => {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const popup = document.getElementById("popup");
-    const closeBtn = document.querySelector(".popup-close");
-    const slidesContainer = document.getElementById("popup-slideshow-container");
-    const nextBtn = document.querySelector(".popup-next");
-    const prevBtn = document.querySelector(".popup-prev");
+    // Add event listeners for all "Learn More" buttons
+    document.querySelectorAll(".openPopupBtn").forEach(button => {
+        button.addEventListener("click", function () {
+            const componentId = this.getAttribute("data-product-id"); // Get the ComponentID from the button
+            const popup = document.getElementById(`data-product-id`); // Get the popup by ID
 
-    let currentComponentId = null;
-    let slideIndex = 0;
-
-    // Function to show the slides for a specific component
-    function showSlidesForComponent(componentId) {
-        // Clear previous slides
-        slidesContainer.innerHTML = "";
-
-        // Find the component by ID from the product object (pass it through a <script> tag in your blade view)
-        const component = product.components.find(c => c.id === componentId);
-
-        if (!component || !component.localizedMultimedia || component.localizedMultimedia.length === 0) {
-            slidesContainer.innerHTML = "<p>No multimedia available for this component.</p>";
-            return;
-        }
-
-        // Create slides dynamically based on the multimedia data
-        component.localizedMultimedia.forEach(pmedia => {
-            const slide = document.createElement("div");
-            slide.classList.add("popup-slide");
-            slide.style.display = "none";  // Hide by default
-
-            if (pmedia.path.endsWith('.mp4')) {
-                const video = document.createElement("video");
-                video.width = "100%";
-                video.controls = true;
-
-                const source = document.createElement("source");
-                source.src = pmedia.path;  // Assuming pmedia.path is the URL
-                source.type = "video/mp4";
-
-                video.appendChild(source);
-                slide.appendChild(video);
-            } else {
-                const image = document.createElement("img");
-                image.src = pmedia.path;  // Assuming pmedia.path is the URL
-                image.style.width = "80%";
-                slide.appendChild(image);
+            if (!popup) {
+                console.error(`Popup with ID detailPopup${componentId} not found.`);
+                return; // Exit the function if popup is not found
             }
 
-            const caption = document.createElement("div");
-            caption.classList.add("text");
-            caption.textContent = pmedia.caption;
-            slide.appendChild(caption);
+            // Show the popup
+            popup.style.display = "block";
 
-            slidesContainer.appendChild(slide);
-        });
-
-        // Show the first slide
-        showSlide(slideIndex);
-    }
-
-    // Function to show the slide based on index
-    function showSlide(index) {
-        const slides = document.querySelectorAll(".popup-slide");
-        if (index >= slides.length) slideIndex = 0;
-        if (index < 0) slideIndex = slides.length - 1;
-
-        slides.forEach(slide => slide.style.display = "none");
-        slides[slideIndex].style.display = "block";
-    }
-
-    // Handle Learn More button click for each component
-    const learnMoreButtons = document.querySelectorAll(".learn-more-btn");
-    learnMoreButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            currentComponentId = parseInt(button.getAttribute("data-component-id"));
-            showSlidesForComponent(currentComponentId);
-            popup.style.display = "block";  // Show the popup
+            // Optionally, show the first slide
+            showSlides(0, componentId);
         });
     });
 
-    // Close the popup
-    closeBtn.addEventListener("click", function () {
-        popup.style.display = "none";
+    
+
+    // Close button functionality
+    document.querySelectorAll(".popup-close").forEach(closeBtn => {
+        closeBtn.addEventListener("click", function () {
+            const popup = this.closest(".detailPopup");
+            if (popup) {
+                popup.style.display = "none"; // Hide the popup
+            }
+        });
     });
 
-    // Close the popup if the user clicks outside the popup content
-    window.addEventListener("click", function (event) {
-        if (event.target === popup) {
-            popup.style.display = "none";
+    // Next button functionality
+    document.querySelectorAll(".popup-next").forEach(nextBtn => {
+        nextBtn.addEventListener("click", function () {
+            const componentId = this.closest(".detailPopup").id.replace('detailPopup', '');
+            let slideIndex = getCurrentSlideIndex(componentId);
+            slideIndex++;
+            showSlides(slideIndex, componentId); // Show next slide
+        });
+    });
+
+    // Previous button functionality
+    document.querySelectorAll(".popup-prev").forEach(prevBtn => {
+        prevBtn.addEventListener("click", function () {
+            const componentId = this.closest(".detailPopup").id.replace('detailPopup', '');
+            let slideIndex = getCurrentSlideIndex(componentId);
+            slideIndex--;
+            showSlides(slideIndex, componentId); // Show previous slide
+        });
+    });
+
+    // Function to get the current slide index
+    function getCurrentSlideIndex(componentId) {
+        const slides = document.querySelectorAll(`#detailPopup${componentId} .popup-slide`);
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].style.display === "block") {
+                return i;
+            }
         }
-    });
-
-    // Next slide
-    nextBtn.addEventListener("click", function () {
-        slideIndex++;
-        showSlide(slideIndex);
-    });
-
-    // Previous slide
-    prevBtn.addEventListener("click", function () {
-        slideIndex--;
-        showSlide(slideIndex);
-    });
+        return 0; // Default to first slide
+    }
 });

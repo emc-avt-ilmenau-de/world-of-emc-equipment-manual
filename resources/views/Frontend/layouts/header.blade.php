@@ -10,6 +10,7 @@
   </head>
   <body>
     <div class="wrapper">
+
       <header>
         <div class="language-switcher">
           <a href="{{ route('set.locale', ['locale' => 'en']) }}">English</a> | 
@@ -63,7 +64,8 @@
         </nav>
       </header>
     </div>
-
+    
+    
     <!-- Corrected script file reference -->
     <script src="{{ asset('Frontend/js/script.js') }}"></script>
   </body>

@@ -45,8 +45,8 @@ class Productcontroller extends Controller
     
         // Loop through each component to set allowsCustom and decode multimedia
         foreach ($product->components as $component) {
-            print($component);
-            print("<br>");
+            //print($component);
+            //print("<br>");
             // dd();
             // Add allowsCustom field dynamically
             if (in_array($component->ComponentName, ['4K Minicam Lens', 'Geographic area for power', 'Color Temperature'])) {
@@ -109,13 +109,7 @@ class Productcontroller extends Controller
     }
     
     
-    // Inject BasketService
-    protected $basketService;
-
-    public function __construct(BasketService $basketService)
-    {
-        $this->basketService = $basketService;
-    }
+    
 
     // Form Submission - Handle form submission and calculate the total price
     public function submit(Request $request, $id)
@@ -185,80 +179,7 @@ class Productcontroller extends Controller
 }
 
 
-    // Create a default entry for components with no user selection
-    public function createDefaultComponentEntry($component)
-{
-    // Enable foreign key constraints for SQLite if needed
-    DB::statement('PRAGMA foreign_keys = ON;');
-    
-    // Attempt to get the default value for the component
-    $defaultValue = $component->componentValues->firstWhere('ComponentValueName', 'Default Value');
-    
-    // If no default value is found, log the issue and return a fallback entry
-    if (!$defaultValue) {
-        Log::error('No default value found for component: ' . $component->ComponentName);
-        
-        return [
-            'component_id' => $component->ComponentID,
-            'component_name' => $component->ComponentName,
-            'value_id' => null,  // No value ID when default value is not available
-            'value_name' => 'Default Value',  // Use a fallback default name
-            'value_price' => 0,  // Default price if no default value exists
-        ];
-    }
-    
-    // Return the default value if found
-    return [
-        'component_id' => $component->ComponentID,
-        'component_name' => $component->ComponentName,
-        'value_id' => $defaultValue->ComponentValueID,
-        'value_name' => $defaultValue->ComponentValueName,
-        'value_price' => $defaultValue->ComponentValuePrice,
-    ];
-}
-
-    
-    // Process a user-provided value or match it to a predefined value
-    protected function processComponentValue($component, $value)
-{
-    // Check if the value is custom (e.g., "Other")
-    if ($value === 'Other') {
-        return [
-            'component_id' => $component->ComponentID,
-            'component_name' => $component->ComponentName,
-            'value_id' => null,  // No ID for custom values
-            'value_name' => $value,  // Custom value provided by the user
-            'value_price' => 0,  // No price for custom values
-            'is_custom' => true,  // Mark this as a custom value
-        ];
-    }
-
-    // Look for a predefined value in the component's available values
-    $componentValue = $component->componentValues->where('ComponentValueName', $value)->first();
-
-    // If a predefined value is found, return it with the associated price
-    if ($componentValue) {
-        return [
-            'component_id' => $component->ComponentID,
-            'component_name' => $component->ComponentName,
-            'value_id' => $componentValue->ComponentValueID,
-            'value_name' => $componentValue->ComponentValueName,
-            'value_price' => $componentValue->ComponentValuePrice,
-            'is_custom' => false,  // Mark this as not a custom value
-        ];
-    }
-
-    // If no predefined value is found, treat it as a custom value (user-provided)
-    return [
-        'component_id' => $component->ComponentID,
-        'component_name' => $component->ComponentName,
-        'value_id' => null,  // No ID for custom values
-        'value_name' => $value,  // Custom value provided by the user
-        'value_price' => 0,      // No price for custom values
-        'is_custom' => true,     // Mark this as a custom value
-    ];
-}
-
+   
     
     // Update the basket session with the selected product and components
     protected function updateBasket($basket, $product, $totalPrice, $selectedItems)
@@ -288,37 +209,6 @@ class Productcontroller extends Controller
     }
     
 
-    protected function createNewProductForCustomValue($component, $processedValue)
-{
-    // Custom products for components like "Other" that require additional pricing
-    $newProductPrice = 0;
-
-    // If the component value includes an additional price (e.g., +100 EUR)
-    if (in_array($processedValue['value_name'], ['40m', '70m', '100m'])) {
-        // Example of additional pricing logic based on the selected custom value
-        switch ($processedValue['value_name']) {
-            case '40m':
-                $newProductPrice = 100; // +100 EUR for 40m fiber optics
-                break;
-            case '70m':
-                $newProductPrice = 200; // +200 EUR for 70m fiber optics
-                break;
-            case '100m':
-                $newProductPrice = 300; // +300 EUR for 100m fiber optics
-                break;
-        }
-    }
-
-    // Return a new product for this custom component value
-    return [
-        'component_id' => $component->ComponentID,
-        'component_name' => $component->ComponentName,
-        'value_id' => null,  // No predefined value ID
-        'value_name' => $processedValue['value_name'],
-        'value_price' => $newProductPrice,  // Additional cost for this custom selection
-        'is_custom' => true,
-    ];
-}
 
     
 }

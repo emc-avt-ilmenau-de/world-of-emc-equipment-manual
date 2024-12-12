@@ -69,7 +69,7 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     Route::prefix('basket')->group(function () {
         Route::get('/', [Basketcontroller::class, 'show'])->name('basket.show');
         Route::post('/add/{id}', [Basketcontroller::class, 'add'])->name('basket.add');
-        Route::post('/update/{productId}', [Basketcontroller::class, 'update'])->name('basket.update');
+        Route::put('/update/{productId}', [Basketcontroller::class, 'update'])->name('basket.update');
         Route::delete('/remove/{productId}', [Basketcontroller::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
     });
     

@@ -1,8 +1,8 @@
 <!-- resources/views/FrontEnd/product/show.blade.php -->
 @extends('FrontEnd.layouts.main')
 
-@section('main-container')
 
+@section('main-container')
 
 <div class="product-show">
     <div class="productname-display">
@@ -63,6 +63,7 @@
             <div class="component-options">
                 
                 @foreach($component->values as $value)
+               
                     <div>
                         <input 
                             type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
@@ -108,9 +109,13 @@
             @endif   
 
            <!-- Learn More button that triggers the popup -->
-            @if (!empty($component->localizedMultimedia))
-                <button id="learn-more-btn+{{ $component->id }}" type="button" data-product-id="{{ $component->id }}">Learn More</button>
-
+            
+                @if (!empty($component->localizedMultimedia))
+                <button id="openPopupBtn{{ $component->ComponentID }}" 
+                type="button" 
+                class="openPopupBtn" 
+                data-product-id="{{ $component->ComponentID }}"
+                data-lang="{{ app()->getLocale() }}">Learn More</button>
             @endif
                             <!-- Power Plug as Custom Input -->
                 @if($component->ComponentName === 'Power Plug')
@@ -136,15 +141,31 @@
 </form>
 
 
-<!-- Popup container -->
-<div id="popup" class="popup" style="display: none;">
+
+<div id="detailPopup" class="detailPopup" style="display: none;">
     <div class="popup-content">
         <!-- Close Button -->
         <span class="popup-close" style="cursor: pointer;">&times;</span>
 
         <!-- Slideshow container -->
-        <div class="popup-slideshow-container" id="popup-slideshow-container">
-            <!-- Slides will be inserted dynamically here -->
+        <div class="popup-slideshow-container">
+            @if (!empty($component->localizedMultimedia))
+                @foreach ($component->localizedMultimedia as $key => $pmedia)
+                    <div class="popup-slide" style="display: none;">
+                        @if (strpos($pmedia['path'], '.mp4') !== false)
+                            <video width="100%" controls>
+                                <source src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" style="width:80%">
+                        @endif
+                        <div class="text">{{ $pmedia['caption'] }}</div>
+                    </div>
+                @endforeach
+            @else
+                <p>No multimedia available for this product.</p>
+            @endif
         </div>
 
         <!-- Navigation buttons -->
@@ -153,6 +174,8 @@
     </div>
 </div>
 
+
+    
 <!-- Modal for Confirmation -->
 <div id="productModal" class="modal" style="display:none;">
     <div class="modal-content">
