@@ -35,29 +35,30 @@ class Basketcontroller extends Controller
 
     // Update the product quantity in the basket
     public function update(Request $request, $productId)
-    {
-        $basket = session()->get('basket', []);
+{
+    $basket = session()->get('basket', []);
 
-        // Loop through the basket to find the product by product_id
-        foreach ($basket as $key => $item) {
-            if ($item['product_id'] == $productId) {
-                // Get the new quantity from the request (default to 1 if not provided)
-                $quantity = $request->input('quantity', 1);
-                $basket[$key]['quantity'] = $quantity;
-
-                // Update the total price based on the new quantity
-                $basket[$key]['total_price'] = $item['product_price'] * $quantity;
-
-                break;
+    foreach ($basket as $key => $item) {
+        if ($item['product_id'] == $productId) {
+            // Ensure the 'product_price' key exists before accessing it
+            if (!isset($item['product_price'])) {
+                return redirect()->route('basket.show')->with('error', 'Product price is missing.');
             }
+
+            // Get the new quantity from the request, default to 1 if not provided
+            $quantity = $request->input('quantity', 1);
+
+            // Update the quantity and total price
+            $basket[$key]['quantity'] = $quantity;
+            $basket[$key]['total_price'] = $item['product_price'] * $quantity;  // Calculate total price
+
+            break;
         }
-
-        // Save the updated basket back to the session
-        session(['basket' => $basket]);
-
-        // Redirect back to the basket page
-        return redirect()->route('basket.show');
     }
+
+    session(['basket' => $basket]);  // Save updated basket to session
+    return redirect()->route('basket.show')->with('success', 'Basket updated successfully!');
+}
 
     // Remove a product from the basket
     public function remove($productId)
