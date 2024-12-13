@@ -149,7 +149,19 @@
         <!-- Slideshow container -->
         <div class="popup-slideshow-container">
             @if (!empty($component->localizedMultimedia))
-               
+                @foreach ($component->localizedMultimedia as $key => $pmedia)
+                    <div class="popup-slide" style="display: none;">
+                        @if (strpos($pmedia['path'], '.mp4') !== false)
+                            <video width="100%" controls>
+                                <source src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" style="width:80%">
+                        @endif
+                        <div class="text">{{ $pmedia['caption'] }}</div>
+                    </div>
+                @endforeach
             @else
                 <p>No multimedia available for this product.</p>
             @endif
