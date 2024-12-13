@@ -109,14 +109,13 @@
             @endif   
 
            <!-- Learn More button that triggers the popup -->
-            
-                @if (!empty($component->localizedMultimedia))
-                <button id="openPopupBtn{{ $component->ComponentID }}" 
-                type="button" 
-                class="openPopupBtn" 
-                data-product-id="{{ $component->ComponentID }}"
-                data-lang="{{ app()->getLocale() }}">Learn More</button>
-            @endif
+           @if (!empty($component->localizedMultimedia))
+    <button id="openPopupBtn{{ $component->ComponentID }}" 
+            type="button" 
+            class="openPopupBtn" 
+            data-product-id="{{ $component->ComponentID }}"
+            data-lang="{{ app()->getLocale() }}">Learn More</button>
+@endif
                             <!-- Power Plug as Custom Input -->
                 @if($component->ComponentName === 'Power Plug')
                 <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="blank">Please visit this link to learn more about power plug types </a><br><br>
@@ -142,7 +141,7 @@
 
 
 
-<div id="detailPopup" class="detailPopup" style="display: none;">
+<div id="popup{{ $component->ComponentID }}" class="popup" style="display: none;">
     <div class="popup-content">
         <!-- Close Button -->
         <span class="popup-close" style="cursor: pointer;">&times;</span>
@@ -173,7 +172,6 @@
         <a class="popup-next" style="cursor: pointer;">&#10095;</a>
     </div>
 </div>
-
 
     
 <!-- Modal for Confirmation -->

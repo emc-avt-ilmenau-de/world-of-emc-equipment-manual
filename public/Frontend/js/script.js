@@ -108,82 +108,82 @@ function checkOther() {
       otherFieldDiv.style.display = 'none';
   }
 }
+
 document.addEventListener("DOMContentLoaded", function () {
-    let popupSlideIndex = 0;
+    // Select all Learn More buttons
+    const openPopupBtns = document.querySelectorAll(".openPopupBtn");
 
-    const popup = document.getElementById("popup");
-    const openPopupBtn = document.getElementById("openPopupBtn");
-    const closeBtn = document.querySelector(".popup-close");
-    const slides = document.getElementsByClassName("popup-slide");
-    const nextBtn = document.querySelector(".popup-next");
-    const prevBtn = document.querySelector(".popup-prev");
+    openPopupBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+            const productId = btn.getAttribute("data-product-id");
+            const popup = document.getElementById(`popup${productId}`);
+            
+            if (popup) {
+                let slideIndex = 0;
+                const slides = popup.getElementsByClassName("popup-slide");
+                const closeBtn = popup.querySelector(".popup-close");
+                const nextBtn = popup.querySelector(".popup-next");
+                const prevBtn = popup.querySelector(".popup-prev");
 
-    let slideIndex = 0;
+                function showSlides(n) {
+                    if (n >= slides.length) slideIndex = 0;
+                    if (n < 0) slideIndex = slides.length - 1;
 
-function showSlides(n) {
-    const slides = document.getElementsByClassName("popup-slide");
-    if (n >= slides.length) slideIndex = 0;
-    if (n < 0) slideIndex = slides.length - 1;
+                    for (let slide of slides) {
+                        slide.style.display = "none";
+                    }
 
-    // Hide all slides
-    for (let slide of slides) {
-        slide.style.display = "none";
-    }
+                    if (slides[slideIndex]) {
+                        slides[slideIndex].style.display = "block";
+                    } else {
+                        console.warn(`slides[${slideIndex}] is undefined.`);
+                    }
+                }
 
-    // Show the selected slide
-    slides[slideIndex].style.display = "block";
-}
+                // Show the first slide
+                showSlides(slideIndex);
 
-document.querySelector(".popup-prev").addEventListener("click", function() {
-    showSlides(--slideIndex); // Show previous slide
-});
+                // Show the popup
+                popup.style.display = "block";
 
-document.querySelector(".popup-next").addEventListener("click", function() {
-    showSlides(++slideIndex); // Show next slide
-});
+                // Add event listeners for navigation buttons
+                if (nextBtn) {
+                    nextBtn.addEventListener("click", function () {
+                        slideIndex++;
+                        showSlides(slideIndex);
+                    });
+                }
 
-// Show the first slide when the popup is opened
-openPopupBtn.addEventListener("click", function() {
-    showSlides(slideIndex);
-    popup.style.display = "block"; // Show the popup
-});
+                if (prevBtn) {
+                    prevBtn.addEventListener("click", function () {
+                        slideIndex--;
+                        showSlides(slideIndex);
+                    });
+                }
 
-    // Close the popup
-    if (closeBtn) {
-        closeBtn.addEventListener("click", function () {
-            console.log("Closing popup...");
-            popup.style.display = "none"; // Hide the popup
+                // Close popup on close button click
+                if (closeBtn) {
+                    closeBtn.addEventListener("click", function () {
+                        popup.style.display = "none";
+                    });
+                }
+
+                // Close popup when clicking outside the popup content
+                window.addEventListener("click", function (event) {
+                    if (event.target === popup) {
+                        popup.style.display = "none";
+                    }
+                });
+            } else {
+                console.error(`Popup with ID popup${productId} not found.`);
+            }
         });
-    }
-
-    // Close the popup if the user clicks outside of the popup content
-    window.addEventListener("click", function (event) {
-        if (event.target === popup) {
-            console.log("Clicked outside the popup. Closing...");
-            popup.style.display = "none";
-        }
     });
-
-    // Next slide
-    if (nextBtn) {
-        nextBtn.addEventListener("click", function () {
-            popupSlideIndex++;
-            showPopupSlides(popupSlideIndex);
-        });
-    }
-
-    // Previous slide
-    if (prevBtn) {
-        prevBtn.addEventListener("click", function () {
-            popupSlideIndex--;
-            showPopupSlides(popupSlideIndex);
-        });
-    }
-
-    // Initially display the first slide (if any)
-    showPopupSlides(popupSlideIndex);
 });
 
+
+
+    
 
  // Function to show the selected section and hide others for both lamp100 and lamp24
 function showSection(sectionId) {
@@ -417,66 +417,3 @@ document.querySelectorAll('.remove-product').forEach(button => {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Add event listeners for all "Learn More" buttons
-    document.querySelectorAll(".openPopupBtn").forEach(button => {
-        button.addEventListener("click", function () {
-            const componentId = this.getAttribute("data-product-id"); // Get the ComponentID from the button
-            const popup = document.getElementById(`data-product-id`); // Get the popup by ID
-
-            if (!popup) {
-                console.error(`Popup with ID detailPopup${componentId} not found.`);
-                return; // Exit the function if popup is not found
-            }
-
-            // Show the popup
-            popup.style.display = "block";
-
-            // Optionally, show the first slide
-            showSlides(0, componentId);
-        });
-    });
-
-    
-
-    // Close button functionality
-    document.querySelectorAll(".popup-close").forEach(closeBtn => {
-        closeBtn.addEventListener("click", function () {
-            const popup = this.closest(".detailPopup");
-            if (popup) {
-                popup.style.display = "none"; // Hide the popup
-            }
-        });
-    });
-
-    // Next button functionality
-    document.querySelectorAll(".popup-next").forEach(nextBtn => {
-        nextBtn.addEventListener("click", function () {
-            const componentId = this.closest(".detailPopup").id.replace('detailPopup', '');
-            let slideIndex = getCurrentSlideIndex(componentId);
-            slideIndex++;
-            showSlides(slideIndex, componentId); // Show next slide
-        });
-    });
-
-    // Previous button functionality
-    document.querySelectorAll(".popup-prev").forEach(prevBtn => {
-        prevBtn.addEventListener("click", function () {
-            const componentId = this.closest(".detailPopup").id.replace('detailPopup', '');
-            let slideIndex = getCurrentSlideIndex(componentId);
-            slideIndex--;
-            showSlides(slideIndex, componentId); // Show previous slide
-        });
-    });
-
-    // Function to get the current slide index
-    function getCurrentSlideIndex(componentId) {
-        const slides = document.querySelectorAll(`#detailPopup${componentId} .popup-slide`);
-        for (let i = 0; i < slides.length; i++) {
-            if (slides[i].style.display === "block") {
-                return i;
-            }
-        }
-        return 0; // Default to first slide
-    }
-});
