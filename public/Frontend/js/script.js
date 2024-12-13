@@ -112,18 +112,24 @@ function checkOther() {
 document.addEventListener("DOMContentLoaded", function () {
     // Select all Learn More buttons
     const openPopupBtns = document.querySelectorAll(".openPopupBtn");
+    // const popupDiv_comp = document.querySelector('.popup-component');
+    const popup_comp_div = document.getElementsByClassName("popup-component")[0];
+    // alert(popup_comp_div);
 
     openPopupBtns.forEach((btn) => {
         btn.addEventListener("click", function () {
-            const productId = btn.getAttribute("data-product-id");
-            const popup = document.getElementById(`popup${productId}`);
+            const component_multimedia_path = btn.getAttribute("comp_multimedia_path");
             
-            if (popup) {
+            // const popup = document.getElementById(`popup${productId}`);
+            
+            if (component_multimedia_path.length > 0 && popup_comp_div) {
+                
+                alert(component_multimedia_path);
                 let slideIndex = 0;
-                const slides = popup.getElementsByClassName("popup-slide");
-                const closeBtn = popup.querySelector(".popup-close");
-                const nextBtn = popup.querySelector(".popup-next");
-                const prevBtn = popup.querySelector(".popup-prev");
+                const slides = popup_comp_div.getElementsByClassName("popup-slide");
+                const closeBtn = popup_comp_div.querySelector(".popup-close");
+                const nextBtn = popup_comp_div.querySelector(".popup-next");
+                const prevBtn = popup_comp_div.querySelector(".popup-prev");
 
                 function showSlides(n) {
                     if (n >= slides.length) slideIndex = 0;
@@ -144,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 showSlides(slideIndex);
 
                 // Show the popup
-                popup.style.display = "block";
+                popup_comp_div.style.display = "block";
 
                 // Add event listeners for navigation buttons
                 if (nextBtn) {
@@ -164,18 +170,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Close popup on close button click
                 if (closeBtn) {
                     closeBtn.addEventListener("click", function () {
-                        popup.style.display = "none";
+                        popup_comp_div.style.display = "none";
                     });
                 }
 
                 // Close popup when clicking outside the popup content
                 window.addEventListener("click", function (event) {
                     if (event.target === popup) {
-                        popup.style.display = "none";
+                        popup_comp_div.style.display = "none";
                     }
                 });
             } else {
-                console.error(`Popup with ID popup${productId} not found.`);
+                console.error(`Popup with ID popup not found.`);
             }
         });
     });

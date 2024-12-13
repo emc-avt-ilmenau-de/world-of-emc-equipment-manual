@@ -113,7 +113,7 @@
     <button id="openPopupBtn{{ $component->ComponentID }}" 
             type="button" 
             class="openPopupBtn" 
-            data-product-id="{{ $component->ComponentID }}"
+            comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
             data-lang="{{ app()->getLocale() }}">Learn More</button>
 @endif
                             <!-- Power Plug as Custom Input -->
@@ -141,7 +141,7 @@
 
 
 
-<div id="popup{{ $component->ComponentID }}" class="popup" style="display: none;">
+<div id="popup{{ $component->ComponentID }}" class="popup-component" style="display: none;">
     <div class="popup-content">
         <!-- Close Button -->
         <span class="popup-close" style="cursor: pointer;">&times;</span>
@@ -149,19 +149,7 @@
         <!-- Slideshow container -->
         <div class="popup-slideshow-container">
             @if (!empty($component->localizedMultimedia))
-                @foreach ($component->localizedMultimedia as $key => $pmedia)
-                    <div class="popup-slide" style="display: none;">
-                        @if (strpos($pmedia['path'], '.mp4') !== false)
-                            <video width="100%" controls>
-                                <source src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        @else
-                            <img src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" style="width:80%">
-                        @endif
-                        <div class="text">{{ $pmedia['caption'] }}</div>
-                    </div>
-                @endforeach
+               
             @else
                 <p>No multimedia available for this product.</p>
             @endif
