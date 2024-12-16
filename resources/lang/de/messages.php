@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'welcome' => 'Willkommen bei EMC-Web',
+    'welcome' => 'Willkommen im EMC-Web',
      'tagline' => 'Wir sind nicht nur Verkäufer, wir sind die Hersteller',
      'home' => 'Startseite',
      'about' => 'Über uns',
@@ -9,7 +9,7 @@ return [
      'downloads' => 'Downloads',
      'basket' => 'Warenkorb',
      'all-product' => 'Alle Produkte',
-      'other' => 'Andere',
+      'other' => 'Weitere',
       'camera' => 'Kameras',
       'price' => 'Preis',
       

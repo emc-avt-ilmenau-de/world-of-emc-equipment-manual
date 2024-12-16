@@ -50,150 +50,177 @@
         </div>
 
         <div class="product-details">
-            <form id="addToBasketForm" action="{{ route('product.submit', ['id' => $product->ProductID]) }}" method="POST">
-    @csrf
-    <h2>Most of the components are included in the base price, except some.</h2>
-    <h4>Please choose Components:</h4>
+    <form id="addToBasketForm" action="{{ route('product.submit', ['id' => $product->ProductID]) }}" method="POST">
+        @csrf
+        <h2>Most of the components are included in the base price, except some.</h2>
+        <h4>Please choose Components:</h4>
 
-    <!-- Loop through Components -->
-    @foreach($product->components as $component)
-        <div class="component-section">
-            <h3>{{ $component->ComponentName }}</h3>
-           
-            <div class="component-options">
-                
-                @foreach($component->values as $value)
-               
-                    <div>
-                        <input 
-                            type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
-                            id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
-                            name="components[{{ $component->ComponentID }}]{{ $component->isMultiple ? '[]' : '' }}" 
-                            value="{{ $value->ComponentValueID }}" 
-                            data-name="{{ $value->ComponentValueName }}"
-                            data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                            onclick="updatePrice()"
-                        >
-                        <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
-                            {{ $value->ComponentValueName }}
-                            @if($value->ComponentValuePrice)
-                                (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
-                            @endif
-                        </label>
-                    </div>
-                @endforeach
-
-                 <!-- Custom "Other" Option -->
-            @if($component->allowsCustom)
-            
-                <div>
-                    <input 
-                        type="radio" 
-                        id="{{ $component->ComponentName }}_Other" 
-                        name="components[{{ $component->ComponentID }}]" 
-                        value="Other" 
-                        onclick="showCustomField('{{ $component->ComponentID }}')"
-                    >
-                    <label for="{{ $component->ComponentName }}_Other">Other</label>
-                    <br><br>
-                    <input 
-                        type="text" 
-                        id="customField_{{ $component->ComponentID }}" 
-                        name="custom_components[{{ $component->ComponentID }}]" 
-                        placeholder="Please specify" 
-                        style="display:none;" 
-                        oninput="validateCustomInput('{{ $component->ComponentName }}')"
-                        >
-                    
-                </div>
-            @endif   
-
-           <!-- Learn More button that triggers the popup -->
-           @if (!empty($component->localizedMultimedia))
-    <button id="openPopupBtn{{ $component->ComponentID }}" 
-            type="button" 
-            class="openPopupBtn" 
-            comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
-            data-lang="{{ app()->getLocale() }}">Learn More</button>
-@endif
-                            <!-- Power Plug as Custom Input -->
-                @if($component->ComponentName === 'Power Plug')
-                <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="blank">Please visit this link to learn more about power plug types </a><br><br>
-                    <label for="powerPlugInput">Please specify your Power Plug choice:</label>
-                    <input 
-                        type="text" 
-                        id="powerPlugInput" 
-                        name="powerPlugInput[{{ $component->ComponentID }}]" 
-                        placeholder="Enter Power Plug Type" 
-                        data-name="Power Plug" 
-                        required
-                        oninput="updatePrice()"
-                    >
+        <!-- Loop through Components -->
+        @foreach($product->components as $component)
+            <div class="component-section">
+                <h3>{{ $component->ComponentName }}</h3>
+                <div class="component-options">
+                    @if($component->ComponentName === 'Software')
+                        <!-- Special Handling for Software Component -->
+                        @foreach($component->values as $value)
+                        <div>
+            <input 
+                type="checkbox" 
+                id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
+                name="softwareOptions[{{ $component->ComponentID }}][]" 
+                value="{{ $value->ComponentValueID }}" 
+                data-name="{{ $value->ComponentValueName }}"
+                data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
+                {{ strtolower($value->ComponentValueName) === 'Basic' ? 'checked disabled' : '' }}
+            >
+            <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
+                {{ $value->ComponentValueName }}
+                @if($value->ComponentValuePrice)
+                    (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
                 @endif
-            </div>
-        </div>
-    @endforeach
+            </label>
 
-    <!-- Display Price -->
-    <p>{{ __('messages.price') }}: <span id="basePrice">{{ $product->ProductPrice }} {{ $product->ProductCurrency }}</span></p>
-    <button type="button" onclick="openModal()" class="basket-button">Add To Basket</button>
-</form>
-
-
-
-<div id="popup{{ $component->ComponentID }}" class="popup-component" style="display: none;">
-    <div class="popup-content">
-        <!-- Close Button -->
-        <span class="popup-close" style="cursor: pointer;">&times;</span>
-
-        <!-- Slideshow container -->
-        <div class="popup-slideshow-container">
-            @if (!empty($component->localizedMultimedia))
-                @foreach ($component->localizedMultimedia as $key => $pmedia)
-                    <div class="popup-slide" style="display: none;">
-                        @if (strpos($pmedia['path'], '.mp4') !== false)
-                            <video width="100%" controls>
-                                <source src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        @else
-                            <img src="{{ asset(str_replace('\\', '/', $pmedia['path'])) }}" style="width:80%">
-                        @endif
-                        <div class="text">{{ $pmedia['caption'] }}</div>
-                    </div>
-                @endforeach
-            @else
-                <p>No multimedia available for this product.</p>
+            <!-- Add a hidden input for disabled "Basic" to ensure it gets submitted -->
+            @if(strtolower($value->ComponentValueName) === 'Basic')
+                <input 
+                    type="hidden" 
+                    name="softwareOptions[{{ $component->ComponentID }}][]" 
+                    value="{{ $value->ComponentValueID }}"
+                >
             @endif
         </div>
+                        @endforeach
+                    @else
+                        <!-- Default Handling for Other Components -->
+                        @foreach($component->values as $value)
+                            <div>
+                                <input 
+                                    type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
+                                    id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
+                                    name="components[{{ $component->ComponentID }}]{{ $component->isMultiple ? '[]' : '' }}" 
+                                    value="{{ $value->ComponentValueID }}" 
+                                    data-name="{{ $value->ComponentValueName }}"
+                                    data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
+                                    onclick="updatePrice()"
+                                >
+                                <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
+                                    {{ $value->ComponentValueName }}
+                                    @if($value->ComponentValuePrice)
+                                        (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                                    @endif
+                                </label>
+                            </div>
+                        @endforeach
 
-        <!-- Navigation buttons -->
-        <a class="popup-prev" style="cursor: pointer;">&#10094;</a>
-        <a class="popup-next" style="cursor: pointer;">&#10095;</a>
-    </div>
-</div>
+                        <!-- Custom "Other" Option -->
+                        @if($component->allowsCustom)
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    id="{{ $component->ComponentName }}_Other" 
+                                    name="components[{{ $component->ComponentID }}]" 
+                                    value="Other" 
+                                    onclick="showCustomField('{{ $component->ComponentID }}')"
+                                >
+                                <label for="{{ $component->ComponentName }}_Other">Other</label>
+                                <br><br>
+                                <input 
+                                    type="text" 
+                                    id="customField_{{ $component->ComponentID }}" 
+                                    name="custom_components[{{ $component->ComponentID }}]" 
+                                    placeholder="Please specify" 
+                                    style="display:none;" 
+                                    oninput="validateCustomInput('{{ $component->ComponentName }}')"
+                                >
+                            </div>
+                        @endif
+                    @endif
 
-    
-<!-- Modal for Confirmation -->
-<div id="productModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <h3>Confirm Your Selection</h3>
-        <p><strong>Product:</strong> <span id="modalProductName">{{ $product->ProductName }}</span></p>
-        <p><strong>Base Price:</strong> {{ $product->ProductPrice }} {{ $product->ProductCurrency }}</p>
-        
-        <!-- Components Summary -->
-        <div id="modalComponents"></div>
-        
-        <!-- Total Price -->
-        <p><strong>Total Price:</strong> <span id="modalTotalPrice"></span></p>
+                    <!-- Learn More button that triggers the popup -->
+                    @if (!empty($component->localizedMultimedia))
+                        <button 
+                            id="openPopupBtn{{ $component->ComponentID }}" 
+                            type="button" 
+                            class="openPopupBtn" 
+                            comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
+                            data-lang="{{ app()->getLocale() }}"
+                        >
+                            Learn More
+                        </button>
+                    @endif
 
-        <!-- Buttons -->
-        <button type="button" onclick="closeModal()">Close</button>
-        <button type="submit" form="addToBasketForm">Confirm</button>
-    </div>
-</div>
-            <a href="{{ route('home') }}">Back to Products</a>
+                    <!-- Power Plug as Custom Input -->
+                    @if($component->ComponentName === 'Power Plug')
+                        <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="_blank">
+                            Please visit this link to learn more about power plug types
+                        </a>
+                        <br><br>
+                        <label for="powerPlugInput">Please specify your Power Plug choice:</label>
+                        <input 
+                            type="text" 
+                            id="powerPlugInput" 
+                            name="powerPlugInput[{{ $component->ComponentID }}]" 
+                            placeholder="Enter Power Plug Type" 
+                            data-name="Power Plug" 
+                            required
+                        >
+                        <small style="color: gray;">Example: Type C, Type G</small>
+                        <p id="powerPlugError" style="color: red; display: none;">Please specify a valid Power Plug type.</p>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+
+        <!-- Display Price -->
+        <p>{{ __('messages.price') }}: <span id="basePrice">{{ $product->ProductPrice }} {{ $product->ProductCurrency }}</span></p>
+        <button type="button" onclick="openModal()" class="basket-button">Add To Basket</button>
+    </form>
+
+    <!-- Popup for Multimedia -->
+    <div id="popup" class="popup-component" style="display: none;">
+        <div class="popup-content">
+            <!-- Close Button -->
+            <span class="popup-close" style="cursor: pointer;">&times;</span>
+
+            <!-- Slideshow container -->
+            <div class="popup-slideshow-container">
+                @if (!empty($component->localizedMultimedia))
+                    <div class="popup-slide" style="display: none;">
+                        <!-- Multimedia slides will be dynamically injected -->
+                    </div>
+                @else
+                    <p>No multimedia available for this product.</p>
+                @endif
+            </div>
+
+            <!-- Navigation buttons -->
+            <a class="popup-prev" style="cursor: pointer;">&#10094;</a>
+            <a class="popup-next" style="cursor: pointer;">&#10095;</a>
         </div>
+    </div>
+
+    <!-- Modal for Confirmation -->
+    <div id="productModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Confirm Your Selection</h3>
+            <p><strong>Product:</strong> <span id="modalProductName">{{ $product->ProductName }}</span></p>
+            <p><strong>Base Price:</strong> {{ $product->ProductPrice }} {{ $product->ProductCurrency }}</p>
+
+            <!-- Components Summary -->
+            <div id="modalComponents"></div>
+
+            <!-- Total Price -->
+            <p><strong>Total Price:</strong> <span id="modalTotalPrice"></span></p>
+
+            <!-- Buttons -->
+            <button type="button" onclick="closeModal()">Close</button>
+            <button type="submit" form="addToBasketForm">Confirm</button>
+        </div>
+    </div>
+
+    <a href="{{ route('home') }}">Back to Products</a>
+</div>
+
         
     </main>
 </div>
