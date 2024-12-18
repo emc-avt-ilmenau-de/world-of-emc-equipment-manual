@@ -236,6 +236,91 @@ private function addComponentValue($component, $value, &$selectedComponents, $re
     }
     
 
+    public function submitOrder(Request $request)
+{
+    $basket = session()->get('basket', []);
+
+    if (empty($basket)) {
+        return redirect()->route('basket.show')->with('error', 'Your basket is empty.');
+    }
+
+    // Temporarily store basket in session for further processing
+    session()->put('order_basket', $basket);
+
+    return redirect()->route('order.customerForm');
+}
+
+public function showCustomerForm()
+{
+    $basket = session()->get('order_basket', []);
+
+    if (empty($basket)) {
+        return redirect()->route('basket.show')->with('error', 'No order data found. Please try again.');
+    }
+
+    return view('Frontend.customer_form', compact('basket'));
+}
+
+public function submitCustomerDetails(Request $request)
+{
+    $request->validate([
+        'OrderCustName' => 'required|string|max:255',
+        'OrderEmail' => 'required|email|max:255',
+        'OrderPhone' => 'nullable|string|max:20',
+        'OrderAddress' => 'required|string|max:255',
+        'OrderComment' => 'nullable|string',
+    ]);
+
+    $basket = session()->get('order_basket', []);
+
+    if (empty($basket)) {
+        return redirect()->route('basket.show')->with('error', 'Order data is missing.');
+    }
+
+    try {
+        DB::beginTransaction();
+
+        // Insert into Order table
+        $orderId = DB::table('Order')->insertGetId([
+            'OrderCustName' => $request->input('OrderCustName'),
+            'OrderEmail' => $request->input('OrderEmail'),
+            'OrderPhone' => $request->input('OrderPhone'),
+            'OrderAddress' => $request->input('OrderAddress'),
+            'OrderComment' => $request->input('OrderComment'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Insert order items into OrderItem table
+        foreach ($basket as $item) {
+            foreach ($item['components'] as $component) {
+                DB::table('OrderItem')->insert([
+                    'OrderID' => $orderId,
+                    'ProductID' => $item['product_id'],
+                    'ComponentID' => $component['name'],
+                    'ComponentValueName' => is_array($component['value']) ? implode(', ', $component['value']) : $component['value'],
+                    'OrderItemQuantity' => $item['quantity'],
+                    'OrderItemPrice' => $component['price'],
+                    'OrderItemCurrency' => 'EUR',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        }
+
+        DB::commit();
+
+        // Clear the session
+        session()->forget(['order_basket', 'basket']);
+
+        return redirect()->route('basket.show')->with('success', 'Order placed successfully!');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        Log::error('Order Submission Failed: ' . $e->getMessage());
+        return redirect()->route('basket.show')->with('error', 'Failed to place the order.');
+    }
+}
+
 
     
 }

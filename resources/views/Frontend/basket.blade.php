@@ -58,6 +58,13 @@
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Remove Item</button>
         </form>
+
+        @if(!empty($basket) && count($basket) > 0)
+    <form action="{{ route('order.submit') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+    </form>
+@endif
     </div>
     <hr>
 @endforeach

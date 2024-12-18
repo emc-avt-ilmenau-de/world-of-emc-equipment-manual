@@ -72,6 +72,11 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
         Route::put('/update/{productId}', [Basketcontroller::class, 'update'])->name('basket.update');
         Route::delete('/remove/{productId}', [Basketcontroller::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
     });
+
+    // New order submission routes
+Route::post('/order/submit', [Productcontroller::class, 'submitOrder'])->name('order.submit');
+Route::get('/order/customer-form', [Productcontroller::class, 'showCustomerForm'])->name('order.customerForm');
+Route::post('/order/customer-submit', [Productcontroller::class, 'submitCustomerDetails'])->name('order.customerSubmit');
     
     
  // Other routes...
