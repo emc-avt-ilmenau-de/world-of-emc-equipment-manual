@@ -257,46 +257,51 @@ function checkGeoOther(value) {
 
 // Update price and component summary
 function updatePrice() {
-    let totalPrice = parseFloat(document.getElementById("basePrice").textContent);
+    let totalPrice = parseFloat(document.getElementById("basePrice").textContent) || 0;
     let selectedComponents = [];
 
-    // Track processed components to avoid duplicates
+    // Track processed components
     let processedComponents = new Set();
 
-    // Loop through all selected inputs (radio/checkbox)
+    // Handle all checked inputs (radio & checkbox)
     document.querySelectorAll("input[type='radio']:checked, input[type='checkbox']:checked").forEach((input) => {
         let price = parseFloat(input.getAttribute("data-price")) || 0;
         let componentName = input.closest(".component-section").querySelector("h3").textContent;
-        let componentValue = input.getAttribute("data-name") || "N/A";
+        let componentValue = input.getAttribute("data-name") || input.value;
 
-        // Handle custom "Other" input
+        // Special handling for "Other" input
         if (input.value === "Other") {
-            const customValue = document.getElementById(`customField_${input.name.match(/\d+/)[0]}`)?.value;
+            const customInputId = `customField_${input.name.match(/\d+/)[0]}`;
+            const customValue = document.getElementById(customInputId)?.value.trim();
             if (customValue) {
-                componentValue = customValue; // Use custom value
+                componentValue = customValue;
             }
         }
 
-        // Special handling for "Software" component
+        // Special handling for Software component
         if (componentName === "Software") {
             if (!processedComponents.has(componentName)) {
                 processedComponents.add(componentName);
-                // Add all selected software options
-                document.querySelectorAll(`input[name^="softwareOptions"]:checked`).forEach((softwareInput) => {
-                    const softwareValue = softwareInput.getAttribute("data-name") || softwareInput.value;
-                    const softwarePrice = parseFloat(softwareInput.getAttribute("data-price")) || 0;
-                    totalPrice += softwarePrice;
-                    selectedComponents.push({
-                        componentName: componentName,
-                        value: softwareValue,
-                        price: softwarePrice,
-                    });
+
+                // Gather all selected software checkboxes
+                document.querySelectorAll(`input[name^="components"]:checked`).forEach((softwareInput) => {
+                    if (softwareInput.closest(".component-section").querySelector("h3").textContent === "Software") {
+                        const softwareValue = softwareInput.getAttribute("data-name");
+                        const softwarePrice = parseFloat(softwareInput.getAttribute("data-price")) || 0;
+
+                        selectedComponents.push({
+                            componentName: componentName,
+                            value: softwareValue,
+                            price: softwarePrice,
+                        });
+                        totalPrice += softwarePrice;
+                    }
                 });
             }
-            return; // Skip default processing for "Software"
+            return; // Skip the default processing for Software
         }
 
-        // Skip duplicate components
+        // Avoid duplicate components
         if (processedComponents.has(componentName)) return;
 
         processedComponents.add(componentName);
@@ -309,23 +314,24 @@ function updatePrice() {
         });
     });
 
-    // Handle any remaining custom inputs
+    // Handle custom text inputs
     document.querySelectorAll("input[type='text']").forEach((input) => {
-        if (input.value) {
-            let componentName = input.closest(".component-section").querySelector("h3").textContent;
+        if (input.value.trim()) {
+            const componentName = input.closest(".component-section").querySelector("h3").textContent;
 
-            if (processedComponents.has(componentName)) return;
+            if (!processedComponents.has(componentName)) {
+                processedComponents.add(componentName);
 
-            processedComponents.add(componentName);
-            selectedComponents.push({
-                componentName: componentName,
-                value: input.value,
-                price: 0,
-            });
+                selectedComponents.push({
+                    componentName: componentName,
+                    value: input.value.trim(),
+                    price: 0,
+                });
+            }
         }
     });
 
-    // Update the modal content
+    // Update the modal with the selected components and total price
     document.getElementById("modalTotalPrice").textContent = totalPrice.toFixed(2);
     document.getElementById("modalComponents").innerHTML = selectedComponents
         .map(
@@ -334,6 +340,7 @@ function updatePrice() {
         )
         .join("");
 }
+
 
 // Show the custom field for "Other" option
 function showCustomField(componentID) {

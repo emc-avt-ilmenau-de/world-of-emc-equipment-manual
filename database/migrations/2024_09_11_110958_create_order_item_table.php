@@ -15,7 +15,8 @@ return new class extends Migration
             $table->bigIncrements('OrderItemID');
             $table->foreignId('OrderID');
             $table->foreignId('ProductID'); // null in case new product proposal
-            $table->foreignId('ComponentValueID'); // null in case new product proposal
+            $table->foreignId('ComponentID'); // null in case new product proposal
+            $table->foreignId('ComponentValueName'); // null in case new product proposal
             $table->unsignedTinyInteger('OrderItemQuantity')->nullable();
             $table->decimal('OrderItemPrice', 8, 2)->nullable();
             $table->string('OrderItemCurrency', 10)->default('EUR')->nullable();

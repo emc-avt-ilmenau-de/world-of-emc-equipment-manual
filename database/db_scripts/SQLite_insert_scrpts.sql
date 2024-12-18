@@ -932,24 +932,22 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('2', '1','4.5mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('3', '1','6.8mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('4', '1','12mm',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('5', '1','Other',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('6', '2','10m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('7', '2','20m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('8', '2','30m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('9', '2','40m','100','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('10', '2','70m','200','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('11', '2','100m','300','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('12', '3','Hardened switching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('13', '3','Hardened nonswitching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('14', '3',' Accumulator/chargeable batterie inside camera ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('15', '5',' 230 V/ 50 Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('16', '5',' 110 VAC @ 60Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('17', '5','Other',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('18', '6',' Basic ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('19', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-      ('20', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('21', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('22', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+     ('5', '2','10m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('6', '2','20m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('7', '2','30m',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('8', '2','40m','100','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('9', '2','70m','200','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10', '2','100m','300','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('11', '3','Hardened switching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('12', '3','Hardened nonswitching power supply 230V/5V ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('13', '3',' Accumulator/chargeable batterie inside camera ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('14', '5',' 230 V/ 50 Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('15', '5',' 110 VAC @ 60Hz ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('16', '6',' Basic ',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('17', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+      ('18', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('19', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('20', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 -- Sample json data insertion
@@ -1009,8 +1007,8 @@ INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
         ('3','Other',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
-UPDATE Product
-SET ProductMultimediaPath = '{"en":{
+UPDATE Component
+SET ComponentMultimediaPath = '{"en":{
         "image1": {
             "path": "Frontend\\images\\usb.jpg",
             "caption": "English caption"
@@ -1040,7 +1038,7 @@ SET ProductMultimediaPath = '{"en":{
         }
     }
 }'
-WHERE ProductID = 7;
+WHERE ComponentID = 3;
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1069,10 +1067,10 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 
 DELETE FROM ComponentValue
-WHERE ComponentValueID = '17';
+WHERE ComponentValueID = '5';
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
-    ('5', '1','Other',NULL,'EUR'),
+    ('4', '1','12mm',NULL,'EUR');
      
      ('17', '5','Other',NULL,'EUR');
 

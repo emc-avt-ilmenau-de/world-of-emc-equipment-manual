@@ -10,28 +10,16 @@ use Illuminate\Support\Facades\Log;
 
 class Basketcontroller extends Controller
 {
-    // Display the basket page
     public function show()
-    {
-        $basket = session()->get('basket', []);
-        //dd($basket);
+{
+    $basket = session()->get('basket', []);
 
-        // Log the basket contents for debugging
-        Log::info('Basket contents: ' . json_encode($basket));
+    Log::info('Basket contents: ' . json_encode($basket));
 
-        // Iterate through the basket items and ensure components are properly formatted
-        foreach ($basket as &$item) {
-            foreach ($item['components'] as &$component) {
-                if (is_array($component['value'])) {
-                    // If 'value' is an array, join it into a string
-                    $component['value'] = implode(', ', $component['value']);
-                }
-            }
-        }
+    // Return the basket view with the basket data
+    return view('Frontend.basket', compact('basket'));
+}
 
-        // Return the basket view with the basket data
-        return view('Frontend.basket', compact('basket'));
-    }
 
     // Update the product quantity in the basket
     public function update(Request $request, $productId)

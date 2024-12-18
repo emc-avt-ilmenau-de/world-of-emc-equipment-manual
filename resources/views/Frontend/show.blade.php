@@ -67,11 +67,11 @@
             <input 
                 type="checkbox" 
                 id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
-                name="softwareOptions[{{ $component->ComponentID }}][]" 
+                name="components[{{ $component->ComponentID }}][]" 
                 value="{{ $value->ComponentValueID }}" 
                 data-name="{{ $value->ComponentValueName }}"
                 data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                {{ strtolower($value->ComponentValueName) === 'Basic' ? 'checked disabled' : '' }}
+                {{ strtolower($value->ComponentValueName) === 'Basic' ? 'checked' : '' }}
             >
             <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
                 {{ $value->ComponentValueName }}
@@ -79,15 +79,6 @@
                     (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
                 @endif
             </label>
-
-            <!-- Add a hidden input for disabled "Basic" to ensure it gets submitted -->
-            @if(strtolower($value->ComponentValueName) === 'Basic')
-                <input 
-                    type="hidden" 
-                    name="softwareOptions[{{ $component->ComponentID }}][]" 
-                    value="{{ $value->ComponentValueID }}"
-                >
-            @endif
         </div>
                         @endforeach
                     @else

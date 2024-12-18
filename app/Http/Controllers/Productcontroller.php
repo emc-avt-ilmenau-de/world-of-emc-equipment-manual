@@ -120,35 +120,17 @@ class Productcontroller extends Controller
     $selectedComponents = [];
 
     // Process components selected in the form
-    foreach ($request->input('components', []) as $componentId => $value) {
+    foreach ($request->input('components', []) as $componentId => $values) {
         $component = $product->components->find($componentId);
 
         if (!$component) continue; // Skip if component not found
 
-        // Check if this component has a custom "Other" field or is a custom input like "Power Plug"
-        if ($value === 'Other') {
-            $customValue = $request->input("custom_components.{$componentId}");
-
-            if ($customValue) {
-                $selectedComponents[] = [
-                    'name' => $component->ComponentName,
-                    'value' => $customValue,
-                    'price' => 0 // No additional cost for "Other" option
-                ];
+        if (is_array($values)) { // Handle multi-select components
+            foreach ($values as $value) {
+                $this->addComponentValue($component, $value, $selectedComponents, $request, $totalPrice);
             }
-        } else {
-            // Handle regular component values
-            $componentValue = $component->values->find($value);
-            if ($componentValue) {
-                $selectedComponents[] = [
-                    'name' => $component->ComponentName,
-                    'value' => $componentValue->ComponentValueName,
-                    'price' => $componentValue->ComponentValuePrice ?? 0
-                ];
-
-                // Add the price to the total (ensure it's numeric)
-                $totalPrice += $componentValue->ComponentValuePrice ?? 0;
-            }
+        } else { // Handle single-value components
+            $this->addComponentValue($component, $values, $selectedComponents, $request, $totalPrice);
         }
     }
 
@@ -158,26 +140,71 @@ class Productcontroller extends Controller
         $selectedComponents[] = [
             'name' => 'Power Plug',
             'value' => $powerPlugInput,
-            'price' => 0 // Assuming no additional cost for this custom value
+            'price' => 0
         ];
     }
 
-    // Add product with selected components to the session basket
-    $basket = session()->get('basket', []);
-    $basket[] = [
-        'product_id' => $id,
-        'product_name' => $product->ProductName,
-        'base_price' => $product->ProductPrice,
-        'total_price' => $totalPrice,
-        'components' => $selectedComponents
-    ];
-    session()->put('basket', $basket);
-    Log::info('Basket Data:', session()->get('basket'));
+    // Generate a unique identifier for the product
+    $uniqueIdentifier = md5($id . serialize($selectedComponents));
 
-    // Optionally, add a success message
+    // Add product to the basket or update if it already exists
+    $basket = session()->get('basket', []);
+    $found = false;
+
+    foreach ($basket as &$item) {
+        if ($item['unique_identifier'] === $uniqueIdentifier) {
+            $item['quantity'] += 1; // Update quantity
+            $item['total_price'] += $totalPrice;
+            $found = true;
+            break;
+        }
+    }
+
+    if (!$found) {
+        $basket[] = [
+            'product_id' => $id,
+            'product_name' => $product->ProductName,
+            'base_price' => $product->ProductPrice,
+            'total_price' => $totalPrice,
+            'components' => $selectedComponents,
+            'quantity' => 1,
+            'unique_identifier' => $uniqueIdentifier
+        ];
+    }
+
+    session()->put('basket', $basket);
+
+    Log::info('Basket Data:', session()->get('basket')); // Debugging log
+
     return redirect()->route('basket.show')->with('success', 'Product added to basket successfully!');
 }
 
+// Helper method to process component values, including custom "Other" option
+private function addComponentValue($component, $value, &$selectedComponents, $request, &$totalPrice)
+{
+    if ($value === 'Other') {
+        // Handle the custom "Other" input
+        $customValue = $request->input("custom_components.{$component->ComponentID}");
+        if ($customValue) {
+            $selectedComponents[] = [
+                'name' => $component->ComponentName,
+                'value' => $customValue,
+                'price' => 0
+            ];
+        }
+    } else {
+        // Handle regular component values
+        $componentValue = $component->values->find($value);
+        if ($componentValue) {
+            $selectedComponents[] = [
+                'name' => $component->ComponentName,
+                'value' => $componentValue->ComponentValueName,
+                'price' => $componentValue->ComponentValuePrice ?? 0
+            ];
+            $totalPrice += $componentValue->ComponentValuePrice ?? 0;
+        }
+    }
+}
 
    
     
