@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $table = 'Order';
+    protected $fillable = [
+        'OrderCustName', 'OrderEmail', 'OrderPhone', 
+        'OrderAddress', 'OrderComment', 'created_at', 'updated_at'
+    ];
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class, 'OrderID', 'OrderID');
+    }
     use HasFactory;
 }

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use App\Services\BasketService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+use App\Exceptions\YourCustomException;
+use Exception;
 
 class Productcontroller extends Controller
 {
@@ -294,10 +297,20 @@ public function submitCustomerDetails(Request $request)
         // Insert order items into OrderItem table
         foreach ($basket as $item) {
             foreach ($item['components'] as $component) {
+                // Fetch ComponentID dynamically based on name
+                $componentID = DB::table('Component')
+                    ->where('ComponentName', $component['name'])
+                    ->value('ComponentID');
+        
+                if (!$componentID) {
+                    throw new Exception('ComponentID not found for ' . $component['name']);
+                }
+        
+                // Insert into OrderItem
                 DB::table('OrderItem')->insert([
                     'OrderID' => $orderId,
                     'ProductID' => $item['product_id'],
-                    'ComponentID' => $component['name'],
+                    'ComponentID' => $componentID,
                     'ComponentValueName' => is_array($component['value']) ? implode(', ', $component['value']) : $component['value'],
                     'OrderItemQuantity' => $item['quantity'],
                     'OrderItemPrice' => $component['price'],
@@ -307,6 +320,7 @@ public function submitCustomerDetails(Request $request)
                 ]);
             }
         }
+        
 
         DB::commit();
 
@@ -314,7 +328,7 @@ public function submitCustomerDetails(Request $request)
         session()->forget(['order_basket', 'basket']);
 
         return redirect()->route('basket.show')->with('success', 'Order placed successfully!');
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         Log::error('Order Submission Failed: ' . $e->getMessage());
         return redirect()->route('basket.show')->with('error', 'Failed to place the order.');

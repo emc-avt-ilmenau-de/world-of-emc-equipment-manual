@@ -17,6 +17,7 @@ use App\Http\Controllers\FrontEnd\sequenzercontroller;
 use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Basketcontroller;
+use App\Http\Controllers\Ordercontroller;
 
 // Locale switching route
 Route::get('/set-locale/{locale}', function ($locale) {
@@ -74,7 +75,7 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     });
 
     // New order submission routes
-Route::post('/order/submit', [Productcontroller::class, 'submitOrder'])->name('order.submit');
+Route::post('/order/submit', [Ordercontroller::class, 'submit'])->name('order.submit');
 Route::get('/order/customer-form', [Productcontroller::class, 'showCustomerForm'])->name('order.customerForm');
 Route::post('/order/customer-submit', [Productcontroller::class, 'submitCustomerDetails'])->name('order.customerSubmit');
     

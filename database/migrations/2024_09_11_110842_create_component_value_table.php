@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ComponentValue', function (Blueprint $table) {
             $table->mediumIncrements('ComponentValueID');
             $table->foreignId('ComponentID') // Foreign key referencing ComponentID
-                  ->constrained('Component') // Ensure this references the correct table
+                  ->constrained('Component', 'ComponentID') // Ensure this references the correct table
                   ->onDelete('cascade')     // Delete ComponentValue if the Component is deleted
                   ->onUpdate('cascade');    // Update ComponentValue if ComponentID changes
             

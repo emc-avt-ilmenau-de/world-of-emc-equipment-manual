@@ -16,8 +16,9 @@
                     @foreach ($products->where('CategoryID', 1) as $product)
                         <div class="product-item camera">
                             <h4>{{ $product->ProductName }}</h4>
-                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">View Details</a>
+                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">
                             <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+                            </a>
                             <p>{{ $product->minidescription }}</p>
                         </div>
                     @endforeach
@@ -31,8 +32,9 @@
                     @foreach ($products->where('CategoryID', 2) as $product)
                         <div class="product-item led">
                             <h4>{{ $product->ProductName }}</h4>
-                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">View Details</a>
+                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">
                             <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+                            </a>
                             <p>{{ $product->minidescription }}</p>
                         </div>
                     @endforeach
@@ -46,8 +48,9 @@
                     @foreach ($products->where('CategoryID', 3) as $product)
                         <div class="product-item other">
                             <h4>{{ $product->ProductName }}</h4>
-                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">View Details</a>
+                            <a href="{{ route('product.show', ['id' => $product->ProductID]) }}">
                             <img src="{{ asset($product->ProductHomeImagePath) }}" alt="{{ $product->ProductName }}" />
+                            </a>
                             <p>{{ $product->minidescription }}</p>
                         </div>
                     @endforeach

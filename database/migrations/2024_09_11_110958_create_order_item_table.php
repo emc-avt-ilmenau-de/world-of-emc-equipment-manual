@@ -10,19 +10,19 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('OrderItem', function (Blueprint $table) {
-            $table->bigIncrements('OrderItemID');
-            $table->foreignId('OrderID');
-            $table->foreignId('ProductID'); // null in case new product proposal
-            $table->foreignId('ComponentID'); // null in case new product proposal
-            $table->foreignId('ComponentValueName'); // null in case new product proposal
-            $table->unsignedTinyInteger('OrderItemQuantity')->nullable();
-            $table->decimal('OrderItemPrice', 8, 2)->nullable();
-            $table->string('OrderItemCurrency', 10)->default('EUR')->nullable();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('OrderItem', function (Blueprint $table) {
+        $table->bigIncrements('OrderItemID');
+        $table->foreignId('OrderID')->constrained('Order', 'OrderID')->onDelete('cascade'); // Assumes 'orders' table exists
+        $table->foreignId('ProductID')->nullable()->constrained('Product', 'ProductID')->onDelete('set null'); // Assumes 'products' table exists
+        $table->json('Components')->nullable(); // JSON column to store grouped components
+        $table->unsignedSmallInteger('OrderItemQuantity')->nullable(); // Adjusted to Small Integer for flexibility
+        $table->decimal('OrderItemPrice', 8, 2)->nullable(); // Total price for the product and its components
+        $table->string('OrderItemCurrency', 10)->default('EUR');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

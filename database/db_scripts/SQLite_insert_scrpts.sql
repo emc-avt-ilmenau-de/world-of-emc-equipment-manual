@@ -15,7 +15,7 @@ INSERT INTO Product (
 ) VALUES (
     '1',
     '1',
-    '4K Minicam',
+    '4K MiniCam',
    '{
     "en": {
         "ProductMiniDescription": "High resolution (UHD) Camera especially for EMC- und test laboratories and general applications."
@@ -947,7 +947,17 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('17', '6',' Minicam Plus ','2000','EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
       ('18', '7','4 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('19', '7','6 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('20', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+     ('20', '7','9 mm',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('21', '8','2700 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('22', '8','3000 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('23', '8','4000 K',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('24', '9','15°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('25', '9','30°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('26', '9','40°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('27', '9','80°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('28', '10','Variant 2',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('29', '10','Variant 3',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 -- Sample json data insertion
@@ -1128,3 +1138,12 @@ SET ComponentMultimediaPath = '{"en":{
     }
 }'
 WHERE ComponentID = 1;
+
+DROP TABLE IF EXISTS OrderItem;
+
+PRAGMA table_info("Product");
+
+PRAGMA foreign_key_list("OrderItem");
+PRAGMA foreign_key_check;
+PRAGMA table_info("Component");
+PRAGMA foreign_key_list("ComponentValue");

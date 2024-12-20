@@ -1,25 +1,45 @@
 @extends('Frontend.layouts.main')
 
 @section('main-container')
-<h2>Enter Your Information</h2>
-<form action="{{ route('order.customerSubmit') }}" method="POST">
-    @csrf
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
+            <h2 class="card-title">Enter Your Information</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('order.customerSubmit') }}" method="POST">
+                @csrf
 
-    <label for="OrderCustName">Name:</label>
-    <input type="text" id="OrderCustName" name="OrderCustName" required><br>
+                <div class="form-group mb-3">
+                    <label for="OrderCustName" class="form-label">Name:</label>
+                    <input type="text" id="OrderCustName" name="OrderCustName" class="form-control" placeholder="Enter your full name" required>
+                </div>
 
-    <label for="OrderEmail">Email:</label>
-    <input type="email" id="OrderEmail" name="OrderEmail" required><br>
+                <div class="form-group mb-3">
+                    <label for="OrderEmail" class="form-label">Email:</label>
+                    <input type="email" id="OrderEmail" name="OrderEmail" class="form-control" placeholder="Enter your email address" required>
+                </div>
 
-    <label for="OrderPhone">Phone:</label>
-    <input type="text" id="OrderPhone" name="OrderPhone"><br>
+                <div class="form-group mb-3">
+                    <label for="OrderPhone" class="form-label">Phone:</label>
+                    <input type="text" id="OrderPhone" name="OrderPhone" class="form-control" placeholder="Enter your phone number">
+                </div>
 
-    <label for="OrderAddress">Address:</label>
-    <input type="text" id="OrderAddress" name="OrderAddress" required><br>
+                <div class="form-group mb-3">
+                    <label for="OrderAddress" class="form-label">Address:</label>
+                    <textarea id="OrderAddress" name="OrderAddress" class="form-control" rows="3" placeholder="Enter your address" required></textarea>
+                </div>
 
-    <label for="OrderComment">Comments:</label>
-    <textarea id="OrderComment" name="OrderComment"></textarea><br>
+                <div class="form-group mb-3">
+                    <label for="OrderComment" class="form-label">Comments:</label>
+                    <textarea id="OrderComment" name="OrderComment" class="form-control" rows="4" placeholder="Any additional comments"></textarea>
+                </div>
 
-    <button type="submit" class="btn btn-success">Submit Order</button>
-</form>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
