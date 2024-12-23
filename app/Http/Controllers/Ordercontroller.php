@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -74,6 +75,24 @@ class Ordercontroller extends Controller
             DB::rollBack();
             Log::error('Order Submission Failed:', ['error' => $e->getMessage()]);
             return redirect()->route('basket.show')->with('error', 'Failed to place the order.');
+        }
+    }
+    private function sendOrderEmail($order, $summary)
+    {
+        $emailData = [
+            'order' => $order,
+            'summary' => $summary,
+        ];
+    
+        try {
+            Mail::send('emails.order_summary', $emailData, function ($message) use ($order) {
+                $message->to($order->OrderEmail)
+                        ->subject('Order Summary');
+            });
+    
+            Log::info('Order email sent successfully to ' . $order->OrderEmail);
+        } catch (Exception $e) {
+            Log::error('Failed to send order email: ' . $e->getMessage());
         }
     }
     

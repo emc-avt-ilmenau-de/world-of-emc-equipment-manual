@@ -40,37 +40,44 @@
         </tbody>
     </table>
 
-    <!-- Order Form -->
-    <form action="{{ route('order.submit') }}" method="POST">
-        @csrf
+   <!-- Trigger Button -->
+<button id="openOrderModal" class="btn btn-primary">Place Order</button>
+
+<!-- Modal Structure -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <span id="closeOrderModal" class="modal-close">&times;</span>
         <h3>Customer Details</h3>
-        <div>
-            <label for="OrderCustName">Name:</label>
-            <input type="text" name="OrderCustName" required>
-        </div>
-        <div>
-            <label for="OrderEmail">Email:</label>
-            <input type="email" name="OrderEmail" required>
-        </div>
-        <div>
-            <label for="OrderPhone">Phone:</label>
-            <input type="text" name="OrderPhone">
-        </div>
-        <div>
-            <label for="OrderAddress">Address:</label>
-            <input type="text" name="OrderAddress" required>
-        </div>
-        <div>
-            <label for="OrderComment">Comment:</label>
-            <textarea name="OrderComment"></textarea>
-        </div>
-        <button type="submit">Place Order</button>
-    </form>
+        <form action="{{ route('order.submit') }}" method="POST">
+            @csrf
+            <div>
+                <label for="OrderCustName">Name:</label>
+                <input type="text" name="OrderCustName" required>
+            </div>
+            <div>
+                <label for="OrderEmail">Email:</label>
+                <input type="email" name="OrderEmail" required>
+            </div>
+            <div>
+                <label for="OrderPhone">Phone:</label>
+                <input type="text" name="OrderPhone">
+            </div>
+            <div>
+                <label for="OrderAddress">Address:</label>
+                <input type="text" name="OrderAddress" required>
+            </div>
+            <div>
+                <label for="OrderComment">Comment:</label>
+                <textarea name="OrderComment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit Order</button>
+        </form>
+    </div>
+</div>
+
 @else
     <p>Your basket is empty.</p>
 @endif
-
-
 
 </div>
 @endsection
