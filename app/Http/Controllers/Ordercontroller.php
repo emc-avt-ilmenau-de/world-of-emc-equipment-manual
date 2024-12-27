@@ -29,6 +29,7 @@ class Ordercontroller extends Controller
             // Insert order into `Order` table
             $orderId = DB::table('Order')->insertGetId([
                 'OrderCustName' => $request->input('OrderCustName'),
+                'OrderOrgName' => $request->input('OrderOrgName'),
                 'OrderEmail' => $request->input('OrderEmail'),
                 'OrderPhone' => $request->input('OrderPhone'),
                 'OrderAddress' => $request->input('OrderAddress'),

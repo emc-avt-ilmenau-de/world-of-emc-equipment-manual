@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,19 +39,28 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', 'smtp.office365.com'),
+            //'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('labor@avt-ilmenau.de'),
-            'password' => env('avt+2004'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'auth_mode' => null,
+            //'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
         'ses' => [
             'transport' => 'ses',
         ],
+
+        'mailgun' => [
+            'transport' => 'mailgun',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
+        ],
+
 
         'postmark' => [
             'transport' => 'postmark',
@@ -61,10 +70,10 @@ return [
             // ],
         ],
 
-        'resend' => [
+       /* 'resend' => [
             'transport' => 'resend',
         ],
-
+*/
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
@@ -87,17 +96,17 @@ return [
             ],
         ],
 
-        'roundrobin' => [
+        /*'roundrobin' => [
             'transport' => 'roundrobin',
             'mailers' => [
                 'ses',
                 'postmark',
             ],
-        ],
+        ],*/
 
     ],
 
-    'log_channel' => env('MAIL_LOG_CHANNEL', 'stack'),
+    //'log_channel' => env('MAIL_LOG_CHANNEL', 'stack'),
 
 
     /*
@@ -114,6 +123,45 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'labor@avt-ilmenau.de'),
         'name' => env('MAIL_FROM_NAME', 'EMC-WEB'),
+    ],
+
+     /*
+    |--------------------------------------------------------------------------
+    | Global "cc" and "bcc" Address
+    |--------------------------------------------------------------------------
+    |
+    | Order confirmation email should also go to cc (AVT) and bcc (sentec)
+    | used globally for all e-mails that are sent by your application.
+    |
+    */
+    'cc' => [
+        // 'address' => 'info@avt-ilmenau.de',
+        'address' => 'peek.out.of@gmail.com',       // test
+        'name' => 'AVT GmbH',
+    ],
+
+    'bcc' => [
+        // 'address' => 'info@sentec-elektronik.de',
+        'address' => 's.kaiser@avt-ilmenau.de',       // test
+        'name' => 'TEST EMC',
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Markdown Mail Settings
+    |--------------------------------------------------------------------------
+    |
+    | If you are using Markdown based email rendering, you may configure your
+    | theme and component paths here, allowing you to customize the design
+    | of the emails. Or, you may simply stick with the Laravel defaults!
+    |
+    */
+
+    'markdown' => [
+        'theme' => 'default',
+
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
     ],
 
 ];
