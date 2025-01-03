@@ -2,8 +2,8 @@
 
 @section('main-container')
 <div class="basket">
-    @if(!empty($basket))
-        <table>
+    @if(!empty($basket) && count($basket) > 0)
+        <table class="custom-table">
             <thead>
                 <tr>
                     <th>Product Name</th>
@@ -13,65 +13,69 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach($basket as $item)
-        <tr>
-            <td>{{ $item['product_name'] }}</td>
-            <td>
-                @if(is_array($item['components']))
-                    @foreach ($item['components'] as $component)
-                        {{ $component['name'] }} ({{ $component['value'] }}) @if (!$loop->last), @endif
-                    @endforeach
-                @else
-                    {{ $item['components'] }} <!-- Handle as string -->
-                @endif
-            </td>
-            <td>{{ $item['quantity'] }}</td>
-            <td>{{ number_format($item['total_price'], 2) }} EUR</td>
-        </tr>
-    @endforeach
+                @foreach($basket as $item)
+                    <tr>
+                        <td>{{ $item['product_name'] }}</td>
+                        <td>
+                            @if(is_array($item['components']))
+                                @foreach ($item['components'] as $component)
+                                    {{ $component['name'] }} ({{ $component['value'] }}) @if (!$loop->last), @endif
+                                @endforeach
+                            @else
+                                {{ $item['components'] }}
+                            @endif
+                        </td>
+                        <td>{{ $item['quantity'] }}</td>
+                        <td>{{ number_format($item['total_price'], 2) }} EUR</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
 
         <!-- Trigger Button -->
-        <button id="openOrderModal" class="btn btn-primary">Place Order</button>
+        <button id="openOrderModal" class="custom-btn primary-btn">Place Order</button>
 
         <!-- Modal Structure -->
-        <div id="orderModal" class="order-modal">
-            <div class="order-modal-content">
-                <span id="closeOrderModal" class="order-modal-close">&times;</span>
-                <h3>Customer Details</h3>
-                <form action="{{ route('order.submit') }}" method="POST">
+        <div id="orderModal" class="custom-modal">
+            <div class="custom-modal-content">
+                <span id="closeOrderModal" class="custom-modal-close">&times;</span>
+                <h3 class="modal-header">Your Details</h3>
+                <form action="{{ route('order.submit') }}" method="POST" class="custom-form">
                     @csrf
-                    <div>
+                    <div class="form-group">
                         <label for="OrderCustName">Name:</label>
                         <input type="text" name="OrderCustName" required>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="OrderOrgName">Organization:</label>
                         <input type="text" name="OrderOrgName">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="OrderEmail">Email:</label>
                         <input type="email" name="OrderEmail" required>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="OrderPhone">Phone:</label>
                         <input type="text" name="OrderPhone">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="OrderAddress">Address:</label>
                         <input type="text" name="OrderAddress" required>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="OrderComment">Comment:</label>
-                        <textarea name="OrderComment"></textarea>
+                        <textarea name="OrderComment" rows="4"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-success">Submit Order</button>
+                    <div class="form-actions">
+                        <button type="submit" class="custom-btn success-btn">Submit Order</button>
+                        <button type="button" id="closeOrderModalButton" class="custom-btn danger-btn">Cancel</button>
+                    </div>
                 </form>
             </div>
         </div>
     @else
-        <p>Your basket is empty.</p>
+        <!-- Empty Basket Message -->
+        <p class="empty-basket-message">Your basket is empty.</p>
     @endif
 </div>
 @endsection

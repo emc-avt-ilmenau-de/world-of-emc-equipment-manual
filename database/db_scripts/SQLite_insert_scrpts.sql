@@ -899,6 +899,130 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
      ('10','Lamp 100 Variant',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
+-- SQLite
+-- Insert sample data into the Component table
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('1','{"en":{ 4K MiniCam Lens
+       
+    },
+    
+    "de": {
+        4K-MiniCam Objektive
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('2','{"en":{ Fiber Optics
+       
+    },
+    
+    "de": {
+        Glasfaserkabel
+
+
+    }
+}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3','{"en":{ Power Supply
+       
+    },
+    
+    "de": {
+       Stromversorgung
+
+
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4','{"en":{ Power Plug
+       
+    },
+    
+    "de": {
+       Netzanschlussstecker
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5','{"en":{ Geographic area for power
+       
+    },
+    
+    "de": {
+      Geografische Region für die Stromversorgung
+
+
+
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('6','{"en":{Software      
+    },
+    
+    "de": {
+       Software
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+      ('7','{"en":{ ThermoCam Lens
+       
+    },
+    
+    "de": {
+       ThermoCam Objektive
+
+
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+      ('8','{"en":{Color Temperature
+       
+    },
+    
+    "de": {
+       Bitte wählen Sie die Komponenten aus:
+
+
+
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('9','{"en":{ Reflector
+       
+    },
+    
+    "de": {
+       Reflektor
+
+
+
+
+    }
+}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10','{"en":{  EMVLED 100 Variants
+       
+    },
+    
+    "de": {
+       EMVLED 100 Varianten
+
+
+
+
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+     UPDATE Component
+SET ComponentName = '{
+    "en": {
+        "ComponentName": "Reflector"
+    },
+    "de": {
+        "ComponentName": "Reflektor"
+    }
+}'
+
+WHERE ComponentID = 9;
+
+
+
 
 -- SQLite
 -- Insert sample data into the ProductComponent table
@@ -957,6 +1081,22 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('27', '9','80°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('28', '10','Variant 2',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('29', '10','Variant 3',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+     
+     UPDATE ComponentValue
+SET ComponentValueName = '{
+    "en": {
+        "ComponentValueName": "Variant 3"
+    },
+    "de": {
+        "ComponentValueName": "Variante 3"
+    }
+}'
+
+WHERE ComponentValueID = 29;
+
 
 
 
@@ -1147,3 +1287,11 @@ PRAGMA foreign_key_list("OrderItem");
 PRAGMA foreign_key_check;
 PRAGMA table_info("Component");
 PRAGMA foreign_key_list("ComponentValue");
+
+UPDATE ComponentValue 
+SET ComponentValueName = JSON_UNQUOTE(ComponentValueName)
+WHERE JSON_VALID(ComponentValueName) = 0;
+
+UPDATE ComponentValue 
+SET ComponentValueName = REPLACE(REPLACE(ComponentValueName, '\\n', ''), '\\', '');
+

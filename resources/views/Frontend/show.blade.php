@@ -4,6 +4,7 @@
 
 @section('main-container')
 
+
 <div class="product-show">
     <div class="productname-display">
         <h1>{{ $product->ProductName }}</h1>
@@ -52,34 +53,36 @@
         <div class="product-details">
     <form id="addToBasketForm" action="{{ route('product.submit', ['id' => $product->ProductID]) }}" method="POST">
         @csrf
-        <h2>Most of the components are included in the base price, except some.</h2>
-        <h4>Please choose Components:</h4>
+        <h2>{{ __('messages.components-tag1') }}</h2>
+        <h4>{{ __('messages.components-tag2') }}</h4>
 
         <!-- Loop through Components -->
         @foreach($product->components as $component)
             <div class="component-section">
                 <h3>{{ $component->ComponentName }}</h3>
                 <div class="component-options">
-                    @if($component->ComponentName === 'Software')
-                        <!-- Special Handling for Software Component -->
+                    
+                    <!-- Handling for Software Component -->
+                    @if($component->ComponentName === __('Software'))
                         @foreach($component->values as $value)
-                        <div>
-            <input 
-                type="checkbox" 
-                id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
-                name="components[{{ $component->ComponentID }}][]" 
-                value="{{ $value->ComponentValueID }}" 
-                data-name="{{ $value->ComponentValueName }}"
-                data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                {{ strtolower($value->ComponentValueName) === 'Basic' ? 'checked' : '' }}
-            >
-            <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
-                {{ $value->ComponentValueName }}
-                @if($value->ComponentValuePrice)
-                    (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
-                @endif
-            </label>
-        </div>
+
+                            <div>
+                                <input 
+                                    type="checkbox" 
+                                    id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
+                                    name="components[{{ $component->ComponentID }}][]" 
+                                    value="{{ $value->ComponentValueID }}" 
+                                    data-name="{{ $value->ComponentValueName }}"
+                                    data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
+                                    {{ strtolower($value->ComponentValueName) === 'basic' ? 'checked' : '' }}
+                                >
+                                <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
+                                    {{ $value->ComponentValueName }}
+                                    @if($value->ComponentValuePrice)
+                                        (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                                    @endif
+                                </label>
+                            </div>
                         @endforeach
                     @else
                         <!-- Default Handling for Other Components -->
@@ -87,14 +90,14 @@
                             <div>
                                 <input 
                                     type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
-                                    id="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}" 
+                                    id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
                                     name="components[{{ $component->ComponentID }}]{{ $component->isMultiple ? '[]' : '' }}" 
                                     value="{{ $value->ComponentValueID }}" 
                                     data-name="{{ $value->ComponentValueName }}"
                                     data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
                                     onclick="updatePrice()"
                                 >
-                                <label for="{{ $component->ComponentName }}_{{ $value->ComponentValueID }}">
+                                <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
                                     {{ $value->ComponentValueName }}
                                     @if($value->ComponentValuePrice)
                                         (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
@@ -108,18 +111,18 @@
                             <div>
                                 <input 
                                     type="radio" 
-                                    id="{{ $component->ComponentName }}_Other" 
+                                    id="{{ Str::slug($component->ComponentName, '_') }}_Other" 
                                     name="components[{{ $component->ComponentID }}]" 
                                     value="Other" 
                                     onclick="showCustomField('{{ $component->ComponentID }}')"
                                 >
-                                <label for="{{ $component->ComponentName }}_Other">Other</label>
+                                <label for="{{ Str::slug($component->ComponentName, '_') }}_Other">{{ __('messages.other') }}</label>
                                 <br><br>
                                 <input 
                                     type="text" 
                                     id="customField_{{ $component->ComponentID }}" 
                                     name="custom_components[{{ $component->ComponentID }}]" 
-                                    placeholder="Please specify" 
+                                    placeholder="{{ __('messages.specify_other') }}" 
                                     style="display:none;" 
                                     oninput="validateCustomInput('{{ $component->ComponentName }}')"
                                 >
@@ -127,7 +130,7 @@
                         @endif
                     @endif
 
-                    <!-- Learn More button that triggers the popup -->
+                    <!-- Learn More Button -->
                     @if (!empty($component->localizedMultimedia))
                         <button 
                             id="openPopupBtn{{ $component->ComponentID }}" 
@@ -136,27 +139,27 @@
                             comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
                             data-lang="{{ app()->getLocale() }}"
                         >
-                            Learn More
+                            {{ __('messages.learn_more') }}
                         </button>
                     @endif
 
                     <!-- Power Plug as Custom Input -->
-                    @if($component->ComponentName === 'Power Plug')
+                    @if ($component->ComponentName === __('Power Plug') || $component->ComponentName === __('Netzanschlussstecker'))
                         <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="_blank">
-                            Please visit this link to learn more about power plug types
+                            {{ __('messages.power_plug_info_link') }}
                         </a>
                         <br><br>
-                        <label for="powerPlugInput">Please specify your Power Plug choice:</label>
+                        <label for="powerPlugInput">{{ __('messages.specify_power_plug') }}</label>
                         <input 
                             type="text" 
                             id="powerPlugInput" 
                             name="powerPlugInput[{{ $component->ComponentID }}]" 
-                            placeholder="Enter Power Plug Type" 
-                            data-name="Power Plug" 
+                            placeholder="{{ __('messages.enter_power_plug') }}" 
+                            data-name="{{ __('messages.power_plug') }}" 
                             required
                         >
-                        <small style="color: gray;">Example: Type C, Type G</small>
-                        <p id="powerPlugError" style="color: red; display: none;">Please specify a valid Power Plug type.</p>
+                        <small style="color: gray;">{{ __('messages.example_power_plug') }}</small>
+                        <p id="powerPlugError" style="color: red; display: none;">{{ __('messages.invalid_power_plug') }}</p>
                     @endif
                 </div>
             </div>
@@ -164,7 +167,7 @@
 
         <!-- Display Price -->
         <p>{{ __('messages.price') }}: <span id="basePrice">{{ $product->ProductPrice }} {{ $product->ProductCurrency }}</span></p>
-        <button type="button" onclick="openModal()" class="basket-button">Add To Basket</button>
+        <button type="button" onclick="openModal()" class="basket-button">{{ __('messages.add_to_basket') }}</button>
     </form>
 
     <!-- Popup for Multimedia -->
@@ -180,7 +183,7 @@
                         <!-- Multimedia slides will be dynamically injected -->
                     </div>
                 @else
-                    <p>No multimedia available for this product.</p>
+                    <p>{{ __('messages.no_multimedia_available') }}</p>
                 @endif
             </div>
 
@@ -193,24 +196,25 @@
     <!-- Modal for Confirmation -->
     <div id="productModal" class="modal" style="display:none;">
         <div class="modal-content">
-            <h3>Confirm Your Selection</h3>
-            <p><strong>Product:</strong> <span id="modalProductName">{{ $product->ProductName }}</span></p>
-            <p><strong>Base Price:</strong> {{ $product->ProductPrice }} {{ $product->ProductCurrency }}</p>
+            <h3>{{ __('messages.confirm_selection') }}</h3>
+            <p><strong>{{ __('messages.product') }}:</strong> <span id="modalProductName">{{ $product->ProductName }}</span></p>
+            <p><strong>{{ __('messages.base_price') }}:</strong> {{ $product->ProductPrice }} {{ $product->ProductCurrency }}</p>
 
             <!-- Components Summary -->
             <div id="modalComponents"></div>
 
             <!-- Total Price -->
-            <p><strong>Total Price:</strong> <span id="modalTotalPrice"></span></p>
+            <p><strong>{{ __('messages.total_price') }}:</strong> <span id="modalTotalPrice"></span></p>
 
             <!-- Buttons -->
-            <button type="button" onclick="closeModal()">Close</button>
-            <button type="submit" form="addToBasketForm">Confirm</button>
+            <button type="button" onclick="closeModal()">{{ __('messages.close') }}</button>
+            <button type="submit" form="addToBasketForm">{{ __('messages.confirm') }}</button>
         </div>
     </div>
 
-    <a href="{{ route('home') }}">Back to Products</a>
+    <a href="{{ route('home') }}">{{ __('messages.back_to_products') }}</a>
 </div>
+
 
         
     </main>

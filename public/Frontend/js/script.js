@@ -525,23 +525,25 @@ document.querySelectorAll('.remove-product').forEach(button => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('orderModal');
-    const openButton = document.getElementById('openOrderModal');
-    const closeButton = document.getElementById('closeOrderModal');
+    const openBtn = document.getElementById('openOrderModal');
+    const closeBtn = document.getElementById('closeOrderModal');
+    const closeModalButton = document.getElementById('closeOrderModalButton');
 
-    // Open the modal
-    openButton.addEventListener('click', function () {
+    openBtn.addEventListener('click', () => {
         modal.style.display = 'block';
     });
 
-    // Close the modal
-    closeButton.addEventListener('click', function () {
+    closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
     });
 
-    // Close the modal when clicking outside the modal content
-    window.addEventListener('click', function (event) {
+    closeModalButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
         }

@@ -12,6 +12,8 @@ return [
       'other' => 'Weitere',
       'camera' => 'Kameras',
       'price' => 'Preis',
+      'components-tag1' => 'Fast alle Komponenten sind im Grundpreis enthalten, außer wenigen speziellen.',
+       'components-tag2' => 'Bitte wählen Sie die Komponenten aus:'
       
       
      
