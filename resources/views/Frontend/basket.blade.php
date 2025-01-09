@@ -17,13 +17,14 @@
                     <tr>
                         <td>{{ $item['product_name'] }}</td>
                         <td>
-                            @if(is_array($item['components']))
+                            <ul>
                                 @foreach ($item['components'] as $component)
-                                    {{ $component['name'] }} ({{ $component['value'] }}) @if (!$loop->last), @endif
+                                    <li>
+                                        {{ $component['name'] }}: 
+                                        {{ $component['value'] }}
+                                    </li>
                                 @endforeach
-                            @else
-                                {{ $item['components'] }}
-                            @endif
+                            </ul>
                         </td>
                         <td>{{ $item['quantity'] }}</td>
                         <td>{{ number_format($item['total_price'], 2) }} EUR</td>

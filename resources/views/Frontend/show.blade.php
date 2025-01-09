@@ -64,7 +64,7 @@
                     
                     <!-- Handling for Software Component -->
                     @if($component->ComponentName === __('Software'))
-                        @foreach($component->values as $value)
+                        @foreach($component->componentValues as $value)
 
                             <div>
                                 <input 
@@ -74,7 +74,7 @@
                                     value="{{ $value->ComponentValueID }}" 
                                     data-name="{{ $value->ComponentValueName }}"
                                     data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                                    {{ strtolower($value->ComponentValueName) === 'basic' ? 'checked' : '' }}
+                                    {{ strtolower($value->ComponentValueID) === '16' ? 'checked' : '' }}
                                 >
                                 <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
                                     {{ $value->ComponentValueName }}
@@ -86,7 +86,7 @@
                         @endforeach
                     @else
                         <!-- Default Handling for Other Components -->
-                        @foreach($component->values as $value)
+                        @foreach($component->componentValues as $value)
                             <div>
                                 <input 
                                     type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 

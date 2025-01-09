@@ -13,6 +13,7 @@ return [
      'camera' => 'Cameras',
      'price' => 'Price',
      'components-tag1' => 'Most of the components are included in the base price, except some.',
+     'Power-Plug'  => 'Power Plug',
       'components-tag2' => 'Please choose Components:'
    
 ];

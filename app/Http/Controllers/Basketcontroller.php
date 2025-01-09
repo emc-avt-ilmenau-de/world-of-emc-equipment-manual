@@ -12,35 +12,80 @@ class Basketcontroller extends Controller
 {
     // Display basket
     public function show()
-    {
-        $basket = session()->get('basket', []);
-    
-        $groupedBasket = collect($basket)->map(function ($item) {
-            $components = collect($item['components'])->map(function ($component) {
-                $value = $component['value'];
-    
-                // Handle array or single value
-                if (is_array($value)) {
-                    $value = implode(', ', $value); // Convert array to comma-separated string
+{
+    $basket = session()->get('basket', []);
+    $locale = app()->getLocale();
+
+    $groupedBasket = collect($basket)->map(function ($item) use ($locale) {
+        return [
+            'product_id' => $item['product_id'],
+            'product_name' => $item['product_name'],
+            'base_price' => $item['base_price'],
+            'total_price' => $item['total_price'],
+            'quantity' => $item['quantity'],
+            'components' => collect($item['components'])->map(function ($component) use ($locale) {
+                $componentName = 'Custom Component';
+                $componentValueName = $component['value'] ?? 'No Value Provided';
+
+                // ✅ Special handling for "Power Plug" component
+                if ($component['component_id'] == 4) { // Assuming ComponentID for Power Plug is 4
+                    $powerPlugComponent = Component::find(4);
+                    if ($powerPlugComponent) {
+                        $decodedName = json_decode($powerPlugComponent->ComponentName, true);
+                        $componentName = $decodedName[$locale]['ComponentName'] 
+                                        ?? $decodedName['en']['ComponentName'] 
+                                        ?? 'Power Plug';
+                    }
+                    if (is_array($componentValueName)) {
+                        $componentValueName = implode(', ', array_map('strval', $componentValueName));
+                    }
+                } 
+                // ✅ Handle other components with names stored as JSON
+                else if (isset($component['name'])) {
+                    $decodedName = json_decode($component['name'], true);
+                    if (is_array($decodedName)) {
+                        $componentName = $decodedName[$locale]['ComponentName'] 
+                                        ?? $decodedName['en']['ComponentName'] 
+                                        ?? $component['name'];
+                    } else {
+                        $componentName = $component['name'];
+                    }
                 }
-    
-                return $component['name'] . ' (' . $value . ')';
-            })->implode(', '); // Combine all components into a single string
-    
-            return [
-                'product_id' => $item['product_id'],
-                'product_name' => $item['product_name'],
-                'base_price' => $item['base_price'],
-                'total_price' => $item['total_price'],
-                'quantity' => $item['quantity'],
-                'components' => $components, // Aggregated components as a string
-            ];
-        });
-    
-        Log::info('Grouped Basket Contents:', $groupedBasket->toArray());
-    
-        return view('Frontend.basket', ['basket' => $groupedBasket]);
-    }
+
+                // ✅ Handle standard components with value_id
+                if (!empty($component['value_id']) && $component['component_id'] != 4) {
+                    $componentModel = Component::find($component['component_id']);
+                    $componentValueModel = ComponentValue::find($component['value_id']);
+
+                    if ($componentModel) {
+                        $decodedComponentName = json_decode($componentModel->ComponentName, true);
+                        $componentName = $decodedComponentName[$locale]['ComponentName'] 
+                                        ?? $decodedComponentName['en']['ComponentName'] 
+                                        ?? 'Unnamed Component';
+                    }
+
+                    if ($componentValueModel) {
+                        $decodedValueName = json_decode($componentValueModel->ComponentValueName, true);
+                        $componentValueName = $decodedValueName[$locale]['ComponentValueName'] 
+                                            ?? $decodedValueName['en']['ComponentValueName'] 
+                                            ?? 'Unnamed Value';
+                    }
+                }
+
+                return [
+                    'name' => $componentName,
+                    'value' => $componentValueName
+                ];
+            })->toArray()
+        ];
+    })->toArray();
+
+    return view('Frontend.basket', ['basket' => $groupedBasket, 'locale' => $locale]);
+}
+
+
+
+
     // Update product quantity
     public function update(Request $request, $productId)
 {

@@ -13,6 +13,7 @@ return [
       'camera' => 'Kameras',
       'price' => 'Preis',
       'components-tag1' => 'Fast alle Komponenten sind im Grundpreis enthalten, außer wenigen speziellen.',
+      'Power-Plug'  => 'Netzanschlussstecker',
        'components-tag2' => 'Bitte wählen Sie die Komponenten aus:'
       
       

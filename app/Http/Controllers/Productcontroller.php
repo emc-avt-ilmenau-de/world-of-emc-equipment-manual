@@ -53,21 +53,30 @@ class ProductController extends Controller
                 ?? 'Unnamed Component';
     
             // ✅ Decode and localize each ComponentValueName (More Robust Handling)
-            foreach ($component->componentValues as $value) {
+            foreach ($component->componentValues as $values) {
                 // Decode the JSON data
-                $componentValueDecoded = $this->decodeJson($value->ComponentValueName);
+                $componentValueDecoded = $this->decodeJson($values->ComponentValueName);
             
-                // Check if the expected keys exist before accessing them
+                // Log the raw decoded data for inspection
+                Log::info('Decoded ComponentValueName:', ['componentValueDecoded' => $componentValueDecoded]);
+            
+                // Explicitly setting the value as a string
+                $values->ComponentValueName = 'Unnamed Value';  
+            
+                // Assign only the plain string value, not the entire array
                 if (isset($componentValueDecoded[$locale]['ComponentValueName'])) {
-                    $value->ComponentValueName = $componentValueDecoded[$locale]['ComponentValueName'];
+                    $values->ComponentValueName = (string) $componentValueDecoded[$locale]['ComponentValueName'];
                 } elseif (isset($componentValueDecoded['en']['ComponentValueName'])) {
-                    // Fallback to English if the locale is missing
-                    $value->ComponentValueName = $componentValueDecoded['en']['ComponentValueName'];
-                } else {
-                    // Final fallback to prevent empty values
-                    $value->ComponentValueName = 'Unnamed Value';
+                    $values->ComponentValueName = (string) $componentValueDecoded['en']['ComponentValueName'];
                 }
+            
+                // Fix the logging issue by directly logging a string
+                Log::info('Final ComponentValueName Set: ' . $values->ComponentValueName);
             }
+            
+            
+            
+            
             
     
             // Decode ComponentMultimediaPath safely
@@ -130,11 +139,11 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $totalPrice = $product->ProductPrice;
         $selectedComponents = [];
-
+    
         foreach ($request->input('components', []) as $componentId => $values) {
             $component = $product->components->find($componentId);
             if (!$component) continue;
-
+    
             if (is_array($values)) {
                 foreach ($values as $value) {
                     $this->addComponentValue($component, $value, $selectedComponents, $request, $totalPrice);
@@ -143,23 +152,46 @@ class ProductController extends Controller
                 $this->addComponentValue($component, $values, $selectedComponents, $request, $totalPrice);
             }
         }
+    // Special handling for custom "Power Plug" input
+$powerPlugInput = $request->input('powerPlugInput');
 
-        // Special handling for custom "Power Plug" input
-        $powerPlugInput = $request->input('powerPlugInput');
-        if ($powerPlugInput) {
-            $selectedComponents[] = [
-                'name' => 'Power Plug',
-                'value' => $powerPlugInput,
-                'price' => 0
-            ];
-        }
+// ✅ Convert array to a string if necessary
+if (is_array($powerPlugInput)) {
+    $powerPlugInput = implode(', ', array_map('strval', $powerPlugInput));
+}
 
+if ($powerPlugInput) {
+    // ✅ Dynamically resolve the localized name for the "Power Plug" component
+    $powerPlugComponent = $product->components->where('ComponentID', '4')->first();
+
+    if ($powerPlugComponent) {
+        $decodedName = $this->decodeJson($powerPlugComponent->ComponentName);
+        $locale = app()->getLocale();
+        $componentName = $decodedName[$locale]['ComponentName'] 
+                        ?? $decodedName['en']['ComponentName'] 
+                        ?? 'Power Plug';
+    } else {
+        $componentName = 'Power Plug';  // Fallback if the component is missing
+    }
+
+    // ✅ Store the dynamically resolved component name
+    $selectedComponents[] = [
+        'component_id' => $powerPlugComponent ? $powerPlugComponent->ComponentID : null,  // Handle missing component ID
+        'name' => $componentName, 
+        'value' => (string) $powerPlugInput,
+        'price' => 0
+    ];
+}
+
+
+
+    
         // Generate a unique identifier for the product
         $uniqueIdentifier = md5($id . serialize($selectedComponents));
-
+    
         $basket = session()->get('basket', []);
         $found = false;
-
+    
         foreach ($basket as &$item) {
             if ($item['unique_identifier'] === $uniqueIdentifier) {
                 $item['quantity'] += 1;
@@ -168,7 +200,7 @@ class ProductController extends Controller
                 break;
             }
         }
-
+    
         if (!$found) {
             $basket[] = [
                 'product_id' => $id,
@@ -180,34 +212,48 @@ class ProductController extends Controller
                 'unique_identifier' => $uniqueIdentifier
             ];
         }
-
+    
         session()->put('basket', $basket);
-
+        Log::info('Final Stored Basket (Debugging):', $basket);
+    
         return redirect()->route('basket.show')->with('success', 'Product added to basket successfully!');
     }
-
-    // Helper method to process component values
+    
+    // ✅ FIX: Ensure component values are stored as strings, not arrays
     private function addComponentValue($component, $value, &$selectedComponents, $request, &$totalPrice)
     {
+        $locale = app()->getLocale();
+    
+        // ✅ Handle Custom Inputs Separately
         if ($value === 'Other') {
             $customValue = $request->input("custom_components.{$component->ComponentID}");
             if ($customValue) {
+                $decodedComponentName = $this->decodeJson($component->ComponentName);
+                $componentName = $decodedComponentName[$locale]['ComponentName'] 
+                                ?? $decodedComponentName['en']['ComponentName'] 
+                                ?? 'Unnamed Component';
+    
                 $selectedComponents[] = [
-                    'name' => $component->ComponentName,
-                    'value' => $customValue,
+                    'component_id' =>$component->ComponentID,  // Custom inputs don't have IDs
+                    'name' =>$component->ComponentName,
+                    'value' => (string) $customValue,  
                     'price' => 0
                 ];
             }
         } else {
+            // ✅ Standard Components - Store IDs and Resolve Locale Later
             $componentValue = $component->componentValues->find($value);
             if ($componentValue) {
                 $selectedComponents[] = [
-                    'name' => $component->ComponentName,
-                    'value' => $componentValue->ComponentValueName,
+                    'component_id' => $component->ComponentID,  
+                    'value_id' => $componentValue->ComponentValueID,  
                     'price' => $componentValue->ComponentValuePrice ?? 0
                 ];
                 $totalPrice += $componentValue->ComponentValuePrice ?? 0;
             }
         }
     }
+    
+    
+
 }
