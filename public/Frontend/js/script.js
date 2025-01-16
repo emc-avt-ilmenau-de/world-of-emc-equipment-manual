@@ -255,37 +255,68 @@ function checkGeoOther(value) {
     }
 }
 
-// Update price and component summary
+// Update price and component summary with enhanced logic and error handling
 function updatePrice() {
     let totalPrice = parseFloat(document.getElementById("basePrice").textContent) || 0;
     let selectedComponents = [];
+    let processedComponents = new Set(); // Prevent duplicate components
 
-    // Track processed components
-    let processedComponents = new Set();
-
-    // Handle all checked inputs (radio & checkbox)
+    // ✅ Handle all checked inputs (radio & checkbox)
     document.querySelectorAll("input[type='radio']:checked, input[type='checkbox']:checked").forEach((input) => {
-        let price = parseFloat(input.getAttribute("data-price")) || 0;
-        let componentName = input.closest(".component-section").querySelector("h3").textContent;
-        let componentValue = input.getAttribute("data-name") || input.value;
+        const componentSection = input.closest(".component-section");
 
-        // Special handling for "Other" input
+        // ✅ Check if component section exists
+        if (!componentSection) {
+            console.warn("Missing component-section for input:", input);
+            return;
+        }
+
+        // ✅ Fix: Fetch the component name correctly
+        let componentNameElement = componentSection.querySelector("h3");
+        let componentName = componentNameElement ? componentNameElement.textContent : "Undefined Component";
+
+        // ✅ Fix: Fetch the component value correctly
+        let componentValue =
+            input.getAttribute("data-name") ||
+            componentSection.querySelector(`label[for='${input.id}']`)?.textContent.trim() ||
+            input.value;
+
+        let price = parseFloat(input.getAttribute("data-price")) || 0;
+
+        // ✅ Special Handling for "Other" Option
         if (input.value === "Other") {
             const customInputId = `customField_${input.name.match(/\d+/)[0]}`;
-            const customValue = document.getElementById(customInputId)?.value.trim();
+            const customValueElement = document.getElementById(customInputId);
+            const customValue = customValueElement ? customValueElement.value.trim() : null;
             if (customValue) {
                 componentValue = customValue;
             }
         }
 
-        // Special handling for Software component
+        // ✅ Special Handling for Object Area (4K MiniCam Lens)
+        if (componentName.includes("4K MiniCam Lens")) {
+            const objectAreaInput = document.getElementById(`objectAreaInput_${input.name.match(/\d+/)[0]}`);
+            if (objectAreaInput && objectAreaInput.style.display !== "none") {
+                const objectAreaValue = objectAreaInput.querySelector("input").value.trim();
+                if (objectAreaValue) {
+                    componentValue += `, Object Area: ${objectAreaValue}`;
+                }
+            }
+        }
+
+        // ✅ Special Handling for Software Component
         if (componentName === "Software") {
             if (!processedComponents.has(componentName)) {
                 processedComponents.add(componentName);
 
                 // Gather all selected software checkboxes
                 document.querySelectorAll(`input[name^="components"]:checked`).forEach((softwareInput) => {
-                    if (softwareInput.closest(".component-section").querySelector("h3").textContent === "Software") {
+                    if (
+                        softwareInput
+                            .closest(".component-section")
+                            ?.querySelector("h3")
+                            .textContent === "Software"
+                    ) {
                         const softwareValue = softwareInput.getAttribute("data-name");
                         const softwarePrice = parseFloat(softwareInput.getAttribute("data-price")) || 0;
 
@@ -301,12 +332,48 @@ function updatePrice() {
             return; // Skip the default processing for Software
         }
 
-        // Avoid duplicate components
-        if (processedComponents.has(componentName)) return;
+        // ✅ Special Handling for Component Value ID 29 (Show Components 12 and 13)
+        if (input.value == "29") {
+            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+            if (additionalComponentsSection) {
+                additionalComponentsSection.style.display = "block";
 
-        processedComponents.add(componentName);
+                // ✅ Automatically include components 12 and 13 if ID 29 is selected
+                document.querySelectorAll("#additionalComponentsSection input:checked").forEach((additionalInput) => {
+                    const additionalComponentSection = additionalInput.closest(".component-section");
+                    const additionalComponentName =
+                        additionalComponentSection?.querySelector("h3")?.textContent || "Undefined Component";
+                    const additionalComponentValue =
+                        additionalInput.getAttribute("data-name") || additionalInput.value;
+                    const additionalPrice = parseFloat(additionalInput.getAttribute("data-price")) || 0;
+
+                    // ✅ Avoid duplicate entries for additional components
+                    if (!processedComponents.has(`${additionalComponentName}:${additionalComponentValue}`)) {
+                        processedComponents.add(`${additionalComponentName}:${additionalComponentValue}`);
+
+                        selectedComponents.push({
+                            componentName: additionalComponentName,
+                            value: additionalComponentValue,
+                            price: additionalPrice,
+                        });
+
+                        totalPrice += additionalPrice;
+                    }
+                });
+            }
+        } else {
+            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+            if (additionalComponentsSection) {
+                additionalComponentsSection.style.display = "none";
+            }
+        }
+
+        // ✅ Prevent duplicate components being added
+        if (processedComponents.has(`${componentName}:${componentValue}`)) return;
+
+        // ✅ Add component and update price
+        processedComponents.add(`${componentName}:${componentValue}`);
         totalPrice += price;
-
         selectedComponents.push({
             componentName: componentName,
             value: componentValue,
@@ -314,13 +381,15 @@ function updatePrice() {
         });
     });
 
-    // Handle custom text inputs
+    // ✅ Handle custom text inputs for components
     document.querySelectorAll("input[type='text']").forEach((input) => {
         if (input.value.trim()) {
-            const componentName = input.closest(".component-section").querySelector("h3").textContent;
+            const componentSection = input.closest(".component-section");
+            const componentName = componentSection?.querySelector("h3")?.textContent || "Undefined Component";
 
-            if (!processedComponents.has(componentName)) {
-                processedComponents.add(componentName);
+            // ✅ Prevent duplicate custom inputs
+            if (!processedComponents.has(`${componentName}:${input.value.trim()}`)) {
+                processedComponents.add(`${componentName}:${input.value.trim()}`);
 
                 selectedComponents.push({
                     componentName: componentName,
@@ -331,18 +400,16 @@ function updatePrice() {
         }
     });
 
-    // Update the modal with the selected components and total price
+    // ✅ Update the modal with the selected components and total price
     document.getElementById("modalTotalPrice").textContent = totalPrice.toFixed(2);
     document.getElementById("modalComponents").innerHTML = selectedComponents
-        .map(
-            (comp) =>
-                `<p><strong>${comp.componentName}:</strong> ${comp.value} (+${comp.price})</p>`
-        )
+        .map((comp) => `<p><strong>${comp.componentName}:</strong> ${comp.value} (+${comp.price.toFixed(2)})</p>`)
         .join("");
 }
 
 
-// Show the custom field for "Other" option
+
+// Show the custom field when "Other" is selected
 function showCustomField(componentID) {
     const customField = document.getElementById(`customField_${componentID}`);
     if (customField) {
@@ -351,14 +418,32 @@ function showCustomField(componentID) {
     }
 }
 
-// Hide the custom field for "Other" option
+// Hide the custom field when any other option is selected
 function hideCustomField(componentID) {
     const customField = document.getElementById(`customField_${componentID}`);
     if (customField) {
         customField.style.display = "none";
-        customField.value = ""; // Reset custom value
+        customField.value = ""; // Clear input value when hiding
     }
 }
+
+// ✅ Ensure all radio buttons toggle visibility correctly
+document.querySelectorAll("input[type='radio']").forEach(input => {
+    input.addEventListener('change', function () {
+        const componentID = this.name.match(/\d+/)[0]; 
+        const otherOption = document.getElementById(`${componentID}_Other`);
+
+        // ✅ If "Other" is selected, show it; otherwise hide it
+        if (otherOption && otherOption.checked) {
+            showCustomField(componentID);
+        } else {
+            hideCustomField(componentID);
+        }
+    });
+});
+
+
+
 
 // Open the modal and update price and summary
 function openModal() {
@@ -414,12 +499,26 @@ document.addEventListener("DOMContentLoaded", function () {
         let isValid = true;
         let errorMessages = [];
 
+        // Check if Component Value ID 29 is selected
+        const isComponentValue29Selected = Array.from(
+            document.querySelectorAll('input[type="radio"]:checked')
+        ).some((input) => input.value === "29");
+
+
         // Loop through each component section
         document.querySelectorAll(".component-section").forEach((section) => {
             const radioButtons = section.querySelectorAll('input[type="radio"]');
             const checkboxes = section.querySelectorAll('input[type="checkbox"]');
             const textInput = section.querySelector('input[type="text"]');
             const otherRadio = section.querySelector('input[type="radio"][value="Other"]');
+
+            // Extract the component ID
+    const componentId = section.querySelector('input')?.name.match(/\d+/)?.[0];
+
+    // ✅ Skip validation for Components 12 and 13 if Component Value ID 29 is not selected
+    if (!isComponentValue29Selected && (componentId === "12" || componentId === "13")) {
+        return; // Skip validation for these components
+    }
 
             let isComponentValid = false;
 
@@ -549,3 +648,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+function checkObjectAreaInput(selectedValue, componentID) {
+    const objectAreaInput = document.getElementById(`objectAreaInput_${componentID}`);
+    const numericValue = parseFloat(selectedValue);
+    if (componentID == 1 && numericValue >= 12) {
+        objectAreaInput.style.display = 'block';
+    } else if (componentID == 1) {
+        objectAreaInput.style.display = 'none';
+    }
+}
+
+
+    /**
+     * JavaScript to show/hide components 12 and 13 based on selection of Variant 3 (ComponentValueID 29)
+     */
+    function handleComponentSelection(inputElement, componentValueID) {
+        var additionalComponentsSection = document.getElementById('additionalComponentsSection');
+        
+        // ✅ Only show if Component Value ID 29 is selected
+        if (componentValueID == 29 && inputElement.checked) {
+            additionalComponentsSection.style.display = 'block';
+        } else {
+            additionalComponentsSection.style.display = 'none';
+        }
+    }
+

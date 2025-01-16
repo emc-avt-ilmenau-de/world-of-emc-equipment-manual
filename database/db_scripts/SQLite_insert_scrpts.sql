@@ -898,6 +898,16 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
      ('9','Reflector', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('10','Lamp 100 Variant',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+      INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('11','{
+    "en": {
+        "ComponentName": "Object Area"
+    },
+    "de": {
+        "ComponentName": "Objekt Bereich"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 -- SQLite
 -- Insert sample data into the Component table
@@ -1048,7 +1058,8 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
      ('3', '10',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('3', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-
+INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('1', '11', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- SQLite
 -- Insert sample data into the ComponentValue table
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
@@ -1099,7 +1110,76 @@ WHERE ComponentValueID = 29;
 
 
 
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('12','{
+    "en": {
+        "ComponentName": "Length of Cable Between Driver and Lamp"
+    },
+    "de": {
+        "ComponentName": "Länge der Kabel zwischen Treiber und Lampe"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 
+ ('13','{
+    "en": {
+        "ComponentName": "Length of Cable Between Driver and Power Plug"
+    },
+    "de": {
+        "ComponentName": "Kabellänge zwischen Treiber und Netzstecker"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('30', '12','{
+    "en": {
+        "ComponentValueName": "2m"
+    },
+    "de": {
+        "ComponentValueName": "2m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('31', '12','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('32', '12','{
+    "en": {
+        "ComponentValueName": "5m"
+    },
+    "de": {
+        "ComponentValueName": "5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('33', '13','{
+    "en": {
+        "ComponentValueName": "1.5m"
+    },
+    "de": {
+        "ComponentValueName": "1.5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('34', '13','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('35', '13','{
+    "en": {
+        "ComponentValueName": "4.5m"
+    },
+    "de": {
+        "ComponentValueName": "4.5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- Sample json data insertion
 /*INSERT INTO Product (ProductMedia) VALUES
 ('{
@@ -1202,6 +1282,10 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
      ('2', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('2', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+      INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('3', '12', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('3', '13', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency, created_at, updated_at) VALUES
@@ -1218,6 +1302,13 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 DELETE FROM ComponentValue
 WHERE ComponentValueID = '5';
+
+
+DELETE FROM ProductComponent
+WHERE ComponentID = '13';
+
+
+
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency) VALUES
     ('4', '1','12mm',NULL,'EUR');

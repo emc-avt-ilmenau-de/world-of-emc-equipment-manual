@@ -56,114 +56,200 @@
         <h2>{{ __('messages.components-tag1') }}</h2>
         <h4>{{ __('messages.components-tag2') }}</h4>
 
-        <!-- Loop through Components -->
-        @foreach($product->components as $component)
-            <div class="component-section">
-                <h3>{{ $component->ComponentName }}</h3>
-                <div class="component-options">
-                    
-                    <!-- Handling for Software Component -->
-                    @if($component->ComponentName === __('Software'))
-                        @foreach($component->componentValues as $value)
+      <!-- Loop through Components -->
+@foreach($product->components as $component)
+    <div class="component-section">
+        <h3>{{ $component->ComponentName }}</h3>
+        <div class="component-options">
+            <!-- Handling for Software Component -->
+            @if($component->ComponentName === __('Software'))
+                @foreach($component->componentValues as $value)
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
+                            name="components[{{ $component->ComponentID }}][]" 
+                            value="{{ $value->ComponentValueID }}" 
+                            data-name="{{ $value->ComponentValueName }}"
+                            data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
+                            {{ strtolower($value->ComponentValueID) === '16' ? 'checked' : '' }}
+                        >
+                        <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
+                            {{ $value->ComponentValueName }}
+                            @if($value->ComponentValuePrice)
+                                (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                            @endif
+                        </label>
+                    </div>
+                @endforeach
 
-                            <div>
-                                <input 
-                                    type="checkbox" 
-                                    id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
-                                    name="components[{{ $component->ComponentID }}][]" 
-                                    value="{{ $value->ComponentValueID }}" 
-                                    data-name="{{ $value->ComponentValueName }}"
-                                    data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                                    {{ strtolower($value->ComponentValueID) === '16' ? 'checked' : '' }}
-                                >
-                                <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
-                                    {{ $value->ComponentValueName }}
-                                    @if($value->ComponentValuePrice)
-                                        (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
-                                    @endif
-                                </label>
-                            </div>
-                        @endforeach
-                    @else
-                        <!-- Default Handling for Other Components -->
-                        @foreach($component->componentValues as $value)
-                            <div>
-                                <input 
-                                    type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
-                                    id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
-                                    name="components[{{ $component->ComponentID }}]{{ $component->isMultiple ? '[]' : '' }}" 
-                                    value="{{ $value->ComponentValueID }}" 
-                                    data-name="{{ $value->ComponentValueName }}"
-                                    data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
-                                    onclick="updatePrice()"
-                                >
-                                <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
-                                    {{ $value->ComponentValueName }}
-                                    @if($value->ComponentValuePrice)
-                                        (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
-                                    @endif
-                                </label>
-                            </div>
-                        @endforeach
+            <!-- ✅ Fixed Handling for EMVLED 100 Variants -->
+            @elseif($component->ComponentName === "EMVLED 100 Variants" || $component->ComponentName === "EMVLED 100 Varianten")
+                @foreach($component->componentValues as $value)
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="variant_{{ $value->ComponentValueID }}" 
+                            name="components[{{ $component->ComponentID }}]" 
+                            value="{{ $value->ComponentValueID }}" 
+                            onchange="handleComponentSelection(this, '{{ $value->ComponentValueID }}')"
+                        >
+                        <label for="variant_{{ $value->ComponentValueID }}">
+                            {{ $value->ComponentValueName }}
+                        </label>
+                    </div>
+                @endforeach
 
-                        <!-- Custom "Other" Option -->
-                        @if($component->allowsCustom)
-                            <div>
-                                <input 
-                                    type="radio" 
-                                    id="{{ Str::slug($component->ComponentName, '_') }}_Other" 
-                                    name="components[{{ $component->ComponentID }}]" 
-                                    value="Other" 
-                                    onclick="showCustomField('{{ $component->ComponentID }}')"
-                                >
-                                <label for="{{ Str::slug($component->ComponentName, '_') }}_Other">{{ __('messages.other') }}</label>
-                                <br><br>
+            <!-- Default Handling for Other Components -->
+            @else
+                @foreach($component->componentValues as $value)
+                    <div>
+                        <input 
+                            type="{{ $component->isMultiple ? 'checkbox' : 'radio' }}" 
+                            id="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}" 
+                            name="components[{{ $component->ComponentID }}]{{ $component->isMultiple ? '[]' : '' }}" 
+                            value="{{ $value->ComponentValueID }}" 
+                            data-name="{{ $value->ComponentValueName }}"
+                            data-price="{{ $value->ComponentValuePrice ?? 0 }}" 
+                            onclick="checkObjectAreaInput('{{ $value->ComponentValueName }}', '{{ $component->ComponentID }}')"
+                        >
+                        <label for="{{ Str::slug($component->ComponentName, '_') }}_{{ $value->ComponentValueID }}">
+                            {{ $value->ComponentValueName }}
+                            @if($value->ComponentValuePrice)
+                                (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                            @endif
+                        </label>
+                    </div>
+                @endforeach
+                
+                <!-- Custom "Other" Option for All Components -->
+                @if($component->allowsCustom)
+                    <div>
+                        <input 
+                            type="radio" 
+                            id="{{ Str::slug($component->ComponentName, '_') }}_Other" 
+                            name="components[{{ $component->ComponentID }}]" 
+                            value="Other" 
+                            onclick="showCustomField('{{ $component->ComponentID }}')"
+                        >
+                        <label for="{{ Str::slug($component->ComponentName, '_') }}_Other">Other</label>
+                        <input 
+                            type="text" 
+                            id="customField_{{ $component->ComponentID }}" 
+                            name="custom_components[{{ $component->ComponentID }}]" 
+                            placeholder="Specify other value"
+                            style="display:none;" 
+                            oninput="checkObjectAreaInput(this.value, '{{ $component->ComponentID }}')"
+                        >
+                        
+                        <!-- Object Area Input Field (Only for Component ID 1 and value >= 12mm) -->
+                        @if($component->ComponentID == 1)
+                            <div id="objectAreaInput_{{ $component->ComponentID }}" style="display:none;">
+                                <label for="objectArea_{{ $component->ComponentID }}">{{ __('messages.Object-Area1') }}:</label>
                                 <input 
                                     type="text" 
-                                    id="customField_{{ $component->ComponentID }}" 
-                                    name="custom_components[{{ $component->ComponentID }}]" 
-                                    placeholder="{{ __('messages.specify_other') }}" 
-                                    style="display:none;" 
-                                    oninput="validateCustomInput('{{ $component->ComponentName }}')"
+                                    id="objectArea_{{ $component->ComponentID }}" 
+                                    name="object_area[{{ $component->ComponentID }}]"
                                 >
                             </div>
                         @endif
-                    @endif
+                    </div>
+                @endif
+            @endif
 
-                    <!-- Learn More Button -->
-                    @if (!empty($component->localizedMultimedia))
-                        <button 
-                            id="openPopupBtn{{ $component->ComponentID }}" 
-                            type="button" 
-                            class="openPopupBtn" 
-                            comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
-                            data-lang="{{ app()->getLocale() }}"
-                        >
-                            {{ __('messages.learn_more') }}
-                        </button>
-                    @endif
+            <!-- Learn More Button -->
+            @if (!empty($component->localizedMultimedia))
+                <button 
+                    id="openPopupBtn{{ $component->ComponentID }}" 
+                    type="button" 
+                    class="openPopupBtn" 
+                    comp_multimedia_path="{{ json_encode($component->localizedMultimedia) }}"
+                    data-lang="{{ app()->getLocale() }}"
+                >
+                    {{ __('messages.learn_more') }}
+                </button>
+            @endif
 
-                    <!-- Power Plug as Custom Input -->
-                    @if ($component->ComponentName === __('Power Plug') || $component->ComponentName === __('Netzanschlussstecker'))
-                        <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="_blank">
-                            {{ __('messages.power_plug_info_link') }}
-                        </a>
-                        <br><br>
-                        <label for="powerPlugInput">{{ __('messages.specify_power_plug') }}</label>
+            <!-- Power Plug as Custom Input -->
+            @if ($component->ComponentName === __('Power Plug') || $component->ComponentName === __('Netzanschlussstecker'))
+                <a href="https://www.power-plugs-sockets.com/de/united-kingdom/" target="_blank">
+                    {{ __('messages.power_plug_info_link') }}
+                </a>
+                <br><br>
+                <label for="powerPlugInput">{{ __('messages.specify_power_plug') }}</label>
+                <input 
+                    type="text" 
+                    id="powerPlugInput" 
+                    name="powerPlugInput[{{ $component->ComponentID }}]" 
+                    placeholder="{{ __('messages.enter_power_plug') }}" 
+                    data-name="{{ __('messages.power_plug') }}" 
+                    required
+                >
+                <small style="color: gray;">{{ __('messages.example_power_plug') }}</small>
+                <p id="powerPlugError" style="color: red; display: none;">{{ __('messages.invalid_power_plug') }}</p>
+            @endif
+        </div>
+    </div>
+@endforeach
+
+<!-- ✅ Additional Components Section Controlled by Variant 3 -->
+<div id="additionalComponentsSection" style="display: none;">
+
+    <!-- ✅ Component 12: Length of Cable Between Driver and Lamp -->
+    @foreach($additionalComponents as $additionalComponent)
+        @if($additionalComponent->ComponentID == 12)
+            <!-- ✅ Using already decoded ComponentName -->
+            <div class="component-section">
+                <h3>{{ $additionalComponent->ComponentName }}</h3>
+                @foreach($additionalComponent->componentValues as $value)
+                    <div>
                         <input 
-                            type="text" 
-                            id="powerPlugInput" 
-                            name="powerPlugInput[{{ $component->ComponentID }}]" 
-                            placeholder="{{ __('messages.enter_power_plug') }}" 
-                            data-name="{{ __('messages.power_plug') }}" 
-                            required
+                            type="radio" 
+                            name="components[{{ $additionalComponent->ComponentID }}]" 
+                            value="{{ $value->ComponentValueID }}"
+                            data-name="{{ $value->ComponentValueName }}"
+                            data-price="{{ $value->ComponentValuePrice ?? 0 }}"
                         >
-                        <small style="color: gray;">{{ __('messages.example_power_plug') }}</small>
-                        <p id="powerPlugError" style="color: red; display: none;">{{ __('messages.invalid_power_plug') }}</p>
-                    @endif
-                </div>
+                        <label for="component_{{ $value->ComponentValueID }}">
+                            {{ $value->ComponentValueName }}
+                            @if($value->ComponentValuePrice)
+                                (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                            @endif
+                        </label>
+                    </div>
+                @endforeach
             </div>
-        @endforeach
+        @endif
+    @endforeach
+
+    <!-- ✅ Component 13: Length of Cable Between Driver and Power Plug -->
+    @foreach($additionalComponents as $additionalComponent)
+        @if($additionalComponent->ComponentID == 13)
+            <!-- ✅ Using already decoded ComponentName -->
+            <div class="component-section">
+                <h3>{{ $additionalComponent->ComponentName }}</h3>
+                @foreach($additionalComponent->componentValues as $value)
+                    <div>
+                        <input 
+                            type="radio" 
+                            name="components[{{ $additionalComponent->ComponentID }}]" 
+                            value="{{ $value->ComponentValueID }}"
+                            data-name="{{ $value->ComponentValueName }}"
+                            data-price="{{ $value->ComponentValuePrice ?? 0 }}"
+                        >
+                        <label for="component_{{ $value->ComponentValueID }}">
+                            {{ $value->ComponentValueName }}
+                            @if($value->ComponentValuePrice)
+                                (+{{ $value->ComponentValuePrice }} {{ $value->ComponentValueCurrency }})
+                            @endif
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    @endforeach
+</div>
+
 
         <!-- Display Price -->
         <p>{{ __('messages.price') }}: <span id="basePrice">{{ $product->ProductPrice }} {{ $product->ProductCurrency }}</span></p>
