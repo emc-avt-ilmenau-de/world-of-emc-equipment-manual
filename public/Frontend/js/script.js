@@ -272,6 +272,7 @@ function checkGeoOther(value) {
 }
 
 // Update price and component summary with enhanced logic and error handling
+// Update price and component summary with enhanced logic and error handling
 function updatePrice() {
     let totalPrice = parseFloat(document.getElementById("basePrice").textContent) || 0;
     let selectedComponents = [];
@@ -308,50 +309,24 @@ function updatePrice() {
             }
         }
 
-            
-      // ✅ Special Handling for Object Area (4K MiniCam Lens and 4K-MiniCam Objektive)
-if (componentName.includes("4K MiniCam Lens") || componentName.includes("4K-MiniCam Objektive")) {
-    const objectAreaInputs = document.querySelectorAll(`[id^="objectAreaInput_"]`);
-    let objectAreaValues = [];
+       // ✅ Special Handling for Object Area (4K MiniCam Lens and 4K-MiniCam Objektive)
+       let objectAreaAppended = false;
+       if (componentName.includes("4K MiniCam Lens") || componentName.includes("4K-MiniCam Objektive")) {
+           const objectAreaInput = document.getElementById(`objectAreaInput_${input.name.match(/\d+/)[0]}`);
+           if (objectAreaInput && objectAreaInput.style.display !== "none") {
+               const objectAreaValue = objectAreaInput.querySelector("input").value.trim();
 
-    objectAreaInputs.forEach(inputElement => {
-        if (inputElement.style.display !== "none") {
-            const inputField = inputElement.querySelector("input");
-            if (inputField) {
-                let objectAreaValue = inputField.value.trim();
-                
-                // Only add values ≥ 12mm
-                if (objectAreaValue && parseFloat(objectAreaValue) >= 12) {
-                    objectAreaValues.push(`${objectAreaValue} (+0.00)`);
-                }
-            }
-        }
-    });
-
-    if (objectAreaValues.length > 0) {
-        // Check if an entry for "4K MiniCam Lens" already exists in selectedComponents
-        let existingIndex = selectedComponents.findIndex(comp => 
-            comp.componentName.includes("4K MiniCam Lens") || comp.componentName.includes("4K-MiniCam Objektive")
-        );
-
-        if (existingIndex !== -1) {
-            // If found, update the existing entry instead of creating a new one
-            selectedComponents[existingIndex].value = objectAreaValues.join(", ");
-        } else {
-            // Otherwise, add a new entry
-            selectedComponents.push({
-                componentName: "4K MiniCam Lens",
-                value: objectAreaValues.join(", "),
-                price: 0, // Assuming no additional price change
-            });
-        }
-    }
-
-    return; // Prevent further processing for "4K MiniCam Lens"
-}
-
-
-
+               // ✅ Append Object Area only if the value is valid (≥ 12mm)
+               if (objectAreaValue && parseFloat(objectAreaValue) >= 12) {
+                   if (componentName.includes("4K MiniCam Lens")) {
+                       componentValue += `, Object Area: ${objectAreaValue}`;
+                   } else if (componentName.includes("4K-MiniCam Objektive")) {
+                       componentValue += `, Objekt Bereich: ${objectAreaValue}`;
+                   }
+                   objectAreaAppended = true;
+               }
+           }
+       }
 
         // ✅ Special Handling for Software Component
         if (componentName === "Software") {
@@ -381,65 +356,50 @@ if (componentName.includes("4K MiniCam Lens") || componentName.includes("4K-Mini
             return; // Skip the default processing for Software
         }
 
-    
+        if (input.value == "28") {
+            // When Variant 3 is selected
+            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+            if (additionalComponentsSection) {
+                additionalComponentsSection.style.display = "block";
 
-if (input.value == "28") {
-    // When Variant 3 is selected
-    const additionalComponentsSection = document.getElementById("additionalComponentsSection");
-    if (additionalComponentsSection) {
-        additionalComponentsSection.style.display = "block";
+                document.querySelectorAll("#additionalComponentsSection input:checked").forEach((additionalInput) => {
+                    const additionalComponentSection = additionalInput.closest(".component-section");
+                    const additionalComponentId = additionalInput.getAttribute("data-id"); // Use ID
+                    const additionalComponentName =
+                        additionalComponentSection?.querySelector("h3")?.textContent || "Undefined Component";
+                    const additionalComponentValue =
+                        additionalInput.getAttribute("data-name") || additionalInput.value;
+                    const additionalPrice = parseFloat(additionalInput.getAttribute("data-price")) || 0;
 
-        document.querySelectorAll("#additionalComponentsSection input:checked").forEach((additionalInput) => {
-            const additionalComponentSection = additionalInput.closest(".component-section");
-            const additionalComponentId = additionalInput.getAttribute("data-id"); // Use ID
-            const additionalComponentName =
-                additionalComponentSection?.querySelector("h3")?.textContent || "Undefined Component";
-            const additionalComponentValue =
-                additionalInput.getAttribute("data-name") || additionalInput.value;
-            const additionalPrice = parseFloat(additionalInput.getAttribute("data-price")) || 0;
-
-            if (!processedComponents.has(`${additionalComponentId}:${additionalComponentValue}`)) {
-                processedComponents.add(`${additionalComponentId}:${additionalComponentValue}`);
-                selectedComponents.push({
-                    componentId: additionalComponentId, // Use ID here
-                    componentName: additionalComponentName,
-                    value: additionalComponentValue,
-                    price: additionalPrice,
+                    if (!processedComponents.has(`${additionalComponentId}:${additionalComponentValue}`)) {
+                        processedComponents.add(`${additionalComponentId}:${additionalComponentValue}`);
+                        selectedComponents.push({
+                            componentId: additionalComponentId, // Use ID here
+                            componentName: additionalComponentName,
+                            value: additionalComponentValue,
+                            price: additionalPrice,
+                        });
+                        totalPrice += additionalPrice;
+                    }
                 });
-                totalPrice += additionalPrice;
             }
-        });
-    }
-} else {
-    // When Variant 3 is not selected
-    const additionalComponentsSection = document.getElementById("additionalComponentsSection");
-    if (additionalComponentsSection) {
-        additionalComponentsSection.style.display = "none";
+        } else {
+            // When Variant 3 is not selected
+            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+            if (additionalComponentsSection) {
+                additionalComponentsSection.style.display = "none";
 
-        // Mark components 12 and 13 as hidden instead of removing them
-        selectedComponents = selectedComponents.map((component) => {
-            if (component.componentId === "12" ) {
-                return { ...component, hidden: true }; // Add hidden flag
+                // Mark components 12 and 13 as hidden instead of removing them
+                selectedComponents = selectedComponents.map((component) => {
+                    if (component.componentId === "12") {
+                        return { ...component, hidden: true }; // Add hidden flag
+                    }
+                    return component;
+                });
+
+                console.log("Components 12 are marked as hidden.");
             }
-            return component;
-        });
-
-        console.log("Components 12  are marked as hidden.");
-    }
-}
-
-// Ensure hidden components are preserved during submission
-const submissionData = selectedComponents.map((component) => ({
-    componentId: component.componentId,
-    componentName: component.componentName,
-    value: component.value,
-    price: component.price,
-    hidden: component.hidden || false, // Include hidden flag
-}));
-
-// Debugging the submission data
-console.log("Final submission data:", submissionData);
-
+        }
 
         // ✅ Prevent duplicate components being added
         const componentKey = `${componentName}:${componentValue}`;
@@ -475,6 +435,23 @@ console.log("Final submission data:", submissionData);
         }
     });
 
+    // ✅ Special Handling for Showing Component 14
+    const shouldShowComponent14 = selectedComponents.some(
+        (comp) => ["11", "12"].includes(comp.value)
+    );
+    const component14Section = document.querySelector(`.component-section[data-component-id="14"]`);
+    if (component14Section) {
+        component14Section.style.display = shouldShowComponent14 ? "block" : "none";
+    }
+
+    // ✅ Special Handling for Showing Components 12 and 15 When 28 is Selected
+    const shouldShowComponent12And15 = selectedComponents.some((comp) => comp.value === "28");
+    const component12Section = document.querySelector(`.component-section[data-component-id="12"]`);
+    const component15Section = document.querySelector(`.component-section[data-component-id="15"]`);
+
+    if (component12Section) component12Section.style.display = shouldShowComponent12And15 ? "block" : "none";
+    if (component15Section) component15Section.style.display = shouldShowComponent12And15 ? "block" : "none";
+
     // ✅ Remove duplicates (Final Step)
     selectedComponents = selectedComponents.filter((value, index, self) =>
         index === self.findIndex((t) => t.componentName === value.componentName && t.value === value.value)
@@ -486,6 +463,7 @@ console.log("Final submission data:", submissionData);
         .map((comp) => `<p><strong>${comp.componentName}:</strong> ${comp.value} (+${comp.price.toFixed(2)})</p>`)
         .join("");
 }
+
 
 
 
@@ -748,14 +726,37 @@ function checkObjectAreaInput(selectedValue, componentID) {
      * JavaScript to show/hide components 12 and 13 based on selection of Variant 3 (ComponentValueID 29)
      */
     function handleComponentSelection(inputElement, componentValueID) {
-        const additionalComponentsSection = document.getElementById('additionalComponentsSection');
         const selectedValueIDs = [28, 11, 12]; // IDs that trigger visibility
+        
+        // Show/Hide Entire Additional Components Section
+        const additionalComponentsSection = document.getElementById('additionalComponentsSection');
         const anyChecked = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
             .some(input => selectedValueIDs.includes(parseInt(input.value)));
-    
         additionalComponentsSection.style.display = anyChecked ? 'block' : 'none';
+    
+        // Individual Component Handling
+        toggleComponentVisibility(14, [11, 12]); // Show Component 14 when ID 11 or 12 is selected
+        toggleComponentVisibility(12, [28]); // Show Component 12 when ID 28 is selected
+        toggleComponentVisibility(15, [28]); // Show Component 15 when ID 28 is selected
     }
     
+    // Function to Show/Hide Individual Components
+    function toggleComponentVisibility(componentID, triggerIDs) {
+        const componentSection = document.querySelector(`.component-section[data-component-id="${componentID}"]`);
+        
+        if (componentSection) {
+            const isTriggered = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
+                .some(input => triggerIDs.includes(parseInt(input.value)));
+            componentSection.style.display = isTriggered ? 'block' : 'none';
+        }
+    }
+    
+    // Attach Event Listeners to All Radio Inputs
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+        input.addEventListener('change', function() {
+            handleComponentSelection(this, parseInt(this.value));
+        });
+    });
     
     
-   
+    
