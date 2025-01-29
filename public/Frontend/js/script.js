@@ -1,100 +1,117 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const categoryGroups = document.querySelectorAll('.category-group');
     const allProductsHeading = document.getElementById('all-products-heading');
-    
+
+    // Check if 'all-products-heading' exists; if not, log a warning and exit gracefully
+    if (!allProductsHeading) {
+      
+        return; // Stop further execution if the heading is not relevant on this page
+    }
+
     function showCategory(categoryClass) {
-        let showHeading = true; // Assume we will show the heading unless a specific category is selected
+        let showHeading = true;
 
         categoryGroups.forEach(group => {
             if (categoryClass === 'all') {
                 group.style.display = 'block'; // Show all categories
             } else {
                 group.style.display = (group.id === `${categoryClass}-category`) ? 'block' : 'none';
-                // Only show the heading if we're displaying all categories
                 if (group.style.display === 'block') {
                     showHeading = false;
                 }
             }
         });
 
+        // Update display of the 'all-products-heading'
         allProductsHeading.style.display = showHeading ? 'block' : 'none';
     }
 
-    // Check if a category is present in the URL (like ?category=camera)
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get('category');
 
     if (categoryParam) {
+        console.log("URL category parameter found:", categoryParam);
         showCategory(categoryParam);
     } else {
-        // Show all products by default when no category is specified
+        
         showCategory('all');
     }
 
-    // Attach the showCategory function to the global window object for manual calls
     window.showCategory = showCategory;
 
-    // Add event listeners to category buttons
-    document.querySelectorAll('.dropdown-content a').forEach(anchor => {
-        anchor.addEventListener('click', function() {
-            // Remove active class from all buttons
-            document.querySelectorAll('.dropdown-content a').forEach(btn => btn.classList.remove('active'));
-            // Add active class to the clicked button
-            this.classList.add('active');
+    const dropdownLinks = document.querySelectorAll('.dropdown-content a');
+    if (dropdownLinks.length > 0) {
+        dropdownLinks.forEach(anchor => {
+            anchor.addEventListener('click', function () {
+                console.log("Category clicked:", this.getAttribute('href'));
 
-            // Get the category class from href attribute
-            const categoryClass = this.getAttribute('href').replace('/', '');
-            showCategory(categoryClass);
+                dropdownLinks.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                const categoryClass = this.getAttribute('href')?.replace('/', '') || '';
+                if (categoryClass) {
+                    showCategory(categoryClass);
+                } else {
+                    console.error("Invalid category class.");
+                }
+            });
         });
+    } else {
+        console.warn("No dropdown links found.");
+    }
+});
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Slideshow logic scoped within this function
+    let currentSlideIndex = 1; // Scoped to this block
+
+    function plusSlides(n) {
+        showSlides(currentSlideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(currentSlideIndex = n);
+    }
+
+    function showSlides(n) {
+        const slides = document.getElementsByClassName("mySlides");
+
+        // Wrap around the slide index if out of range
+        if (n > slides.length) {
+            currentSlideIndex = 1;
+        }
+        if (n < 1) {
+            currentSlideIndex = slides.length;
+        }
+
+        // Hide all slides
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        // Show the current slide
+        if (slides[currentSlideIndex - 1]) {
+            slides[currentSlideIndex - 1].style.display = "block";
+        }
+    }
+
+    // Event listeners for next/prev buttons
+    document.querySelector(".next")?.addEventListener("click", function () {
+        plusSlides(1);
     });
+
+    document.querySelector(".prev")?.addEventListener("click", function () {
+        plusSlides(-1);
+    });
+
+    // Initialize slideshow
+    showSlides(currentSlideIndex);
 });
 
-
-
-let slideIndex = 1;
-document.addEventListener("DOMContentLoaded", function() {
-  showSlides(slideIndex); // Ensure the initial slide is displayed
-});
-
-
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
-
-function currentSlide(n) {
-  showSlides(slideIndex = n);
-}
-
-function showSlides(n) {
-  const slides = document.getElementsByClassName("mySlides");
-  const dots = document.getElementsByClassName("dot");
-  
-  // Wrap around the slide index if out of range
-  if (n > slides.length) { slideIndex = 1; }
-  if (n < 1) { slideIndex = slides.length; }
-
-  // Hide all slides and remove active class from all dots
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
-  }
-  for (let i = 0; i < dots.length; i++) {
-    dots[i].classList.remove("active");
-  }
-
-  // Show the current slide and add active class to the corresponding dot
-  slides[slideIndex - 1].style.display = "block";  
-  dots[slideIndex - 1].classList.add("active");
-  // Next/previous controls
-  document.querySelector(".next").onclick = function() {
-    slideIndex++;
-    showSlides(slideIndex);
-}
-
-document.querySelector(".prev").onclick = function() {
-    slideIndex--;
-    showSlides(slideIndex);
-}
-}
 
 
 function checkOther() {
@@ -120,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let multimediaData;
             try {
                 multimediaData = JSON.parse(component_multimedia_path);
-                console.log("Parsed JSON:", multimediaData); // Debugging parsed JSON
+                console.log("Parsed JSON:", multimediaData);
             } catch (error) {
                 console.error("Invalid JSON in comp_multimedia_path:", error);
                 return;
@@ -128,17 +145,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (multimediaData && popup_comp_div) {
                 // Clear previous slides
-                popup_comp_div.innerHTML = '';
+                popup_comp_div.innerHTML = "";
 
                 // Iterate over multimedia data to create slides
                 Object.values(multimediaData).forEach((media, index) => {
                     const slide = document.createElement("div");
                     slide.className = "popup-slide";
-                    slide.style.display = "none"; // Hide all slides initially
+                    slide.style.display = "none";
 
-                    // Normalize the path using Laravel's base URL
-                    const baseUrl = window.location.origin; // e.g., http://127.0.0.1:8000
-                    const normalizedPath = `${baseUrl}/${media.path.replace(/\\/g, '/')}`;
+                    const baseUrl = window.location.origin;
+                    const normalizedPath = `${baseUrl}/${media.path.replace(/\\\\/g, "/")}`;
 
                     if (normalizedPath.endsWith(".mp4")) {
                         slide.innerHTML = `
@@ -158,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     popup_comp_div.appendChild(slide);
                 });
 
-                // Add navigation buttons dynamically if not already present
+                // Add navigation buttons dynamically
                 if (!popup_comp_div.querySelector(".popup-close")) {
                     popup_comp_div.innerHTML += `
                         <button class="popup-close">Close</button>
@@ -167,40 +183,41 @@ document.addEventListener("DOMContentLoaded", function () {
                     `;
                 }
 
-                let slideIndex = 0;
+                // Scope variables to this popup
+                let popupSlideIndex = 0; // Isolated slide index
                 const slides = popup_comp_div.getElementsByClassName("popup-slide");
                 const closeBtn = popup_comp_div.querySelector(".popup-close");
                 const nextBtn = popup_comp_div.querySelector(".popup-next");
                 const prevBtn = popup_comp_div.querySelector(".popup-prev");
 
-                function showSlides(n) {
-                    if (n >= slides.length) slideIndex = 0;
-                    if (n < 0) slideIndex = slides.length - 1;
+                function showPopupSlides(n) {
+                    if (n >= slides.length) popupSlideIndex = 0;
+                    if (n < 0) popupSlideIndex = slides.length - 1;
 
                     Array.from(slides).forEach((slide) => {
                         slide.style.display = "none";
                     });
 
-                    if (slides[slideIndex]) {
-                        slides[slideIndex].style.display = "block";
+                    if (slides[popupSlideIndex]) {
+                        slides[popupSlideIndex].style.display = "block";
                     }
                 }
 
                 // Show the first slide
-                showSlides(slideIndex);
+                showPopupSlides(popupSlideIndex);
 
                 // Show the popup
                 popup_comp_div.style.display = "block";
 
                 // Navigation buttons
                 nextBtn.addEventListener("click", () => {
-                    slideIndex++;
-                    showSlides(slideIndex);
+                    popupSlideIndex++;
+                    showPopupSlides(popupSlideIndex);
                 });
 
                 prevBtn.addEventListener("click", () => {
-                    slideIndex--;
-                    showSlides(slideIndex);
+                    popupSlideIndex--;
+                    showPopupSlides(popupSlideIndex);
                 });
 
                 closeBtn.addEventListener("click", () => {
@@ -218,7 +235,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-
 
 
 
@@ -271,11 +287,10 @@ function updatePrice() {
             return;
         }
 
-        // ✅ Fix: Fetch the component name correctly
+        // ✅ Fetch the component name and value
         let componentNameElement = componentSection.querySelector("h3");
         let componentName = componentNameElement ? componentNameElement.textContent : "Undefined Component";
 
-        // ✅ Fix: Fetch the component value correctly
         let componentValue =
             input.getAttribute("data-name") ||
             componentSection.querySelector(`label[for='${input.id}']`)?.textContent.trim() ||
@@ -283,7 +298,7 @@ function updatePrice() {
 
         let price = parseFloat(input.getAttribute("data-price")) || 0;
 
-        // ✅ Special Handling for "Other" Option
+        // ✅ Handle "Other" Option
         if (input.value === "Other") {
             const customInputId = `customField_${input.name.match(/\d+/)[0]}`;
             const customValueElement = document.getElementById(customInputId);
@@ -293,16 +308,50 @@ function updatePrice() {
             }
         }
 
-        // ✅ Special Handling for Object Area (4K MiniCam Lens)
-        if (componentName.includes("4K MiniCam Lens")) {
-            const objectAreaInput = document.getElementById(`objectAreaInput_${input.name.match(/\d+/)[0]}`);
-            if (objectAreaInput && objectAreaInput.style.display !== "none") {
-                const objectAreaValue = objectAreaInput.querySelector("input").value.trim();
-                if (objectAreaValue) {
-                    componentValue += `, Object Area: ${objectAreaValue}`;
+            
+      // ✅ Special Handling for Object Area (4K MiniCam Lens and 4K-MiniCam Objektive)
+if (componentName.includes("4K MiniCam Lens") || componentName.includes("4K-MiniCam Objektive")) {
+    const objectAreaInputs = document.querySelectorAll(`[id^="objectAreaInput_"]`);
+    let objectAreaValues = [];
+
+    objectAreaInputs.forEach(inputElement => {
+        if (inputElement.style.display !== "none") {
+            const inputField = inputElement.querySelector("input");
+            if (inputField) {
+                let objectAreaValue = inputField.value.trim();
+                
+                // Only add values ≥ 12mm
+                if (objectAreaValue && parseFloat(objectAreaValue) >= 12) {
+                    objectAreaValues.push(`${objectAreaValue} (+0.00)`);
                 }
             }
         }
+    });
+
+    if (objectAreaValues.length > 0) {
+        // Check if an entry for "4K MiniCam Lens" already exists in selectedComponents
+        let existingIndex = selectedComponents.findIndex(comp => 
+            comp.componentName.includes("4K MiniCam Lens") || comp.componentName.includes("4K-MiniCam Objektive")
+        );
+
+        if (existingIndex !== -1) {
+            // If found, update the existing entry instead of creating a new one
+            selectedComponents[existingIndex].value = objectAreaValues.join(", ");
+        } else {
+            // Otherwise, add a new entry
+            selectedComponents.push({
+                componentName: "4K MiniCam Lens",
+                value: objectAreaValues.join(", "),
+                price: 0, // Assuming no additional price change
+            });
+        }
+    }
+
+    return; // Prevent further processing for "4K MiniCam Lens"
+}
+
+
+
 
         // ✅ Special Handling for Software Component
         if (componentName === "Software") {
@@ -332,44 +381,69 @@ function updatePrice() {
             return; // Skip the default processing for Software
         }
 
-        // ✅ Special Handling for Component Value ID 29 (Show Components 12 and 13)
-        if (input.value == "29") {
-            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
-            if (additionalComponentsSection) {
-                additionalComponentsSection.style.display = "block";
+    
 
-                // ✅ Automatically include components 12 and 13 if ID 29 is selected
-                document.querySelectorAll("#additionalComponentsSection input:checked").forEach((additionalInput) => {
-                    const additionalComponentSection = additionalInput.closest(".component-section");
-                    const additionalComponentName =
-                        additionalComponentSection?.querySelector("h3")?.textContent || "Undefined Component";
-                    const additionalComponentValue =
-                        additionalInput.getAttribute("data-name") || additionalInput.value;
-                    const additionalPrice = parseFloat(additionalInput.getAttribute("data-price")) || 0;
+if (input.value == "28") {
+    // When Variant 3 is selected
+    const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+    if (additionalComponentsSection) {
+        additionalComponentsSection.style.display = "block";
 
-                    // ✅ Avoid duplicate entries for additional components
-                    if (!processedComponents.has(`${additionalComponentName}:${additionalComponentValue}`)) {
-                        processedComponents.add(`${additionalComponentName}:${additionalComponentValue}`);
+        document.querySelectorAll("#additionalComponentsSection input:checked").forEach((additionalInput) => {
+            const additionalComponentSection = additionalInput.closest(".component-section");
+            const additionalComponentId = additionalInput.getAttribute("data-id"); // Use ID
+            const additionalComponentName =
+                additionalComponentSection?.querySelector("h3")?.textContent || "Undefined Component";
+            const additionalComponentValue =
+                additionalInput.getAttribute("data-name") || additionalInput.value;
+            const additionalPrice = parseFloat(additionalInput.getAttribute("data-price")) || 0;
 
-                        selectedComponents.push({
-                            componentName: additionalComponentName,
-                            value: additionalComponentValue,
-                            price: additionalPrice,
-                        });
-
-                        totalPrice += additionalPrice;
-                    }
+            if (!processedComponents.has(`${additionalComponentId}:${additionalComponentValue}`)) {
+                processedComponents.add(`${additionalComponentId}:${additionalComponentValue}`);
+                selectedComponents.push({
+                    componentId: additionalComponentId, // Use ID here
+                    componentName: additionalComponentName,
+                    value: additionalComponentValue,
+                    price: additionalPrice,
                 });
+                totalPrice += additionalPrice;
             }
-        } else {
-            const additionalComponentsSection = document.getElementById("additionalComponentsSection");
-            if (additionalComponentsSection) {
-                additionalComponentsSection.style.display = "none";
+        });
+    }
+} else {
+    // When Variant 3 is not selected
+    const additionalComponentsSection = document.getElementById("additionalComponentsSection");
+    if (additionalComponentsSection) {
+        additionalComponentsSection.style.display = "none";
+
+        // Mark components 12 and 13 as hidden instead of removing them
+        selectedComponents = selectedComponents.map((component) => {
+            if (component.componentId === "12" ) {
+                return { ...component, hidden: true }; // Add hidden flag
             }
-        }
+            return component;
+        });
+
+        console.log("Components 12  are marked as hidden.");
+    }
+}
+
+// Ensure hidden components are preserved during submission
+const submissionData = selectedComponents.map((component) => ({
+    componentId: component.componentId,
+    componentName: component.componentName,
+    value: component.value,
+    price: component.price,
+    hidden: component.hidden || false, // Include hidden flag
+}));
+
+// Debugging the submission data
+console.log("Final submission data:", submissionData);
+
 
         // ✅ Prevent duplicate components being added
-        if (processedComponents.has(`${componentName}:${componentValue}`)) return;
+        const componentKey = `${componentName}:${componentValue}`;
+        if (processedComponents.has(componentKey)) return;
 
         // ✅ Add component and update price
         processedComponents.add(`${componentName}:${componentValue}`);
@@ -388,8 +462,9 @@ function updatePrice() {
             const componentName = componentSection?.querySelector("h3")?.textContent || "Undefined Component";
 
             // ✅ Prevent duplicate custom inputs
-            if (!processedComponents.has(`${componentName}:${input.value.trim()}`)) {
-                processedComponents.add(`${componentName}:${input.value.trim()}`);
+            const customKey = `${componentName}:${input.value.trim()}`;
+            if (!processedComponents.has(customKey)) {
+                processedComponents.add(customKey);
 
                 selectedComponents.push({
                     componentName: componentName,
@@ -399,6 +474,11 @@ function updatePrice() {
             }
         }
     });
+
+    // ✅ Remove duplicates (Final Step)
+    selectedComponents = selectedComponents.filter((value, index, self) =>
+        index === self.findIndex((t) => t.componentName === value.componentName && t.value === value.value)
+    );
 
     // ✅ Update the modal with the selected components and total price
     document.getElementById("modalTotalPrice").textContent = totalPrice.toFixed(2);
@@ -427,20 +507,21 @@ function hideCustomField(componentID) {
     }
 }
 
-// ✅ Ensure all radio buttons toggle visibility correctly
+// Ensure all radio buttons toggle visibility correctly
 document.querySelectorAll("input[type='radio']").forEach(input => {
     input.addEventListener('change', function () {
-        const componentID = this.name.match(/\d+/)[0]; 
-        const otherOption = document.getElementById(`${componentID}_Other`);
+        const componentID = this.name.match(/\d+/)?.[0]; // Extract the component ID
+        if (!componentID) return; // Exit if no component ID is found
 
-        // ✅ If "Other" is selected, show it; otherwise hide it
-        if (otherOption && otherOption.checked) {
-            showCustomField(componentID);
+        // Check if the clicked option is "Other"
+        if (this.value === "Other") {
+            showCustomField(componentID); // Show the custom field
         } else {
-            hideCustomField(componentID);
+            hideCustomField(componentID); // Hide and clear the custom field
         }
     });
 });
+
 
 
 
@@ -460,99 +541,89 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("addToBasketForm");
     const powerPlugInput = document.getElementById("powerPlugInput");
     const powerPlugError = document.getElementById("powerPlugError");
+    const additionalComponentsSection = document.getElementById("additionalComponentsSection");
 
-    // Validate components and Power Plug input on form submission
+    if (!form) {
+        console.warn("Form not found in the DOM.");
+        return;
+    }
+
     form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
+
         let isFormValid = validateSelection();
 
-        // Validate Power Plug input if it exists
-        if (powerPlugInput) {
-            if (powerPlugInput.value.trim() === "") {
-                isFormValid = false;
-                powerPlugError.style.display = "block"; // Show error message
-                powerPlugInput.style.borderColor = "red"; // Highlight the field
-            } else {
-                powerPlugError.style.display = "none"; // Hide error message
-                powerPlugInput.style.borderColor = ""; // Reset field styling
-            }
-        }
+        
 
-        // If the form is valid, submit the form
         if (isFormValid) {
+            const formData = new FormData(form);
+
+            // Collect and add Components 12 and 13 values if applicable
+            if (additionalComponentsSection?.style.display !== "none") {
+                const component12Input = document.querySelector("input[name='components[12,15]']");
+                
+                if (component12Input && component12Input.value.trim() !== "") {
+                    formData.append("components[12]", component12Input.value.trim());
+                }
+                
+            }
+
+            console.log("Form data submitted:", Object.fromEntries(formData.entries())); // Debugging
             form.submit();
         }
     });
 
-    // Real-time validation for Power Plug input
-    if (powerPlugInput) {
-        powerPlugInput.addEventListener("input", function () {
-            if (powerPlugInput.value.trim() !== "") {
-                powerPlugError.style.display = "none";
-                powerPlugInput.style.borderColor = ""; // Reset field styling
-            }
-        });
-    }
-
-    // Function to validate component selection
+   
     function validateSelection() {
         let isValid = true;
         let errorMessages = [];
 
-        // Check if Component Value ID 29 is selected
         const isComponentValue29Selected = Array.from(
             document.querySelectorAll('input[type="radio"]:checked')
-        ).some((input) => input.value === "29");
+        ).some((input) => input.value === "28");
 
-
-        // Loop through each component section
         document.querySelectorAll(".component-section").forEach((section) => {
             const radioButtons = section.querySelectorAll('input[type="radio"]');
             const checkboxes = section.querySelectorAll('input[type="checkbox"]');
             const textInput = section.querySelector('input[type="text"]');
             const otherRadio = section.querySelector('input[type="radio"][value="Other"]');
+            const componentId = section.querySelector('input')?.name.match(/\d+/)?.[0];
 
-            // Extract the component ID
-    const componentId = section.querySelector('input')?.name.match(/\d+/)?.[0];
-
-    // ✅ Skip validation for Components 12 and 13 if Component Value ID 29 is not selected
-    if (!isComponentValue29Selected && (componentId === "12" || componentId === "13")) {
-        return; // Skip validation for these components
-    }
+            if (
+                (componentId === "12") &&
+                (!isComponentValue29Selected || additionalComponentsSection?.style.display === "none")
+            ) {
+                return;
+            }
 
             let isComponentValid = false;
 
-            // Check if any radio button or checkbox is selected
             if (radioButtons.length > 0) {
                 isComponentValid = Array.from(radioButtons).some((input) => input.checked);
             } else if (checkboxes.length > 0) {
                 isComponentValid = Array.from(checkboxes).some((input) => input.checked);
             }
 
-            // Handle "Other" input field validation
             if (!isComponentValid && otherRadio && otherRadio.checked && textInput) {
                 if (textInput.value.trim() === "") {
                     errorMessages.push(
-                        `${section.querySelector("h3").textContent} requires a custom value.`
+                        `${section.querySelector("h3")?.textContent || "Custom value"} requires a custom value.`
                     );
-                    textInput.style.borderColor = "red"; // Highlight the custom field
+                    textInput.style.borderColor = "red";
                     isValid = false;
                 } else {
-                    textInput.style.borderColor = ""; // Reset styling if valid
-                    isComponentValid = true; // Mark as valid if custom value is provided
+                    textInput.style.borderColor = "";
+                    isComponentValid = true;
                 }
             }
 
-            // If no selection or valid input, mark as invalid
             if (!isComponentValid && !section.contains(powerPlugInput)) {
-                errorMessages.push(
-                    `${section.querySelector("h3").textContent} requires a selection.`
-                );
+                const sectionTitle = section.querySelector("h3")?.textContent || "Unknown Component";
+                errorMessages.push(`${sectionTitle} requires a selection.`);
                 isValid = false;
             }
         });
 
-        // Display error messages
         if (!isValid) {
             alert("Please fix the following errors:\n" + errorMessages.join("\n"));
         }
@@ -560,6 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return isValid;
     }
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const basicCheckbox = document.querySelector('input[data-name="Basic"]');
@@ -624,53 +696,66 @@ document.querySelectorAll('.remove-product').forEach(button => {
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('orderModal');
-    const openBtn = document.getElementById('openOrderModal');
-    const closeBtn = document.getElementById('closeOrderModal');
-    const closeModalButton = document.getElementById('closeOrderModalButton');
+// Modal handling
+document.addEventListener("DOMContentLoaded", function () {
+const modal = document.getElementById('orderModal');
+const openBtn = document.getElementById('openOrderModal');
+const closeBtn = document.getElementById('closeOrderModal');
+const closeModalButton = document.getElementById('closeOrderModalButton');
 
-    openBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-    });
-
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    closeModalButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
+if (modal && openBtn && closeBtn && closeModalButton) {
+    openBtn.addEventListener('click', () => modal.style.display = 'block');
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    closeModalButton.addEventListener('click', () => modal.style.display = 'none');
 
     window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
+        if (event.target === modal) modal.style.display = 'none';
     });
+
+
+
+}
 });
 
+// Check object area input for values >= 12mm
 function checkObjectAreaInput(selectedValue, componentID) {
-    const objectAreaInput = document.getElementById(`objectAreaInput_${componentID}`);
+    const objectAreaDiv = document.getElementById(`objectAreaInput_${componentID}`);
     const numericValue = parseFloat(selectedValue);
-    if (componentID == 1 && numericValue >= 12) {
-        objectAreaInput.style.display = 'block';
-    } else if (componentID == 1) {
-        objectAreaInput.style.display = 'none';
+
+    if (!objectAreaDiv) {
+        console.warn(`Object area container not found for componentID: ${componentID}`);
+        return;
+    }
+
+    if (numericValue >= 12) {
+        objectAreaDiv.style.display = "block";
+        const objectAreaInput = document.getElementById(`objectArea_${componentID}`);
+        if (objectAreaInput) {
+            objectAreaInput.focus(); // Focus the input
+        }
+        console.log(`Showing object area input for value >= 12: objectArea_${componentID}`);
+    } else {
+        objectAreaDiv.style.display = "none";
+        const objectAreaInput = document.getElementById(`objectArea_${componentID}`);
+        if (objectAreaInput) {
+            objectAreaInput.value = ""; // Clear the input field
+            console.log(`Hiding and clearing object area input: objectArea_${componentID}`);
+        }
     }
 }
-
 
     /**
      * JavaScript to show/hide components 12 and 13 based on selection of Variant 3 (ComponentValueID 29)
      */
     function handleComponentSelection(inputElement, componentValueID) {
-        var additionalComponentsSection = document.getElementById('additionalComponentsSection');
-        
-        // ✅ Only show if Component Value ID 29 is selected
-        if (componentValueID == 29 && inputElement.checked) {
-            additionalComponentsSection.style.display = 'block';
-        } else {
-            additionalComponentsSection.style.display = 'none';
-        }
+        const additionalComponentsSection = document.getElementById('additionalComponentsSection');
+        const selectedValueIDs = [28, 11, 12]; // IDs that trigger visibility
+        const anyChecked = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
+            .some(input => selectedValueIDs.includes(parseInt(input.value)));
+    
+        additionalComponentsSection.style.display = anyChecked ? 'block' : 'none';
     }
-
+    
+    
+    
+   

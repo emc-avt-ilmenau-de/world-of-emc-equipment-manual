@@ -1129,6 +1129,26 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     }
 }',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('14','{
+    "en": {
+        "ComponentName": "Length of Cabel"
+    },
+    "de": {
+        "ComponentName": "Länge der Kabel"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+ 
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('15','{
+    "en": {
+        "ComponentName": "Variant 2 Power Plug"
+    },
+    "de": {
+        "ComponentName": "Variante 2 Netzanschlussstecker"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
@@ -1385,4 +1405,76 @@ WHERE JSON_VALID(ComponentValueName) = 0;
 
 UPDATE ComponentValue 
 SET ComponentValueName = REPLACE(REPLACE(ComponentValueName, '\\n', ''), '\\', '');
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('36', '4','{
+    "en": {
+        "ComponentValueName": "EU"
+    },
+    "de": {
+        "ComponentValueName": "EU"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('37', '4','{
+    "en": {
+        "ComponentValueName": "UK"
+    },
+    "de": {
+        "ComponentValueName": "UK"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('38', '4','{
+    "en": {
+        "ComponentValueName": "USA"
+    },
+    "de": {
+        "ComponentValueName": "USA"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('39', '14','{
+    "en": {
+        "ComponentValueName": "2m"
+    },
+    "de": {
+        "ComponentValueName": "2m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('40', '14','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('41', '14','{
+    "en": {
+        "ComponentValueName": "5m"
+    },
+    "de": {
+        "ComponentValueName": "5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('42', '15','{
+    "en": {
+        "ComponentValueName": "With Plug"
+    },
+    "de": {
+        "ComponentValueName": "Mit Stecker"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('43', '15','{
+    "en": {
+        "ComponentValueName": "Without Plug"
+    },
+    "de": {
+        "ComponentValueName": "Ohne Stecker"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
