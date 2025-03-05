@@ -10,13 +10,14 @@ class Kernel extends HttpKernel
         'web' => [
             // Other middleware here...
             \App\Http\Middleware\LocaleMiddleware::class, // Make sure this line is present
-           
+            \App\Http\Middleware\EncryptCookies::class,
+
+
         ],
-    
+
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
-    
 }

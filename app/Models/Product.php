@@ -13,6 +13,7 @@ class Product extends Model
     protected $primaryKey = 'ProductID';
     protected $table = 'Product';
     protected $casts = [
+        'ProductName' => 'array',
         'ProductMiniDescription' => 'array',
         'ProductDescription' => 'array',
         'ProductMultimediaPath' => 'array',
@@ -29,5 +30,11 @@ class Product extends Model
         return $this->components->flatMap(function ($component) {
             return $component->componentValues;
         });
+    }
+
+    // ✅ Relationship: A product belongs to a category
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'CategoryID', 'CategoryID');
     }
 }

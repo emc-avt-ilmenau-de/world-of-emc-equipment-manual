@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'welcome' => 'Welcome to EMC-Web',
+    'welcome' => 'Welcome to World of EMC Equipment',
     'tagline' => 'We Are Not Just Sellers, We Are The Producer',
     'home' => 'Home',
     'about' => 'About Us',
@@ -16,6 +16,36 @@ return [
     'Power-Plug'  => 'Power Plug',
     'components-tag2' => 'Please choose Components:',
     'Object-Area'  => 'Object Area',
-    'Object-Area1'  => 'Specify Object Area',
+    'Object-Area1'  => 'Specify Object Area value in Square Meter',
+    'learn_more'    => 'Learn More',
+    'add_to_basket' => 'Add To Basket',
+    'power_plug_info_link' => 'Click here to learn more about power plugs',
+    'confirm_selection' => 'Confirm Selection',
+    'close' => 'Close',
+    'confirm' => 'Confirm',
+    'total_price' => 'Total Price',
+    'back_to_products' => 'Back to Products',
+    'p_name' => 'Product Name',
+    'c_name' => 'Component',
+    'quantity' => 'Quantity',
+    'action' => 'Action',
+    'update' => 'Update',
+    'remove' => 'Remove',
+    'Place_Order' => 'Place Order',
+    'name' => 'Name:',
+    'organization' => 'Organization Name:',
+    'email' => 'Email:',
+    'phone' => 'Phone',
+    'address' => 'Address',
+    'comment' => 'Comment',
+    'Submit_Order' => 'Submit Order',
+    'cancel' => 'Cancel',
+    'your_details' => 'Your Details',
+    'empty' => 'Your basket is empty.',
+    'right_reserved' => ' All rights reserved AVT GmbH.',
+    'order_summary' => 'Order Summary',
+    'order_summary1' => 'Here is your order summary:',
+    'thank_you' => 'Thank You'
+
 
 ];

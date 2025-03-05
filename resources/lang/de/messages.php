@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'welcome' => 'Willkommen im EMC-Web',
+    'welcome' => 'Willkommen bei World of EMC Equipment',
     'tagline' => 'Wir sind nicht nur Verkäufer, wir sind die Hersteller',
     'home' => 'Startseite',
     'about' => 'Über uns',
@@ -16,6 +16,38 @@ return [
     'Power-Plug'  => 'Netzanschlussstecker',
     'components-tag2' => 'Bitte wählen Sie die Komponenten aus:',
     'Object-Area'  => 'Objekt Bereich',
-     'Object-Area1'  => 'Objektbereich angeben'
+    'Object-Area1'  => 'Geben Sie den Wert der Objektfläche in Quadratmeter an.',
+    'learn_more' => 'Mehr Informationen',
+    'add_to_basket' => 'In den Warenkorb legen',
+    'power_plug_info_link' => 'Klicken Sie hier, um mehr über Steckdosen zu erfahren',
+    'confirm_selection' => 'Auswahl bestätigen',
+    'close' => 'Schließen',
+    'confirm' => 'Bestätigen',
+    'total_price' => 'Gesamtpreis',
+    'back_to_products' => 'Zurück zu Produkte',
+    'p_name' => 'Produktname',
+    'c_name' => 'Komponente',
+    'quantity' => 'Anzahl',
+    'action' => 'Aktion',
+    'update' => 'Update',
+    'remove' => 'Entfernen',
+    'Place_Order' => 'Bestellung aufgeben',
+    'name' => 'Name:',
+    'organization' => 'Name der Organisation:',
+    'email' => 'Email:',
+    'phone' => 'Telefon',
+    'address' => 'Adresse',
+    'comment' => 'Kommentar',
+    'Submit_Order' => 'Bestellung abschicken',
+    'cancel' => 'Abbrechen',
+    'your_details' => 'Deine Details',
+    'empty' => 'Ihr Warenkorb ist leer.',
+    'right_reserved' => 'Alle Rechte vorbehalten AVT GmbH.',
+    'order_summary' => 'Zusammenfassung der Bestellung',
+    'order_summary1' => 'Hier ist die Zusammenfassung Ihrer Bestellung:',
+    'thank_you' => 'Vielen Dank'
+
+
+
 
 ];

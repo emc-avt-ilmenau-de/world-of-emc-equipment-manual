@@ -121,7 +121,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'labor@avt-ilmenau.de'),
+        'address' => env('MAIL_FROM_ADDRESS', 'emc@avt-ilmenau.de'),
         'name' => env('MAIL_FROM_NAME', 'EMC-WEB'),
     ],
 

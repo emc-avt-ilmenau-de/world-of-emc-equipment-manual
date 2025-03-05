@@ -1033,6 +1033,92 @@ WHERE ComponentID = 9;
 
 
 
+     UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "4K MiniCam"
+    },
+    "de": {
+        "ProductName": "4K MiniCam"
+    }
+}'
+
+WHERE ProductID = 1;
+
+ UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "ThermoCam"
+    },
+    "de": {
+        "ProductName": "ThermoCam"
+    }
+}'
+
+WHERE ProductID = 2;
+
+UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "Lamp EMVLED 100"
+    },
+    "de": {
+        "ProductName": "Leuchte EMVLED 100"
+    }
+}'
+
+WHERE ProductID = 3;
+
+UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "Lamp EMVLED 24/40"
+    },
+    "de": {
+        "ProductName": "Leuchte EMVLED 24/40"
+    }
+}'
+
+WHERE ProductID = 5;
+
+UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "EMC LED Driver"
+    },
+    "de": {
+        "ProductName": "EMV LED Treiber"
+    }
+}'
+
+WHERE ProductID = 6;
+
+UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "EMC USB Converter"
+    },
+    "de": {
+        "ProductName": "EMV USB Konverter"
+    }
+}'
+
+WHERE ProductID = 7;
+
+UPDATE Product
+SET ProductName = '{
+    "en": {
+        "ProductName": "Sequenzer AVT NT01 "
+    },
+    "de": {
+        "ProductName": "Sequenzer AVT NT01 "
+    }
+}'
+
+WHERE ProductID = 8;
+
+
+
 
 -- SQLite
 -- Insert sample data into the ProductComponent table
@@ -1058,8 +1144,39 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
      ('3', '10',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('3', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('4', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4', '5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4', '8',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4', '13',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('4', '16',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('5', '17', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '5',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '8',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '9',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('5', '13',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('7', '18', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('7', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('7', '4',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('7', '19',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('8', '20', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
     ('1', '11', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+    INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('2', '21', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- SQLite
 -- Insert sample data into the ComponentValue table
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
@@ -1095,6 +1212,18 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 
 
+UPDATE Category
+SET CategoryName = '{
+    "en": {
+        "CategoryName": "Other"
+    },
+    "de": {
+        "CategoryName": "Weitere"
+    }
+}'
+
+WHERE CategoryID = 3;
+
      
      UPDATE ComponentValue
 SET ComponentValueName = '{
@@ -1107,6 +1236,41 @@ SET ComponentValueName = '{
 }'
 
 WHERE ComponentValueID = 29;
+
+
+ UPDATE ComponentValue
+SET ComponentValueName = '{
+    "en": {
+        "ComponentValueName": "12 mm"
+    },
+    "de": {
+        "ComponentValueName": "12 mm"
+    }
+}'
+WHERE ComponentValueID = 4;
+
+
+UPDATE ComponentValue
+SET ComponentValueName = '{
+    "en": {
+        "ComponentValueName": "2x AVT-EMVLED-040 + 1x driver"
+    },
+    "de": {
+        "ComponentValueName": "2x AVT-EMVLED-040 + 1x Treiber"
+    }
+}'
+
+WHERE ComponentValueID = 46;
+
+UPDATE Product
+SET ProductPrice = '990'
+
+WHERE ProductID = 7;
+
+UPDATE Product
+SET ProductCurrency = 'EUR'
+
+WHERE ProductID = 5;
 
 
 
@@ -1149,6 +1313,70 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
         "ComponentName": "Variante 2 Netzanschlussstecker"
     }
 }',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('16','{
+    "en": {
+        "ComponentName": "EMVLED 75 Variant"
+    },
+    "de": {
+        "ComponentName": "EMVLED 75 Varianten"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('17','{
+    "en": {
+        "ComponentName": "Lamp EMVLED 24/40"
+    },
+    "de": {
+        "ComponentName": "Lampe EMVLED 24/40"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('18','{
+    "en": {
+        "ComponentName": "USB-device types"
+    },
+    "de": {
+        "ComponentName": "USB-Geräte-Typen"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('19','{
+    "en": {
+        "ComponentName": "Internal Power Supply Option"
+    },
+    "de": {
+        "ComponentName": "Interne Stromversorgungsoptionen"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('20','{
+    "en": {
+        "ComponentName": "Sequencer"
+    },
+    "de": {
+        "ComponentName": "Sequenzer "
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('21','{
+    "en": {
+        "ComponentName": "Thermocam Software"
+    },
+    "de": {
+        "ComponentName": "Thermocam Software"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
 
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
@@ -1321,11 +1549,11 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 
 DELETE FROM ComponentValue
-WHERE ComponentValueID = '5';
+WHERE ComponentValueID = '46';
 
 
 DELETE FROM ProductComponent
-WHERE ComponentID = '13';
+WHERE ComponentID = '6' and ProductID= '2';
 
 
 
@@ -1477,4 +1705,114 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
         "ComponentValueName": "Ohne Stecker"
     }
 }',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('44', '16','{
+    "en": {
+        "ComponentValueName": "Variant 1"
+    },
+    "de": {
+        "ComponentValueName": "Variante 1"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('45', '17','{
+    "en": {
+        "ComponentValueName": "Lamp EMVLED 24"
+    },
+    "de": {
+        "ComponentValueName": "Lampe EMVLED 24"
+    }
+}','1540','EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+ ('46', '17','{
+    "en": {
+        "ComponentValueName": "Lamp EMVLED 40"
+    },
+    "de": {
+        "ComponentValueName": "Lampe EMVLED 40"
+    }
+}','1230','EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('47', '18','{
+    "en": {
+        "ComponentValueName": "1.0 - 2.0"
+    },
+    "de": {
+        "ComponentValueName": "1.0 - 2.0"
+    }
+}','1540','EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+ ('48', '18','{
+    "en": {
+        "ComponentValueName": "3.0"
+    },
+    "de": {
+        "ComponentValueName": "3.0"
+    }
+}','1230','EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('49', '19','{
+    "en": {
+        "ComponentValueName": "15W"
+    },
+    "de": {
+        "ComponentValueName": "15W"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('50', '20','{
+    "en": {
+        "ComponentValueName": "Nt01-08"
+    },
+    "de": {
+        "ComponentValueName": "Nt01-08"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+ ('51', '20','{
+    "en": {
+        "ComponentValueName": "Nt01-16"
+    },
+    "de": {
+        "ComponentValueName": "Nt01-16"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('52', '20','{
+    "en": {
+        "ComponentValueName": "Nt01-64"
+    },
+    "de": {
+        "ComponentValueName": "Nt01-64"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+
+('53', '20','{
+    "en": {
+        "ComponentValueName": "Nt01-72"
+    },
+    "de": {
+        "ComponentValueName": "Nt01-72"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('54', '21','{
+    "en": {
+        "ComponentValueName": "ThermoCam Program"
+    },
+    "de": {
+        "ComponentValueName": "ThermoCam Programm"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
+
 
