@@ -1,14 +1,18 @@
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+  /* Use min-height instead of fixed height */
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  /* Allow body to grow taller than the screen, enabling scrolling */
+  height: auto;
 }
+
 
 .wrapper {
     flex: 1;
@@ -50,6 +54,7 @@ nav ul li a {
 nav ul li a:hover, .dropdown:hover .dropbtn {
     background-color: #555;
 }
+
 
 /* Main Dropdown */
 .dropdown {
@@ -960,3 +965,99 @@ a:hover {
   font-weight: bold;
 }
 
+/* Additional Responsive Overrides */
+@media (max-width: 1024px) {
+  /* Adjust header and logo so they center correctly */
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .logo {
+    padding-left: 0;  /* Remove the 60% padding */
+    margin: 0 auto;
+  }
+  /* Allow the nav items to wrap if needed */
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  /* Make the main content stack vertically */
+  .main-content {
+    flex-direction: column;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Stack navigation vertically */
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Reduce padding in header and main content */
+  .header,
+  .main-content {
+    padding: 10px;
+  }
+  /* Adjust product details to use full width */
+  .product-details,
+  .product-image {
+    max-width: 100%;
+    padding: 0;
+  }
+  /* Reduce gap for product grid */
+  .product-row {
+    gap: 10px;
+  }
+  /* Display 2 products per row */
+  .product-item {
+    flex: 1 1 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  /* For very small screens, stack nav links and adjust padding */
+  nav ul {
+    flex-direction: column;
+  }
+  nav ul li a {
+    padding: 8px 10px;
+  }
+  /* Display one product per row */
+  .product-item {
+    flex: 1 1 100%;
+  }
+}
+
+/* --- Responsive Adjustments for Larger Screens --- */
+
+@media (max-height: 720px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .logo {
+    padding-left: 0;
+    margin: 0 auto;
+  }
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* --- Pinned Footer Patch (append at the end) --- */
+footer {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999; /* Ensures the footer is above other elements */
+  /* Keep your existing background-color, padding, etc. */
+}
+
+/* Reserve space at the bottom so content isn't hidden behind the fixed footer.
+   Match this padding to your footer's approximate height. */
+body {
+  padding-bottom: 60px; /* Adjust to your footer’s height (in px) */
+}

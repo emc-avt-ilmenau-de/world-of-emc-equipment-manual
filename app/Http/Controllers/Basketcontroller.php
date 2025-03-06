@@ -15,7 +15,7 @@ class BasketController extends Controller
     {
         $basket = session()->get('basket', []);
         $locale = app()->getLocale();
-        
+
         // Collect all product, component, & value IDs for optimized DB queries
         $productIDs = [];
         $componentIDs = [];
@@ -42,7 +42,7 @@ class BasketController extends Controller
         $groupedBasket = collect($basket)->map(function ($item) use ($locale, $products, $components, $componentValues) {
             // Localize product name
             $product = $products[$item['product_id']] ?? null;
-            $productName = $product 
+            $productName = $product
                 ? $this->decodeAndLocalize($product->ProductName, $locale, 'ProductName')
                 : 'Unnamed Product';
 
@@ -58,9 +58,15 @@ class BasketController extends Controller
                 if (isset($component['value_id']) && isset($componentValues[$component['value_id']])) {
                     $rawValue = $componentValues[$component['value_id']]->ComponentValueName;
                     $decodedValue = $this->decodeJsonOrRaw($rawValue);
-                    // Log for debugging
-                    Log::info('Decoded ComponentValue', ['raw' => $rawValue, 'decoded' => $decodedValue, 'locale' => $locale]);
-                    $componentValue = $this->getComponentValueName($decodedValue, $locale);
+                    $localizedValue = $this->getComponentValueName($decodedValue, $locale);
+                    // Append any custom object area input if present (detected after a comma)
+                    if (strpos($component['value'], ',') !== false) {
+                        $parts = explode(',', $component['value'], 2);
+                        if (isset($parts[1]) && trim($parts[1]) !== '') {
+                            $localizedValue .= ', ' . trim($parts[1]);
+                        }
+                    }
+                    $componentValue = $localizedValue;
                 } else {
                     $componentValue = is_string($component['value'])
                         ? trim($component['value'])
@@ -136,7 +142,7 @@ class BasketController extends Controller
         Log::error('JSON decoding failed.', ['input' => $jsonString, 'error' => json_last_error_msg()]);
         return [];
     }
-    
+
     // Helper: Attempt to decode JSON; if invalid, return the raw input.
     private function decodeJsonOrRaw($input)
     {
@@ -150,7 +156,7 @@ class BasketController extends Controller
         // Return raw input if not valid JSON
         return $input;
     }
-    
+
     // Helper: Get localized component value name from decoded input (or raw text)
     private function getComponentValueName($input, $locale)
     {

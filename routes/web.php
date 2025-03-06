@@ -22,6 +22,8 @@ use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Basketcontroller;
 use App\Http\Controllers\Ordercontroller;
+use App\Http\Controllers\PartnerController;
+
 
 // Locale switching route
 Route::get('/set-locale/{locale}', function ($locale) {
@@ -63,9 +65,10 @@ Route::get('{locale?}', function ($locale = null) {
 // Other routes without locale constraints
 // Middleware applied to all routes
 Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(function () {
-   
+
     Route::get('/minicam', [MinicamController::class, 'index']);
     Route::get('/downloads', [DownloadsController::class, 'index']);
+    Route::get('/partner', [PartnerController::class, 'index']);
     Route::get('/thermocam', [ThermocamController::class, 'index']);
     Route::get('/lamp100', [Lamp100Controller::class, 'index']);
     Route::get('/lamp75', [Lamp75Controller::class, 'index']);
@@ -76,7 +79,7 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     Route::get('/about', [aboutcontroller::class, 'index'])->name('about');
     Route::get('/product/{id}', [Productcontroller::class, 'show'])->name('product.show');
     Route::post('/product/{id}/submit', [Productcontroller::class, 'submit'])->name('product.submit');
-    
+
     Route::prefix('basket')->group(function () {
         Route::get('/', [Basketcontroller::class, 'show'])->name('basket.show');
         Route::post('/add/{id}', [Basketcontroller::class, 'add'])->name('basket.add');
@@ -85,12 +88,12 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     });
 
     // New order submission routes
-Route::post('/order/submit', [Ordercontroller::class, 'submit'])->name('order.submit');
-Route::get('/order/customer-form', [Productcontroller::class, 'showCustomerForm'])->name('order.customerForm');
-Route::post('/order/customer-submit', [Productcontroller::class, 'submitCustomerDetails'])->name('order.customerSubmit');
-    
-    
- // Other routes...
+    Route::post('/order/submit', [Ordercontroller::class, 'submit'])->name('order.submit');
+    Route::get('/order/customer-form', [Productcontroller::class, 'showCustomerForm'])->name('order.customerForm');
+    Route::post('/order/customer-submit', [Productcontroller::class, 'submitCustomerDetails'])->name('order.customerSubmit');
+
+
+    // Other routes...
 });
 
 
@@ -121,5 +124,3 @@ Route::get('/{any}', function () {
     // Redirect back to the previous page
     return redirect()->back();
 });*/
-
-
