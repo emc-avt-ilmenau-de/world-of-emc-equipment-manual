@@ -445,7 +445,10 @@
                 </div>
             </div>
             <br>
-            <button href="{{ route('home') }}">{{ __('messages.back_to_products') }}</button>
+            <button type="button" onclick="window.location.href='{{ route('home') }}'">
+                {{ __('messages.back_to_products') }}
+            </button>
+
         </div>
 
 
