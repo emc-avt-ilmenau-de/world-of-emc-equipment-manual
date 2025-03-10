@@ -197,7 +197,135 @@ INSERT INTO Product (
     CURRENT_TIMESTAMP
 );
 
-
+-- SQLite
+-- Insert sample data into the Product table Cam Controller
+INSERT INTO Product (
+    ProductID,
+    CategoryID,
+    ProductName,
+    ProductMiniDescription,
+    ProductDescription,
+    ProductPrice,
+    ProductCurrency,
+    ProductHomeImagePath,
+    ProductMultimediaPath,
+    created_at,
+    updated_at
+) VALUES (
+    '9',
+    '1',
+    '{
+    "en": {
+        "ProductName": "CamControl"
+    },
+    "de": {
+        "ProductName": "CamControl"
+    }
+}',
+   '{
+    "en": {
+        "ProductMiniDescription": "AVT EMC CamControl Control unit for high resolution (UHD) and thermal cameras for EMC- and test laboratories, as well as general applications."
+    },
+    "de": {
+        "ProductMiniDescription": "AVT EMC CamControl Steuergerät für hochauflösende (UHD) und Wärmebildkameras für EMV- und Prüflabore, sowie für allgemeine Anwendungen."
+    }
+}', 
+    '{"en":{"Features":
+     [
+        "Control unit for AVT cameras in the visual and infrared wavelength range",
+        "Controls up to or one 4K MiniCam and one2 AVT EMC 4K MiniCams ThermoCam or 2 ThermoCams with USB3 fiber line",
+        "Small housing in (12,5 x10,5 x 5 cm)smart design (12,5 x10,5 x 5 cm)",
+        "Output to HDMI monitors with FullHD resolution (4K resolution option)",
+        "4.3 inch on deviceIPS touch display on device",
+        "LEDs for power and connected cameras (Cam 1, Cam 2)",
+        "Power connection via USB-C plug (5 V/2,5 A)",
+        "Automatic detection of connected cameras",
+        "Realization of camera functions (pan/tilt/zoom/resolution/ compression/brightness/contrast/temperature etc.)"
+    ],
+    "Options": [
+        "Mouse and keyboard connection",
+        "Ethernet connection to PC or Laptop"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Steuergerät für AVT-Kameras im visuellen und infraroten Wellenlängenbereich",
+        "Steuert bis zu oder eine 4K MiniCam und eine2 AVT EMC 4K MiniCams ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
+        "Kleines Gehäuse im (12,5 x10,5 x 5 cm)schicken Design (12,5 x10,5 x 5 cm)",
+        "Ausgabe an HDMI-Monitore mit FullHD-Auflösung (4K-Auflösung optional)",
+        "4,3 Zoll auf dem GerätIPS-Touch-Display auf dem Gerät",
+        "LEDs für Stromversorgung und angeschlossene Kameras (Cam 1, Cam 2)",
+        "Stromanschluss über USB-C-Stecker (5 V/2,5 A)",
+        "Automatische Erkennung von angeschlossenen Kameras",
+        "Realisierung von Kamerafunktionen (Schwenken/Neigen/Zoomen/Auflösung/Komprimierung/Helligkeit/Kontrast/Temperatur usw.)"
+    ],
+    "Optionen:": [
+        "Anschluss von Maus und Tastatur",
+        "Ethernet-Anschluss an PC oder Laptop"
+    ]
+    }
+    }' ,
+    00,
+    'EUR',
+    'Frontend/images/camcontrol.png',
+    '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\CamControl01_001.png",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\CamControl01_002.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\CamControl01.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\CamControl01_001.png",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\CamControl01_002.png",
+            "caption": "German caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\CamControl01.mp4",
+            "caption": "German caption"
+        }
+    }
+}',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
 
 -- SQLite
 -- Insert sample data into the Product table Lamp EMVLED 100
@@ -1018,18 +1146,29 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 }',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
+     UPDATE Category
+SET CategoryName = '{
+    "en": {
+        "CategoryName": "LED Lamp"
+    },
+    "de": {
+        "CategoryName": "LED Leuchte"
+    }
+}'
+WHERE CategoryID = 2;
+
 
      UPDATE Component
 SET ComponentName = '{
     "en": {
-        "ComponentName": "Reflector"
+        "ComponentName": "ThermoCam Software"
     },
     "de": {
-        "ComponentName": "Reflektor"
+        "ComponentName": "ThermoCam Software"
     }
 }'
 
-WHERE ComponentID = 9;
+WHERE ComponentID = 21;
 
 
 
@@ -1617,6 +1756,54 @@ SET ComponentMultimediaPath = '{"en":{
     }
 }'
 WHERE ComponentID = 1;
+
+
+
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+     [
+        "4K Camera for EMC labs and test fields with high interference immunity",
+        "Different resolutions selectable (640 x 360 up to 3840 x 2160)",
+        "Pan/Tilt/Zoom inside camera controlled by software",
+        "Easy to use in hardware and software",
+        "High quality vision sensor",
+        "USB Video Class (UVC) compliant",
+        "Data transmission with optical fibers (USB 3.0)",
+        "Small housing in slim design",
+        "High field immunity > 200 V/m"
+    ],
+    "Options": [
+        "Integrated rechargeable battery (5 Ah)",
+        "Optic lens for different angles"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC4K_MiniCam_Flyer_en_v1_02.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "4K Kamera für EMV Labore und Prüffelder mit hoher Störfestigkeit",
+        "Unterschiedliche Auflösungen wählbar (640 x 360 bis zu 3840 x 2160)",
+        "Schwenken/Neigen/Zoomen in der Kamera, gesteuert durch Software",
+        "Einfache Nutzung von Hardware und Software",
+        "Hochwertiger Vision-Sensor",
+        "USB Video Class (UVC) kompatibel",
+        "Datenübertragung mit Lichtwellenleitern (USB 3.0)",
+        "Kompaktes Gehäuse in schlankem Design",
+        "Hohe Störfestigkeit > 200 V/m"
+    ],
+    "Optionen:": [
+        "Integrierter Akkumulator (5 Ah)",
+        "Andere Brennweiten der Objektive"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC4K_MiniCam_Flyer_de_v1_03.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 1;
 
 DROP TABLE IF EXISTS OrderItem;
 

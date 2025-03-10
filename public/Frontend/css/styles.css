@@ -389,6 +389,7 @@ a:hover {
   padding-bottom: 80%; /* Decreased from 56.25% for a shorter height */
   object-fit: cover;
 }
+
 .mySlide image {
   position: absolute;
   top: 0;

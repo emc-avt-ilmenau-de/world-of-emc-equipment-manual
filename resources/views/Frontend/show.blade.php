@@ -23,7 +23,7 @@
                         Your browser does not support the video tag.
                     </video>
                     @else
-                    <img src="{{ asset(str_replace('\\', '/', $media['path'])) }}" style="width:80%">
+                    <img src="{{ asset(str_replace('\\', '/', $media['path'])) }}" style="width:100%; height: 600px;">
                     @endif
                     <div class="text">{{ $media['caption'] }}</div>
                 </div>
@@ -38,16 +38,22 @@
             <h2>{{ $product->minidescription }}</h2>
 
             <!-- Features, Options, Additional Services, and Warranty sections -->
-            @foreach(['Features', 'Eigenschaften:', 'Options', 'Optionen:', 'Additional services', 'Zusätzliche Dienstleistungen:', 'Warranty', 'Garantie:'] as $section)
+            @foreach(['Features', 'Eigenschaften:', 'Options', 'Optionen:', 'Flyer Link', 'Flugblatt Link:', 'Additional services', 'Zusätzliche Dienstleistungen:', 'Warranty', 'Garantie:'] as $section)
             @if (isset($product->description[$section]) && !empty($product->description[$section]))
             <h3>{{ __($section) }}</h3>
             <ul>
                 @foreach ($product->description[$section] as $item)
+                @if (filter_var($item, FILTER_VALIDATE_URL))
+                <!-- Check if it's a URL -->
+                <li><a href="{{ $item }}" target="_blank">{{ __('Download Flyer') }}</a></li>
+                @else
                 <li>{{ $item }}</li>
+                @endif
                 @endforeach
             </ul>
             @endif
             @endforeach
+
         </div>
 
         <div class="product-details">
@@ -81,7 +87,7 @@
                         </div>
                         @endforeach
 
-                        @elseif($component->ComponentName === __('Thermocam Software'))
+                        @elseif($component->ComponentName === __('ThermoCam Software'))
                         @foreach($component->componentValues as $value)
                         <div>
                             <input
@@ -445,9 +451,11 @@
                 </div>
             </div>
             <br>
-            <button type="button" onclick="window.location.href='{{ route('home') }}'">
+            <button type="button" onclick="window.location.href=`{{ route('home') }}`;">
                 {{ __('messages.back_to_products') }}
             </button>
+
+
 
         </div>
 
