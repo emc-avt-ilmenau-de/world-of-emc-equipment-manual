@@ -365,47 +365,52 @@ a:hover {
 
 * {box-sizing:border-box}
 
-/* Slideshow container */
+/* Slideshow container - Dynamically adjusts size */
 .slideshow-container {
-  max-width: 1000px;
+  max-width: 1000px; /* Set max width */
+  width: 100%;
   position: relative;
   margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents content from overflowing */
 }
 
-/* Hide the images by default */
-.mySlides  {
+/* Each Slide - Automatically adjusts height based on content */
+.mySlides {
   display: none;
   position: relative;
   width: 100%;
-  height: 0;
-  padding-bottom: 80%; /* Decreased from 56.25% for a shorter height */
+  max-width: 1000px;
+  height: auto; /* Ensures it adapts to content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.mySlides  .fade{
-  display: none;
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 80%; /* Decreased from 56.25% for a shorter height */
-  object-fit: cover;
+/* Ensure images fit properly without stretching */
+.mySlides img {
+  max-width: 100%;  /* Limits width to container */
+  max-height: 90vh; /* Prevents image from being too large */
+  width: auto;      /* Maintains aspect ratio */
+  height: auto;
+  display: block;
+  margin: auto;
+  object-fit: contain; /* Ensures full visibility */
 }
 
-.mySlide image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Ensure videos fit properly without stretching */
+.mySlides video {
+  max-width: 100%;
+  max-height: 90vh; /* Prevents video from being too large */
+  width: auto;
+  height: auto;
+  display: block;
+  margin: auto;
+  object-fit: contain; /* Ensures full visibility */
 }
-.mySlide video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+
 /* Caption text */
 .text {
   color: #131010;
@@ -428,34 +433,42 @@ a:hover {
   top: 0;
 }
 
+/* Navigation buttons */
 .prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto; /* Set to auto to fit content */
-    height: 40px; /* Set a specific height */
-    padding: 0 10px; /* Adjust horizontal padding */
-    color: rgba(36, 14, 14, 0.8); /* Darker color for better visibility */
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 5px; /* Add some border radius */
-    user-select: none;
-    display: flex; /* Use flex to center content */
-    align-items: center; /* Vertically center text */
-    justify-content: center; /* Horizontally center text */
-    background-color: rgba(255, 255, 255, 0.8); /* Background color for visibility */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Optional shadow for depth */
+  cursor: pointer;
+  position: absolute;
+  top: 50%; /* Moves button too high, needs correction */
+  transform: translateY(-50%); /* Centers button properly */
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensures buttons are above images */
+}
+
+/* Adjust left and right positioning */
+.prev {
+  left: 10px; /* Moves button from edge */
 }
 
 .next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
+  right: 10px; /* Moves button from edge */
 }
 
+/* Hover effect */
 .prev:hover, .next:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+
 /* The dots/bullets/indicators */
 .dot {
   cursor: pointer;
@@ -493,20 +506,24 @@ a:hover {
     max-width: 100%;
     max-height: 100%;
 }
-
 .popup-component {
-    display: none; /* Popup hidden by default */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
-    background: white;
-    overflow: hidden;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px; /* Fixed width */
+  height: 600px; /* Fixed height */
+  max-width: 90%; /* Prevents too large popups */
+  max-height: 90%;
+  background: white;
+  overflow: hidden;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 10px;
 }
+
 
 /* Navigation buttons */
 .popup-prev,

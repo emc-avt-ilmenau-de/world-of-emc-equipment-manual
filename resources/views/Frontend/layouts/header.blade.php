@@ -54,7 +54,7 @@
     </div>
     </li>
     @endif
-    <li><a href="/downloads">{{ __('messages.downloads') }}</a></li>
+    {{--><a href="/downloads">{{ __('messages.downloads') }}</a></li>--}}
     <li><a href="/partner">Our Partners</a></li>
     <li><a href="/basket">{{ __('messages.basket') }}</a></li>
     </ul>

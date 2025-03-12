@@ -161,14 +161,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <source src="${normalizedPath}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            <div class="text"><strong>${media.caption || ""}</strong></div>
+                            <!-- Caption commented out -->
+                            <!-- <div class="text"><strong>${media.caption || ""}</strong></div> -->
                         `;
                     } else {
                         slide.innerHTML = `
                             <img src="${normalizedPath}" alt="Slide ${index + 1}" style="width: 80%;">
-                            <div class="text"><strong>${media.caption || ""}</strong></div>
+                            <!-- Caption commented out -->
+                            <!-- <div class="text"><strong>${media.caption || ""}</strong></div> -->
                         `;
                     }
+                    
 
                     popup_comp_div.appendChild(slide);
                 });
@@ -176,9 +179,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Add navigation buttons dynamically
                 if (!popup_comp_div.querySelector(".popup-close")) {
                     popup_comp_div.innerHTML += `
-                        <button class="popup-close">Close</button>
-                        <button class="popup-prev">Prev</button>
-                        <button class="popup-next">Next</button>
+                        <button class="popup-close">✖</button>
+                        <button class="popup-prev">◀</button>
+                        <button class="popup-next">▶</button>
+
                     `;
                 }
 
@@ -795,4 +799,27 @@ function checkObjectAreaInput(selectedValue, componentID) {
     });
     
     
+    
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
+    
+    function updateCursor() {
+        const currentSlide = document.querySelector(".mySlides.active"); // Get current active slide
+        if (currentSlide) {
+            if (currentSlide.querySelector("img")) {
+                prevBtn.style.cursor = "pointer";
+                nextBtn.style.cursor = "pointer";
+            } else if (currentSlide.querySelector("video")) {
+                prevBtn.style.cursor = "pointer"; // Ensure video doesn't block click
+                nextBtn.style.cursor = "pointer";
+            } else {
+                prevBtn.style.cursor = "default";
+                nextBtn.style.cursor = "default";
+            }
+        }
+    }
+    
+    // Run this function whenever the slide changes
+    document.addEventListener("DOMContentLoaded", updateCursor);
+    document.addEventListener("slideChange", updateCursor); // Custom event for slide change
     

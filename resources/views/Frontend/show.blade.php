@@ -17,15 +17,16 @@
                 <div class="mySlides fade">
                     <div class="numbertext">{{ $loop->iteration }} / {{ count($product->multimedia) }}</div>
                     @if (strpos($media['path'], '.mp4') !== false)
-                    <video width="1000" height="644" controls>
+                    <video style="max-width: 100%; height: auto;" controls>
                         <source src="{{ asset(str_replace('\\', '/', $media['path'])) }}" type="video/mp4">
                         <source src="{{ asset(str_replace('\\', '/', $media['path'])) }}" type="video/ogg">
                         Your browser does not support the video tag.
                     </video>
                     @else
-                    <img src="{{ asset(str_replace('\\', '/', $media['path'])) }}" style="width:100%; height: 600px;">
+                    <img src="{{ asset(str_replace('\\', '/', $media['path'])) }}"
+                        style="width: 100%; height: auto; max-height: 600px;">
                     @endif
-                    <div class="text">{{ $media['caption'] }}</div>
+                    <!-- <div class="text">{{ $media['caption'] }}</div>-->
                 </div>
                 @endforeach
                 @else
@@ -38,7 +39,7 @@
             <h2>{{ $product->minidescription }}</h2>
 
             <!-- Features, Options, Additional Services, and Warranty sections -->
-            @foreach(['Features', 'Eigenschaften:', 'Options', 'Optionen:', 'Flyer Link', 'Flugblatt Link:', 'Additional services', 'Zusätzliche Dienstleistungen:', 'Warranty', 'Garantie:'] as $section)
+            @foreach(['Features', 'Eigenschaften:', 'Options', 'Optionen:' , 'Additional services', 'Zusätzliche Dienstleistungen:', 'Warranty', 'Garantie:', 'Flyer Link', 'Flugblatt Link:'] as $section)
             @if (isset($product->description[$section]) && !empty($product->description[$section]))
             <h3>{{ __($section) }}</h3>
             <ul>

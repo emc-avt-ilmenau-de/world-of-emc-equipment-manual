@@ -45,7 +45,39 @@ return [
     'right_reserved' => ' All rights reserved AVT GmbH.',
     'order_summary' => 'Order Summary',
     'order_summary1' => 'Here is your order summary:',
-    'thank_you' => 'Thank You'
+    'thank_you' => 'Thank You',
+    'Impressum' => 'Imprint',
+    'Copyright' => 'Copyright',
+    'Conditions_of_use' => 'Conditions of use',
+    'about-content' => 'We are your partner for',
+    'about-content1' => [
+        "Electronic development",
+        "FPGA Design",
+        "IP-Core development",
+        "Image processing",
+        "Special lighting",
+        "Großer Temperaturbereich",
+        "Development of special solutions",
+        "EMC products (camera, lighting)",
+        "Consulting and training courses "
+    ],
 
+    'impressum' => [
+        "AVT GmbH",
+        "Automatisierungs- und Verfahrenstechnik",
+        "Am Hammergrund 1",
+        "98693 Ilmenau",
+        "Germany",
+        "Managing Director: Dr.-Ing. Jörg Pospiech",
+        "Tel.: +49 (0) 3677 6479-0",
+        "Fax: +49 (0) 3677 6479-69",
+        "E-Mail: info@avt-ilmenau.de",
+        "Homepage: www.avt-ilmenau.de",
+        "Amtsgericht Jena",
+        "HRB 300072",
+        "USt.-IdNr. according to § 27 a of the Value Added Tax Act: DE171084388"
+    ],
+    'copyright' => "The copyright owner of these web pages is AVT GmbH. Reproduction of data, content, and elements of these web pages without obtaining prior written permission from AVT GmbH is expressly prohibited. Some content is provided to the user at no charge. The material is subject to the terms and conditions that are part of this website.",
+    'conditions-of-use' => "AVT GmbH Ilmenau makes the content on these web pages available to customers and interested parties. They serve as information about services and products of AVT GmbH Ilmenau. AVT GmbH Ilmenau strives to ensure that there are no errors in the content provided on these web pages. We reserve the right to make changes, and AVT GmbH Ilmenau is not liable for any errors. These web pages may contain links to websites whose content is not necessarily authorized or continuously monitored by AVT GmbH Ilmenau. AVT GmbH Ilmenau assumes no responsibility whatsoever for the content on the websites of third-party providers. Some content is provided to the user at no charge. This material is subject to the terms and conditions that are part of this website. AVT GmbH Ilmenau assumes no liability whatsoever for the function, usability, and completeness of the data, software, and documentation provided. Should you have further questions about the use of our web pages, then please contact us via email at info@avt-ilmenau.de.",
 
 ];

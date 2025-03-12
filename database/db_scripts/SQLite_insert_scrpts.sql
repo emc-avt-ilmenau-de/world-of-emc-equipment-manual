@@ -1624,38 +1624,38 @@ INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
         ('3','Other',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
-UPDATE Component
-SET ComponentMultimediaPath = '{"en":{
+UPDATE Product
+SET ProductMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\usb.jpg",
+            "path": "Frontend\\images\\Videovorlage_EMV_EMV40.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "path": "Frontend\\images\\Videovorlage_EMV_EMV40a.png",
             "caption": "English caption"
         },
         "video1": {
-            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\usb.jpg",
+            "path": "Frontend\\images\\Videovorlage_EMV_EMV40.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\EMV USB Konverter – AVT GmbH.png",
+            "path": "Frontend\\images\\Videovorlage_EMV_EMV40a.png",
             "caption": "German caption"
         },
         "video1": {
-            "path": "Frontend\\images\\avt_usb_converter.mp4",
+            "path": "Frontend\\images\\avt_emvled_540p.mp4",
             "caption": "German caption"
         }
     }
 }'
-WHERE ComponentID = 3;
+WHERE ProductID = 5;
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1762,15 +1762,15 @@ WHERE ComponentID = 1;
 
 UPDATE Product
 SET ProductDescription =  '{"en":{"Features":
-     [
-        "4K Camera for EMC labs and test fields with high interference immunity",
-        "Different resolutions selectable (640 x 360 up to 3840 x 2160)",
-        "Pan/Tilt/Zoom inside camera controlled by software",
-        "Easy to use in hardware and software",
-        "High quality vision sensor",
-        "USB Video Class (UVC) compliant",
-        "Data transmission with optical fibers (USB 3.0)",
-        "Small housing in slim design",
+    [
+        "LWIR Camera for EMC labs and test fields with high interference imunity",
+        "Different resolutions",
+        "Selectable focal length",
+        "Selectable frame rate",
+        "Wide thermal wavelength range",
+        "Wide temperature range",
+        "Data transmission with optical fibers",
+        "Compact housing in slim design",
         "High field immunity > 200 V/m"
     ],
     "Options": [
@@ -1804,6 +1804,343 @@ SET ProductDescription =  '{"en":{"Features":
     }
     }'
 WHERE ProductID = 1;
+
+
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+     [
+        "LWIR Camera for EMC labs and test fields with high interference imunity",
+        "Different resolutions",
+        "Selectable focal length",
+        "Selectable frame rate",
+        "Wide thermal wavelength range",
+        "Wide temperature range",
+        "Data transmission with optical fibers",
+        "Compact housing in slim design",
+        "High field immunity > 200 V/m"
+    ],
+    "Options": [
+        "Integrated rechargeable battery (5 Ah)",
+        "Optic lens for different angles"
+    ],
+     "Flyer Link": [
+        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvthermocam_t01_en_v1_2.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "LWIR Kamera für EMV-Labore und Prüffelder mit hoher Störfestigkeit",
+        "Unterschiedliche Auflösungen",
+        "Auswählbare Brennweite",
+        "Auswählbare Bildwiederholrate",
+        "Großer thermischer Wellenlängenbereich",
+        "Großer Temperaturbereich",
+        "Datenübertragung mit Lichtwellenleitern",
+        "Kompaktes Gehäuse in schlankem Design",
+        "Hohe Störfestigkeit > 200 V/m"
+    ],
+    "Optionen:": [
+        "Integrierter Akkumulator (5 Ah)",
+        "Andere Brennweiten der Objektive"
+    ],
+    "Flugblatt Link:": [
+        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvthermocam_t01_de_v1_2.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 2;
+
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+     [
+        "Control unit for AVT cameras in the visual and infrared wavelength range",
+        "Controls up to or one 4K MiniCam and one2 AVT EMC 4K MiniCams ThermoCam or 2 ThermoCams with USB3 fiber line",
+        "Small housing in (12,5 x10,5 x 5 cm)smart design (12,5 x10,5 x 5 cm)",
+        "Output to HDMI monitors with FullHD resolution (4K resolution option)",
+        "4.3 inch on deviceIPS touch display on device",
+        "LEDs for power and connected cameras (Cam 1, Cam 2)",
+        "Power connection via USB-C plug (5 V/2,5 A)",
+        "Automatic detection of connected cameras",
+        "Realization of camera functions (pan/tilt/zoom/resolution/ compression/brightness/contrast/temperature etc.)"
+    ],
+    "Options": [
+        "Mouse and keyboard connection",
+        "Ethernet connection to PC or Laptop"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Steuergerät für AVT-Kameras im visuellen und infraroten Wellenlängenbereich",
+        "Steuert bis zu oder eine 4K MiniCam und eine2 AVT EMC 4K MiniCams ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
+        "Kleines Gehäuse im (12,5 x10,5 x 5 cm)schicken Design (12,5 x10,5 x 5 cm)",
+        "Ausgabe an HDMI-Monitore mit FullHD-Auflösung (4K-Auflösung optional)",
+        "4,3 Zoll auf dem GerätIPS-Touch-Display auf dem Gerät",
+        "LEDs für Stromversorgung und angeschlossene Kameras (Cam 1, Cam 2)",
+        "Stromanschluss über USB-C-Stecker (5 V/2,5 A)",
+        "Automatische Erkennung von angeschlossenen Kameras",
+        "Realisierung von Kamerafunktionen (Schwenken/Neigen/Zoomen/Auflösung/Komprimierung/Helligkeit/Kontrast/Temperatur usw.)"
+    ],
+    "Optionen:": [
+        "Anschluss von Maus und Tastatur",
+        "Ethernet-Anschluss an PC oder Laptop"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 9;
+
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+      [
+        "LED light for EMC laboratories and testfield with 100 W output",
+        "High luminous flux from 10,000 lm for one luminaire",
+        "High color rendering index Ra (CRI) 90 to 97 (option)",
+        "High efficiency, therefore low heat load",
+        "Lowest electrical and electromagnetic interference (noise limit)",
+        "Selectable light color (2700 K - 4000 K)",
+        "Selectable opening angle (22° - 80°) of the reflectors",
+        "Input voltage range (220 - 240 V~/ 50 Hz, deviating optional)",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Dimmable (10... 100 %)",
+        "Higher outputs (>100... 200 W / 10 000... 25 000 lm)"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED100-Flyer_de_v1_05.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "LED-Leuchte für EMV-Labore und Prüffelder mit 100 W Leistung",
+        "Hoher Lichtstrom ab 10.000 lm für eine Leuchte",
+        "Hoher Farbwiedergabewert Ra (CRI) 90 bis 97 (Option)",
+        "Hohe Effizienz, dadurch geringe Wärmebelastung",
+        "Geringste elektrische und elektromagnetische Störungen (Rauschgrenze)",
+        "Auswählbare Lichtfarbe (2700 K - 4000 K)",
+        "Auswählbarer Öffnungswinkel (22° - 80°) der Reflektoren",
+        "Eingangsspannungsbereich (220 - 240 V~/ 50 Hz, abweichend optional)",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Dimmbar (10... 100 %)",
+        "Höhere Leistungen (>100... 200 W / 10 000... 25 000 lm)"
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED100-Flyer_de_v1_05.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 3;
+
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+      [
+        "LED light for EMC laboratories and testfield with 75 W output",
+        "High luminous flux from 10,000 lm for one luminaire",
+        "High color rendering index Ra (CRI) 90 to 97 (option)",
+        "High efficiency, therefore low heat load",
+        "Lowest electrical and electromagnetic interference (noise limit)",
+        "Selectable light color (2700 K - 4000 K)",
+        "Selectable opening angle (15° - 80°) of the reflectors",
+        "Input voltage range (220 - 240 V~/ 50 Hz, deviating optional)",
+        "Slim design - perfect fluorescent lamp replacement",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Dimmable (10... 100 %)",
+        "Higher outputs (>100... 200 W / 10 000... 25 000 lm)"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ]
+,
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED75-Flyer_de_v1_05.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+      [
+        "LED-Leuchte für EMV-Labore und Prüffelder mit 75 W Leistung",
+        "Hoher Lichtstrom ab 10.000 lm für eine Leuchte",
+        "Hoher Farbwiedergabewert Ra (CRI) 90 bis 97 (Option)",
+        "Hohe Effizienz, dadurch geringe Wärmebelastung",
+        "Geringste elektrische und elektromagnetische Störungen (Rauschgrenze)",
+        "Auswählbare Lichtfarbe (2700 K - 4000 K)",
+        "Auswählbarer Öffnungswinkel (15° - 80°) der Reflektoren",
+        "Eingangsspannungsbereich (220 - 240 V~/ 50 Hz, abweichend optional)",
+        "Schlankes Design - perfekter Leuchtstofflampenersatz",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Dimmbar (10... 100 %)",
+        "Höhere Leistungen (>100... 200 W / 10 000... 25 000 lm)"
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED75-Flyer_de_v1_05.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 4;
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+      [
+        "LED light for EMC laboratories and testfield with up to 40 W output",
+        "High luminous flux up to over 4000 lm each lamp",
+        "High color rendering index Ra (CRI) 90 to 97 (option)",
+        "High efficiency, therefore low heat load",
+        "Lowest electrical and electromagnetic interference (noise limit)",
+        "Selectable light color (2700 K - 5000 K)",
+        "Selectable opening angle (15° - 80°) of the reflectors",
+        "Supply voltage for driver range 230 VAC (optional different)",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Dimmable (10... 100 %)",
+        "Different power"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED024_40-Flyer_en_v1_00.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+      [
+        "LED-Leuchte für EMV-Labore und Prüffeld mit bis zu 40 W Leistung",
+        "Hoher Lichtstrom bis zu über 4000 lm pro Lampe",
+        "Hoher Farbwiedergabewert Ra (CRI) 90 bis 97 (Option)",
+        "Hohe Effizienz, dadurch geringe Wärmebelastung",
+        "Geringste elektrische und elektromagnetische Störungen (Rauschgrenze)",
+        "Auswählbare Lichtfarbe (2700 K - 5000 K)",
+        "Auswählbarer Öffnungswinkel (15° - 80°) der Reflektoren",
+        "Versorgungsspannung für Treiberbereich 230 VAC (optional abweichend)",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Dimmbar (10... 100 %)",
+        "Unterschiedliche Leistung"
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED024_40-Flyer_en_v1_00.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 5;
+
+UPDATE Product
+SET ProductDescription =  '{"en":{"Features":
+        [
+        "Control of highly precise processes with FPGA technology",
+        "From 8 to 72 output trigger channels",
+        "Good compatibility with devices because of optical and electrical 12V outputs",
+        "Channel output as trigger signal and inverted trigger signal",
+        "Synchronization of the trigger signals with a reference variable or external signal",
+        "Switches for start, reset, standby and safety circuit",
+        "Comfortable operation with rotary encoder and graphic display",
+        "Connection of an external HD monitor possible",
+        "Possibility of control by PC software via Ethernet or RS232",
+        "Minimal installation effort, no software maintenance",
+        "Saving and retrieval of parameters directly on the sequencer",
+        "Devices can be cascaded",
+        "Adjustable repeat of sequences",
+        "Freely programmable trigger programs",
+        "19″ rack mount",
+        "Developed and manufactured in Germany"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_NT01-Flyer_en_v1_02.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+       [
+        "Steuern hochgenauer Abläufe mit FPGA-Technik",
+        "Ausgabe von 8 bis zu 72 Triggerkanälen",
+        "Gute Kompatibilität mit Geräten durch optische und elektrische 12V Ausgäng",
+        "Kanalausgabe als Triggersignal und invertiertes Triggersignal",
+        "Synchronisation der Triggersignale mit einer Bezugsgröße oder externen Signal",
+        "Interner Zero Crossing Detector (ZCD)",
+        "Schalter für Start, Reset, Bereitschaft und Sicherheitskreis",
+        "Komfortable Bedienung mit Drehgeber und Grafikdisplay",
+        "Anschluss eines externen HD-Monitors möglich",
+        "Gerät kann autark ohne PC verwendet werden",
+        "Möglichkeit der Steuerung per PC-Software über Ethernet oder RS232",
+        "Geringer Installationsaufwand, keine Softwarepflege",
+        "Speichern und Abrufen von Parametern direkt am Sequenzer",
+        "Geräte kaskadierbar",
+        "Einstellbare Wiederholungen von Sequenzen",
+        "Freie programmierbarkeit der Triggerprogramme",
+        "19″ Rackeinbau",
+        "Deutsches Produkt"
+    ],
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2021/12/nt01_flyer_de.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 8;
+
+
+
 
 DROP TABLE IF EXISTS OrderItem;
 
