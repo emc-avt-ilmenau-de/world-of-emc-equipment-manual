@@ -46,6 +46,7 @@ return [
     'order_summary' => 'Zusammenfassung der Bestellung',
     'order_summary1' => 'Hier ist die Zusammenfassung Ihrer Bestellung:',
     'thank_you' => 'Vielen Dank',
+    'Our_Partners' => 'Unsere Partner',
     'about-content' => 'Wir sind Ihr Partner für',
     'Impressum' => 'Impressum',
     'Copyright' => 'Copyright',
@@ -55,7 +56,7 @@ return [
         "FPGA Design",
         "IP-Core Entwicklung",
         "Bildverarbeitung",
-        "Sonderbeleuchtungen",
+        "Hochwertige Sonderbeleuchtungen (Museen, Schlösser, Kirchen)",
         "Großer Temperaturbereich",
         "Entwicklung von Speziallösungen",
         "EMV-Produkte (Kamera, Beleuchtung)",
@@ -75,7 +76,7 @@ return [
         "HRB 300072",
         "USt.-IdNr. gemäss § 27 a Umsatzsteuergesetz: DE171084388"
     ],
-    'copyright' => "Der Urheber dieser Seiten ist die AVT GmbH Ilmenau. Die Reproduktion von Daten, Inhalten und Elementen dieser Seiten ist ohne vorher eingeholte, schriftliche Genehmigung der AVT GmbH Ilmenau ausdrücklich untersagt. Einige Inhalte werden dem Nutzer kostenlos zur Verfügung gestellt. Dieses Material unterliegt den beigefügten Nutzungsbedingungen.",
+    'copyright1' => "Der Urheber dieser Seiten ist die AVT GmbH Ilmenau. Die Reproduktion von Daten, Inhalten und Elementen dieser Seiten ist ohne vorher eingeholte, schriftliche Genehmigung der AVT GmbH Ilmenau ausdrücklich untersagt. Einige Inhalte werden dem Nutzer kostenlos zur Verfügung gestellt. Dieses Material unterliegt den beigefügten Nutzungsbedingungen.",
 
     'conditions-of-use' => "Die AVT GmbH Ilmenau stellt die auf diesen Web-Seiten eingestellten Inhalte Kunden und Interessenten zur Verfügung. Sie dienen der Information über Leistungen und Produkte der AVT GmbH Ilmenau. Die AVT GmbH Ilmenau ist bemüht, Fehlerfreiheit der auf diesen Webseiten wiedergegebenen Inhalte sicherzustellen. Irrtümer und Änderungen vorbehalten. Diese Webseiten können Verknüpfungen (Links) zu Webseiten enthalten, deren Inhalte von der AVT GmbH Ilmenau nicht notwendigerweise autorisiert sind bzw. fortlaufend kontrolliert werden. Für die Inhalte auf Seiten fremder Anbieter übernimmt die AVT GmbH Ilmenau keinerlei Verantwortung. Einige Inhalte werden dem Nutzer kostenlos zur Verfügung gestellt. Dieses Material unterliegt den beigefügten Nutzungsbedingungen. Die AVT GmbH Ilmenau übernimmt keinerlei Haftung für die Funktion, Verwendbarkeit und Vollständigkeit der zur Verfügung gestellten Daten, Software und Dokumentation. Sollten Sie weitere Fragen zur Nutzung unserer Seiten haben, so richten Sie diese bitte per Mail an info@avt-ilmenau.de."
 

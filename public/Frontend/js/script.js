@@ -765,12 +765,15 @@ function checkObjectAreaInput(selectedValue, componentID) {
     // Function to Show/Hide Individual Components
     function toggleComponentVisibility(componentID, triggerIDs) {
         const componentSection = document.querySelector(`.component-section[data-component-id="${componentID}"]`);
+        console.log("Checking component", componentID, componentSection);
         
         if (componentSection) {
-            const isTriggered = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
-                .some(input => triggerIDs.includes(parseInt(input.value)));
+            const checkedInputs = Array.from(document.querySelectorAll('input[type="radio"]:checked'));
+            console.log("Checked Inputs:", checkedInputs.map(input => input.value));
+            
+            const isTriggered = checkedInputs.some(input => triggerIDs.includes(parseInt(input.value)));
+            console.log("isTriggered for component", componentID, ":", isTriggered);
     
-            // If not triggered => hide and clear inputs
             if (!isTriggered) {
                 clearInputs(componentSection);
             }
@@ -778,6 +781,7 @@ function checkObjectAreaInput(selectedValue, componentID) {
             componentSection.style.display = isTriggered ? 'block' : 'none';
         }
     }
+    
     
     // Helper function to clear all inputs in a hidden section
     function clearInputs(sectionElement) {
@@ -800,26 +804,26 @@ function checkObjectAreaInput(selectedValue, componentID) {
     
     
     
-    const prevBtn = document.querySelector(".prev");
-    const nextBtn = document.querySelector(".next");
+   
     
-    function updateCursor() {
-        const currentSlide = document.querySelector(".mySlides.active"); // Get current active slide
-        if (currentSlide) {
-            if (currentSlide.querySelector("img")) {
-                prevBtn.style.cursor = "pointer";
-                nextBtn.style.cursor = "pointer";
-            } else if (currentSlide.querySelector("video")) {
-                prevBtn.style.cursor = "pointer"; // Ensure video doesn't block click
-                nextBtn.style.cursor = "pointer";
-            } else {
-                prevBtn.style.cursor = "default";
-                nextBtn.style.cursor = "default";
-            }
-        }
-    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab-link");
+        const contents = document.querySelectorAll(".tab-content");
     
-    // Run this function whenever the slide changes
-    document.addEventListener("DOMContentLoaded", updateCursor);
-    document.addEventListener("slideChange", updateCursor); // Custom event for slide change
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function () {
+                let target = this.getAttribute("data-target");
     
+                // Remove 'active' class from all tabs
+                tabs.forEach(t => t.classList.remove("active"));
+                this.classList.add("active");
+    
+                // Hide all tab content
+                contents.forEach(content => content.classList.remove("active"));
+    
+                // Show the selected tab content
+                document.getElementById(target).classList.add("active");
+            });
+        });
+    });

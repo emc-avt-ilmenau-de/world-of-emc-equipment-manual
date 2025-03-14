@@ -1158,17 +1158,30 @@ SET CategoryName = '{
 WHERE CategoryID = 2;
 
 
-     UPDATE Component
-SET ComponentName = '{
+ UPDATE ComponentValue
+SET ComponentValueName = '{
     "en": {
-        "ComponentName": "ThermoCam Software"
+        "ComponentValueName": "110 VAC/60 Hz"
     },
     "de": {
-        "ComponentName": "ThermoCam Software"
+        "ComponentValueName": "110 VAC/60 Hz"
     }
 }'
 
-WHERE ComponentID = 21;
+WHERE ComponentValueID = 15;
+
+
+     UPDATE Component
+SET ComponentName = '{
+    "en": {
+        "ComponentName": "Reflector (opening angle)"
+    },
+    "de": {
+        "ComponentName": "Reflektor (Öffnungswinkel)"
+    }
+}'
+
+WHERE ComponentID = 9;
 
 
 
@@ -1206,7 +1219,10 @@ SET ProductName = '{
     }
 }'
 
-WHERE ProductID = 3;
+UPDATE Product
+SET ProductPrice = '2000'
+
+WHERE ProductID = 9;
 
 UPDATE Product
 SET ProductName = '{
@@ -1627,35 +1643,59 @@ INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
 UPDATE Product
 SET ProductMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\Videovorlage_EMV_EMV40.png",
+            "path": "Frontend\\images\\CamControl02_003.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\Videovorlage_EMV_EMV40a.png",
+            "path": "Frontend\\images\\CamControl01_002.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
             "caption": "English caption"
         },
         "video1": {
-            "path": "Frontend\\images\\avt_emvled_540p.mp4",
+            "path": "Frontend\\images\\CamControl01.mp4",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\Videovorlage_EMV_EMV40.png",
+            "path": "Frontend\\images\\CamControl02_003.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\Videovorlage_EMV_EMV40a.png",
+            "path": "Frontend\\images\\CamControl01_002.png",
             "caption": "German caption"
         },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
+            "caption": "English caption"
+        },
         "video1": {
-            "path": "Frontend\\images\\avt_emvled_540p.mp4",
+            "path": "Frontend\\images\\CamControl01.mp4",
             "caption": "German caption"
         }
     }
 }'
-WHERE ProductID = 5;
+WHERE ProductID = 9;
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -1857,10 +1897,10 @@ UPDATE Product
 SET ProductDescription =  '{"en":{"Features":
      [
         "Control unit for AVT cameras in the visual and infrared wavelength range",
-        "Controls up to or one 4K MiniCam and one2 AVT EMC 4K MiniCams ThermoCam or 2 ThermoCams with USB3 fiber line",
-        "Small housing in (12,5 x10,5 x 5 cm)smart design (12,5 x10,5 x 5 cm)",
+        "Controls up to 2 AVT EMC 4K MiniCams or one 4K MiniCam and one ThermoCam or  2 ThermoCams with USB3 fiber line",
+        "Small housing in smart design (12,5 x10,5 x 5 cm)",
         "Output to HDMI monitors with FullHD resolution (4K resolution option)",
-        "4.3 inch on deviceIPS touch display on device",
+        "4.3 inch IPS touch display on device",
         "LEDs for power and connected cameras (Cam 1, Cam 2)",
         "Power connection via USB-C plug (5 V/2,5 A)",
         "Automatic detection of connected cameras",
@@ -1878,10 +1918,10 @@ SET ProductDescription =  '{"en":{"Features":
     "de":{"Eigenschaften:":
      [
         "Steuergerät für AVT-Kameras im visuellen und infraroten Wellenlängenbereich",
-        "Steuert bis zu oder eine 4K MiniCam und eine2 AVT EMC 4K MiniCams ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
-        "Kleines Gehäuse im (12,5 x10,5 x 5 cm)schicken Design (12,5 x10,5 x 5 cm)",
+        "Steuert bis zu 2 AVT EMC 4K MiniCams oder eine 4K MiniCam und eine ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
+        "Kleines Gehäuse im eleganten Design (12,5 x10,5 x 5 cm)",
         "Ausgabe an HDMI-Monitore mit FullHD-Auflösung (4K-Auflösung optional)",
-        "4,3 Zoll auf dem GerätIPS-Touch-Display auf dem Gerät",
+        "4,3 Zoll IPS-Touch-Display auf dem Gerät",
         "LEDs für Stromversorgung und angeschlossene Kameras (Cam 1, Cam 2)",
         "Stromanschluss über USB-C-Stecker (5 V/2,5 A)",
         "Automatische Erkennung von angeschlossenen Kameras",
@@ -1913,8 +1953,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Developed and manufactured in Germany"
     ],
     "Options": [
-        "Dimmable (10... 100 %)",
-        "Higher outputs (>100... 200 W / 10 000... 25 000 lm)"
+        "Dimmable on driver (40... 100%)",
+        "Higher outputs with different drivers"
     ],
     "Additional services":[
         "Cable extensions for LED lamps",
@@ -1942,8 +1982,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Deutsches Produkt"
     ],
     "Optionen:": [
-        "Dimmbar (10... 100 %)",
-        "Höhere Leistungen (>100... 200 W / 10 000... 25 000 lm)"
+        "Dimmbar über Treiber (40... 100%)",
+        "Höhere Leistungen mit verschiedenen Treibern"
     ],
     "Zusätzliche Dienstleistungen:": [
         "Kabelverlängerungen für LED-Leuchten",
@@ -1976,8 +2016,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Developed and manufactured in Germany"
     ],
     "Options": [
-        "Dimmable (10... 100 %)",
-        "Higher outputs (>100... 200 W / 10 000... 25 000 lm)"
+        "Dimmable on driver (40... 100%)",
+        "Higher outputs with different drivers"
     ],
     "Additional services":[
         "Cable extensions for LED lamps",
@@ -2007,8 +2047,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Deutsches Produkt"
     ],
     "Optionen:": [
-        "Dimmbar (10... 100 %)",
-        "Höhere Leistungen (>100... 200 W / 10 000... 25 000 lm)"
+        "Dimmbar über Treiber (40... 100%)",
+        "Höhere Leistungen mit verschiedenen Treibern"
     ],
     "Zusätzliche Dienstleistungen:": [
         "Kabelverlängerungen für LED-Leuchten",
@@ -2039,8 +2079,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Developed and manufactured in Germany"
     ],
     "Options": [
-        "Dimmable (10... 100 %)",
-        "Different power"
+        " Dimmable on driver (40... 100%)",
+        "Higher outputs with different drivers"
     ],
     "Additional services":[
         "Cable extensions for LED lamps",
@@ -2068,8 +2108,8 @@ SET ProductDescription =  '{"en":{"Features":
         "Deutsches Produkt"
     ],
     "Optionen:": [
-        "Dimmbar (10... 100 %)",
-        "Unterschiedliche Leistung"
+        "Dimmbar über Treiber (40... 100%)",
+        "Höhere Leistungen mit verschiedenen Treibern"
     ],
     "Zusätzliche Dienstleistungen:": [
         "Kabelverlängerungen für LED-Leuchten",
@@ -2138,6 +2178,94 @@ SET ProductDescription =  '{"en":{"Features":
     }
     }'
 WHERE ProductID = 8;
+
+UPDATE Product
+SET ProductDescription =  
+    '{"en":{"Features":
+     [
+        "USB 1.0 - 3.0 Converter",
+        "USB-device types 1.0 - 2.0 and 3.0",
+        "Maximum transmission data rate up to 5 Gbit/s",
+        "Full data transparency (no driver dependency)",
+        "Power supply for EUT with 5 V / 3 A /15 W",
+        "Power supply device with 85 - 250 VAC / 47 - 63 Hz",
+        "Data transmission and control with fiber optic cable",
+        "Variants of fiber cable length 10 m / 20 m / 30 m / 50 m / 70 m / 100 m",
+        "High interference immunity > 200 V/m",
+        "Developed and manufactured in Germany"
+    ]
+
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "USB 1.0 - 3.0 Konverter",
+        "Gerätetypen für USB 1.0 - 2.0 und 3.0",
+        "Maximale Übertragungsgeschwindigkeit bis 5 Gbit/s",
+        "Volle Datentransparenz (keine Treiberabhängigkeit)",
+        "Spannungsversorgung EUT mit 5 V / 3 A /15 W",
+        "Spannungsversorgung Gerät 85 - 250 VAC / 47 - 63 Hz",
+        "Datenübertragung und Steuerung mit Lichtwellenleiter",
+        "Varianten der LWL-Längen 10 m / 20 m / 30 m / 50 m / 70 m / 100 m",
+        "Hohe Störfestigkeit > 200 V/m",
+        "Deutsches Produkt"
+    ]
+    }
+    }'
+WHERE ProductID = 7;
+
+UPDATE Product
+SET ProductDescription =  
+     '{"en":{"Features":
+     [
+        "Driver power 70 W",
+        "Driver EMVC immun and very low emission",
+        "Driver can be installed inside or outside the EMC equipment",
+        "Dimmable on driver (40... 100%)",
+        "Cabling as fixed installation or as 230 V cable with plugs and sockets for LED cabling",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Different housing colors possible (black as standard)",
+        "Different housing forms possible"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations",
+        "EMC-proof camera system with pan-tilt head"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ]
+
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Treiberleistung 70 W",
+        "Treiber EMV-fest (> 100 V/m) und besonders emmisionsarm (Rauschgrenze)",
+        "Treiber kann innerhalb oder außerhalb der EMV-Kabine/Halle eingebaut werden",
+        "Dimmbar über Treiber (40... 100%)",
+        "Verkabelung als Festinstallation oder als 230 V Kabel mit Stecker und Buchsen der LED-Verkabelung",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Verschiedene Gehäusefarben möglich (standardmäßig schwarz)",
+        "Verschiedene Gehäuseformen möglich (abgesetzter Treiber oder mit Leuchte an Halterung)"
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen",
+        "EMV-festes Kamerasystem und IR-Kamerasystem"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ]
+    }
+    }'
+WHERE ProductID = 6;
 
 
 

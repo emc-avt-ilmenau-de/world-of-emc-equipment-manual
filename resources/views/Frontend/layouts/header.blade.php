@@ -55,7 +55,7 @@
     </li>
     @endif
     {{--><a href="/downloads">{{ __('messages.downloads') }}</a></li>--}}
-    <li><a href="/partner">Our Partners</a></li>
+    <li><a href="/partner">{{ __('messages.Our_Partners') }}</a></li>
     <li><a href="/basket">{{ __('messages.basket') }}</a></li>
     </ul>
 

@@ -15,7 +15,7 @@
                 @if (!empty($product->multimedia))
                 @foreach ($product->multimedia as $key => $media)
                 <div class="mySlides fade">
-                    <div class="numbertext">{{ $loop->iteration }} / {{ count($product->multimedia) }}</div>
+                    <div class="numbertext">{{ $loop->iteration }} / {{ count($product->multimedia) }}</div><br><br>
                     @if (strpos($media['path'], '.mp4') !== false)
                     <video style="max-width: 100%; height: auto;" controls>
                         <source src="{{ asset(str_replace('\\', '/', $media['path'])) }}" type="video/mp4">
@@ -56,6 +56,17 @@
             @endforeach
 
         </div>
+
+
+        @if($product->ProductID == 6)
+        <!-- Custom Section for Product 6 -->
+
+        <div class="product-details">
+            <!-- Custom content for product 6 -->
+            <h3>Your Custom Heading for Product 6</h3>
+            <!-- You can include any additional custom HTML or Blade directives here -->
+        </div>
+        @else
 
         <div class="product-details">
             <form id="addToBasketForm" action="{{ route('product.submit', ['id' => $product->ProductID]) }}" method="POST">
@@ -460,7 +471,7 @@
 
         </div>
 
-
+        @endif
 
     </main>
 </div>
