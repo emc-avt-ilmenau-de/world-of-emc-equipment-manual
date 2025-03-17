@@ -1799,6 +1799,26 @@ WHERE ComponentID = 1;
 
 
 
+UPDATE Component
+SET ComponentMultimediaPath = '{
+  "en": {
+    "image1": {
+      "path": "Frontend\\images\\opening_angle01.png",
+      "caption": "English caption"
+    }
+  },
+  "de": {
+    "image1": {
+      "path": "Frontend\\images\\opening_angle01.png"
+    }
+  }
+}'
+
+WHERE ComponentID = 1;
+
+
+
+
 
 UPDATE Product
 SET ProductDescription =  '{"en":{"Features":

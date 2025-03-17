@@ -89,7 +89,14 @@ class BasketController extends Controller
             ];
         })->toArray();
 
-        return view('Frontend.basket', ['basket' => $groupedBasket, 'locale' => $locale]);
+        // Calculate basket total price by summing each item's total_price
+        $basketTotal = collect($groupedBasket)->sum('total_price');
+
+        return view('Frontend.basket', [
+            'basket' => $groupedBasket,
+            'locale' => $locale,
+            'basket_total' => $basketTotal
+        ]);
     }
 
     // Update product quantity in basket

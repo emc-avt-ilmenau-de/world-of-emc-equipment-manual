@@ -63,23 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
 document.addEventListener("DOMContentLoaded", function () {
-    // Slideshow logic scoped within this function
-    let currentSlideIndex = 1; // Scoped to this block
+    let currentSlideIndex = 1;
 
-    function plusSlides(n) {
+    // Expose plusSlides to the global scope
+    window.plusSlides = function(n) {
         showSlides(currentSlideIndex += n);
-    }
+    };
 
-    function currentSlide(n) {
+    // Optionally, if you use currentSlide elsewhere, expose it too:
+    window.currentSlide = function(n) {
         showSlides(currentSlideIndex = n);
-    }
+    };
 
     function showSlides(n) {
         const slides = document.getElementsByClassName("mySlides");
 
-        // Wrap around the slide index if out of range
+        // Wrap around if index is out of range
         if (n > slides.length) {
             currentSlideIndex = 1;
         }
@@ -92,25 +92,15 @@ document.addEventListener("DOMContentLoaded", function () {
             slides[i].style.display = "none";
         }
 
-        // Show the current slide
+        // Display the current slide
         if (slides[currentSlideIndex - 1]) {
             slides[currentSlideIndex - 1].style.display = "block";
         }
     }
 
-    // Event listeners for next/prev buttons
-    document.querySelector(".next")?.addEventListener("click", function () {
-        plusSlides(1);
-    });
-
-    document.querySelector(".prev")?.addEventListener("click", function () {
-        plusSlides(-1);
-    });
-
-    // Initialize slideshow
+    // Initialize the slideshow
     showSlides(currentSlideIndex);
 });
-
 
 
 function checkOther() {
@@ -515,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const additionalComponentsSection = document.getElementById("additionalComponentsSection");
 
     if (!form) {
-        console.warn("Form not found in the DOM.");
+       
         return;
     }
 

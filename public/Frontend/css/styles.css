@@ -1067,9 +1067,9 @@ html, body {
 }
 
 .section-text {
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 20px;
-  color: #333;
+  color: #080808;
   text-align: justify;
 }
 
@@ -1078,6 +1078,7 @@ html, body {
   list-style: none;
   padding-left: 0;
   margin-bottom: 20px;
+ 
 }
 
 .styled-list li {
@@ -1088,9 +1089,9 @@ html, body {
 }
 
 .styled-list1 li {
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 6px;
-  color: #333;
+  color: #0f0f0f;
 }
 
 

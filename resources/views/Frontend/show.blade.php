@@ -63,7 +63,7 @@
 
         <div class="product-details">
             <!-- Custom content for product 6 -->
-            <h3>Your Custom Heading for Product 6</h3>
+            <h2>{{ __('messages.driver_tag1') }}</h2>
             <!-- You can include any additional custom HTML or Blade directives here -->
         </div>
         @else
