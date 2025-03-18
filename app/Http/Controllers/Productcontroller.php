@@ -25,7 +25,7 @@ class ProductController extends Controller
         // Fetch and decode categories
         $categories = Category::all()->map(function ($category) use ($locale) {
             $decoded = $this->decodeJson($category->CategoryName) ?? [];
-            $category->CategoryName = $decoded[$locale]['CategoryName'] 
+            $category->CategoryName = $decoded[$locale]['CategoryName']
                 ?? ($decoded['en']['CategoryName'] ?? 'Unnamed Category');
             return $category;
         });
@@ -47,13 +47,13 @@ class ProductController extends Controller
             $product->ProductMiniDescription = $this->decodeJson($product->ProductMiniDescription) ?? [];
             $product->ProductDescription = $this->decodeJson($product->ProductDescription) ?? [];
 
-            $product->ProductName = $product->ProductName[$locale]['ProductName'] 
+            $product->ProductName = $product->ProductName[$locale]['ProductName']
                 ?? ($product->ProductName['en']['ProductName'] ?? 'Unnamed Product');
 
-            $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription'] 
+            $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription']
                 ?? ($product->ProductMiniDescription['en']['ProductMiniDescription'] ?? 'No description available');
 
-            $product->description = $product->ProductDescription[$locale] 
+            $product->description = $product->ProductDescription[$locale]
                 ?? ($product->ProductDescription['en'] ?? '');
 
             return $product;
@@ -70,7 +70,7 @@ class ProductController extends Controller
         // Fetch and decode categories
         $categories = Category::all()->map(function ($category) use ($locale) {
             $decoded = $this->decodeJson($category->CategoryName) ?? [];
-            $category->CategoryName = $decoded[$locale]['CategoryName'] 
+            $category->CategoryName = $decoded[$locale]['CategoryName']
                 ?? ($decoded['en']['CategoryName'] ?? 'Unnamed Category');
             return $category;
         });
@@ -82,7 +82,7 @@ class ProductController extends Controller
         $showComponent14 = false;
 
         foreach ($product->components as $component) {
-            $component->allowsCustom = in_array($component->ComponentID, ['1','4','5','8','13','19']);
+            $component->allowsCustom = in_array($component->ComponentID, ['1', '4', '5', '8', '13', '19']);
 
             $componentNameDecoded = $this->decodeJson($component->ComponentName);
             $component->ComponentName = $this->getComponentName($componentNameDecoded, $locale);
@@ -104,8 +104,8 @@ class ProductController extends Controller
             }
 
             $component->ComponentMultimediaPath = $this->decodeJson($component->ComponentMultimediaPath);
-            $component->localizedMultimedia = $component->ComponentMultimediaPath[$locale] 
-                ?? $component->ComponentMultimediaPath['en'] 
+            $component->localizedMultimedia = $component->ComponentMultimediaPath[$locale]
+                ?? $component->ComponentMultimediaPath['en']
                 ?? [];
         }
 
@@ -115,12 +115,13 @@ class ProductController extends Controller
             $additionalComponents = $additionalComponents->merge($additionalComponents12);
         }
         if ($showComponent14) {
-            $additionalComponents14 = Component::where('ComponentID', 14)->with('componentValues')->get();
+            $additionalComponents14 = Component::whereIn('ComponentID', [14, 22])->with('componentValues')->get();
+
             $additionalComponents = $additionalComponents->merge($additionalComponents14);
         }
 
         foreach ($additionalComponents as $additionalComponent) {
-            $additionalComponent->allowsCustom = in_array($additionalComponent->ComponentID, [12, 14]);
+            $additionalComponent->allowsCustom = in_array($additionalComponent->ComponentID, [12, 14, 22]);
             $componentNameDecoded = $this->decodeJson($additionalComponent->ComponentName);
             $additionalComponent->ComponentName = $this->getComponentName($componentNameDecoded, $locale);
 
@@ -139,13 +140,13 @@ class ProductController extends Controller
         $product->ProductDescription = $this->decodeJson($product->ProductDescription) ?? [];
         $product->ProductMultimediaPath = $this->decodeJson($product->ProductMultimediaPath) ?? [];
 
-        $product->ProductName = $product->ProductName[$locale]['ProductName'] 
+        $product->ProductName = $product->ProductName[$locale]['ProductName']
             ?? ($product->ProductName['en']['ProductName'] ?? '');
-        $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription'] 
+        $product->minidescription = $product->ProductMiniDescription[$locale]['ProductMiniDescription']
             ?? ($product->ProductMiniDescription['en']['ProductMiniDescription'] ?? 'No mini description available');
-        $product->description = $product->ProductDescription[$locale] 
+        $product->description = $product->ProductDescription[$locale]
             ?? ($product->ProductDescription['en'] ?? 'No description available');
-        $product->multimedia = $product->ProductMultimediaPath[$locale] 
+        $product->multimedia = $product->ProductMultimediaPath[$locale]
             ?? ($product->ProductMultimediaPath['en'] ?? []);
 
         Log::info('Final Additional Components:', $additionalComponents->toArray());
@@ -159,28 +160,28 @@ class ProductController extends Controller
         $totalPrice = $product->ProductPrice;
         $selectedComponents = [];
         $locale = app()->getLocale();
-    
+
         $showAdditionalComponents = false;
         $showComponent14 = false;
-    
+
         // Properly Localized Product Name
         $productNameDecoded = $this->decodeJson($product->ProductName);
-        $product->ProductName = $productNameDecoded[$locale]['ProductName'] 
+        $product->ProductName = $productNameDecoded[$locale]['ProductName']
             ?? ($productNameDecoded['en']['ProductName'] ?? 'Unnamed Product');
-    
+
         foreach ($request->input('components', []) as $componentId => $values) {
             $component = $product->components->firstWhere('ComponentID', $componentId);
             if (!$component) continue;
-    
+
             // Decode component name safely
             $decodedComponentName = $this->decodeJson($component->ComponentName);
-            $componentName = $decodedComponentName[$locale]['ComponentName'] 
-                ?? $decodedComponentName['en']['ComponentName'] 
+            $componentName = $decodedComponentName[$locale]['ComponentName']
+                ?? $decodedComponentName['en']['ComponentName']
                 ?? (is_array($decodedComponentName) && isset(reset($decodedComponentName)['ComponentName'])
                     ? reset($decodedComponentName)['ComponentName']
                     : 'Unknown Component');
             $component->ComponentName = is_string($componentName) ? trim($componentName) : 'Unknown Component';
-            
+
             if (is_array($values)) {
                 foreach ($values as $value) {
                     $this->addComponentValue($component, $value, $selectedComponents, $request, $totalPrice);
@@ -221,13 +222,13 @@ class ProductController extends Controller
                 }
             }
         }
-    
+
         if ($showAdditionalComponents) {
             $this->addAdditionalComponents([12, 15], $request, $selectedComponents, $totalPrice, $locale);
         }
-    
+
         if ($showComponent14) {
-            $this->addAdditionalComponents([14], $request, $selectedComponents, $totalPrice, $locale);
+            $this->addAdditionalComponents([14, 22], $request, $selectedComponents, $totalPrice, $locale);
         }
 
         /*
@@ -257,9 +258,9 @@ class ProductController extends Controller
             ->all();
 
         $identifierCheck = md5($id . json_encode($sortedComponents, JSON_UNESCAPED_UNICODE));
-    
+
         $basket = session()->get('basket', []);
-    
+
         $found = false;
         foreach ($basket as &$item) {
             if ($item['unique_identifier'] === $identifierCheck) {
@@ -278,17 +279,17 @@ class ProductController extends Controller
                 'total_price'      => $totalPrice,
                 'components'       => $selectedComponents,
                 'quantity'         => 1,
-                'unique_identifier'=> $identifierCheck
+                'unique_identifier' => $identifierCheck
             ];
             Log::info("New Product Added to Cart", ['identifier' => $identifierCheck]);
         }
-    
+
         session()->put('basket', $basket);
         Log::info('Final Stored Basket:', ['basket' => session()->get('basket')]);
-    
+
         return redirect()->route('basket.show')->with('success', 'Product added to basket successfully!');
     }
-    
+
     private function addComponentValue($component, $value, &$selectedComponents, $request, &$totalPrice)
     {
         $locale = app()->getLocale();
@@ -300,7 +301,7 @@ class ProductController extends Controller
                 $componentName = $decodedComponentName[$locale]['ComponentName']
                     ?? $decodedComponentName['en']['ComponentName']
                     ?? (is_array($decodedComponentName) && isset(reset($decodedComponentName)['ComponentName'])
-                        ? reset($decodedComponentName)['ComponentName'] 
+                        ? reset($decodedComponentName)['ComponentName']
                         : $component->ComponentName);
 
                 // CHANGED #1: No value_id for typed input
@@ -317,13 +318,13 @@ class ProductController extends Controller
             if ($componentValue) {
                 $decodedValue = $this->decodeJsonOrRaw($componentValue->ComponentValueName);
                 $valueString = is_array($decodedValue)
-                    ? ($decodedValue[$locale]['ComponentValueName'] 
-                        ?? $decodedValue['en']['ComponentValueName'] 
+                    ? ($decodedValue[$locale]['ComponentValueName']
+                        ?? $decodedValue['en']['ComponentValueName']
                         ?? $componentValue->ComponentValueName)
                     : trim($decodedValue);
-    
+
                 $price = $componentValue->ComponentValuePrice ?? 0;
-    
+
                 $decodedComponentName = $this->decodeJson($component->ComponentName);
                 $componentName = $decodedComponentName[$locale]['ComponentName']
                     ?? $decodedComponentName['en']['ComponentName']
@@ -347,13 +348,13 @@ class ProductController extends Controller
         $additionalComponents = Component::whereIn('ComponentID', $componentIDs)
             ->with('componentValues')
             ->get();
-    
+
         foreach ($additionalComponents as $component) {
             $decodedComponentName = $this->decodeJson($component->ComponentName);
             $component->ComponentName = $this->getComponentName($decodedComponentName, $locale);
-    
+
             $additionalValues = $request->input("components.{$component->ComponentID}", []);
-    
+
             if (is_array($additionalValues)) {
                 foreach ($additionalValues as $value) {
                     $this->addComponentValue($component, $value, $selectedComponents, $request, $totalPrice);
@@ -361,7 +362,7 @@ class ProductController extends Controller
             } else {
                 $this->addComponentValue($component, $additionalValues, $selectedComponents, $request, $totalPrice);
             }
-    
+
             if (in_array('Other', (array)$additionalValues)) {
                 $customValue = $request->input("custom_components.{$component->ComponentID}");
                 $existingComponent = collect($selectedComponents)->firstWhere('component_id', $component->ComponentID);
@@ -384,12 +385,12 @@ class ProductController extends Controller
         if (is_array($input)) {
             return $input;
         }
-    
+
         $decoded = json_decode($input, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
             return $decoded;
         }
-    
+
         // Return raw input if not valid JSON
         return $input;
     }
@@ -400,12 +401,12 @@ class ProductController extends Controller
         if (is_array($jsonString)) {
             return $jsonString;
         }
-    
+
         $decoded = json_decode($jsonString, true);
         if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
             return $decoded;
         }
-    
+
         Log::error('JSON decoding failed:', [
             'input' => $jsonString,
             'error' => json_last_error_msg()
@@ -417,11 +418,11 @@ class ProductController extends Controller
     private function getComponentName($decodedArray, $locale)
     {
         Log::info('Attempting to get Component Name', ['locale' => $locale, 'decodedArray' => $decodedArray]);
-        
-        return $decodedArray[$locale]['ComponentName'] 
-            ?? $decodedArray['en']['ComponentName'] 
-            ?? (is_array($decodedArray) && isset(reset($decodedArray)['ComponentName']) 
-                ? reset($decodedArray)['ComponentName'] 
+
+        return $decodedArray[$locale]['ComponentName']
+            ?? $decodedArray['en']['ComponentName']
+            ?? (is_array($decodedArray) && isset(reset($decodedArray)['ComponentName'])
+                ? reset($decodedArray)['ComponentName']
                 : 'Unnamed Component');
     }
 
@@ -429,11 +430,11 @@ class ProductController extends Controller
     private function getComponentValueName($decodedArray, $locale)
     {
         Log::info('Attempting to get Component Value Name', ['locale' => $locale, 'decodedArray' => $decodedArray]);
-        
-        return $decodedArray[$locale]['ComponentValueName'] 
-            ?? $decodedArray['en']['ComponentValueName'] 
-            ?? (is_array($decodedArray) && isset(reset($decodedArray)['ComponentValueName']) 
-                ? reset($decodedArray)['ComponentValueName'] 
+
+        return $decodedArray[$locale]['ComponentValueName']
+            ?? $decodedArray['en']['ComponentValueName']
+            ?? (is_array($decodedArray) && isset(reset($decodedArray)['ComponentValueName'])
+                ? reset($decodedArray)['ComponentValueName']
                 : 'Unnamed Value');
     }
 }

@@ -368,7 +368,7 @@
                 <!-- Additional Components Section -->
                 <div id="additionalComponentsSection" style="display: none;">
                     @foreach($additionalComponents as $additionalComponent)
-                    @if($additionalComponent->ComponentID == 12 || $additionalComponent->ComponentID == 14|| $additionalComponent->ComponentID == 15)
+                    @if($additionalComponent->ComponentID == 12 || $additionalComponent->ComponentID == 14|| $additionalComponent->ComponentID == 15 || $additionalComponent->ComponentID == 22)
                     <div class="component-section">
                         <h3>{{ $additionalComponent->ComponentName }}</h3>
                         @foreach($additionalComponent->componentValues as $value)

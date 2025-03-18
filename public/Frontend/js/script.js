@@ -417,19 +417,31 @@ function updatePrice() {
         }
     });
 
-    // ✅ Show/Hide Component 14
-    const shouldShowComponent14 = selectedComponents.some((comp) => ["11", "12"].includes(comp.value));
-    const component14Section = document.querySelector(`.component-section[data-component-id="14"]`);
-    if (component14Section) {
-        component14Section.style.display = shouldShowComponent14 ? "block" : "none";
-    }
+   // ✅ Show/Hide Component 14 and 22
+const shouldShowComponent14And22 = selectedComponents.some(comp => ["11", "12"].includes(comp.value));
+const component14Section = document.querySelector(`.component-section[data-component-id="14"]`);
+const component22Section = document.querySelector(`.component-section[data-component-id="22"]`);
 
-    // ✅ Show/Hide Components 12 & 15 if "28" is selected
-    const shouldShowComponent12And15 = selectedComponents.some((comp) => comp.value === "28");
-    const component12Section = document.querySelector(`.component-section[data-component-id="12"]`);
-    const component15Section = document.querySelector(`.component-section[data-component-id="15"]`);
-    if (component12Section) component12Section.style.display = shouldShowComponent12And15 ? "block" : "none";
-    if (component15Section) component15Section.style.display = shouldShowComponent12And15 ? "block" : "none";
+if (component14Section) {
+  component14Section.style.display = shouldShowComponent14And22 ? "block" : "none";
+}
+
+if (component22Section) {
+  component22Section.style.display = shouldShowComponent14And22 ? "block" : "none";
+}
+
+// ✅ Show/Hide Components 12 & 15 if "28" is selected
+const shouldShowComponent12And15 = selectedComponents.some(comp => comp.value === "28");
+const component12Section = document.querySelector(`.component-section[data-component-id="12"]`);
+const component15Section = document.querySelector(`.component-section[data-component-id="15"]`);
+
+if (component12Section) {
+  component12Section.style.display = shouldShowComponent12And15 ? "block" : "none";
+}
+
+if (component15Section) {
+  component15Section.style.display = shouldShowComponent12And15 ? "block" : "none";
+}
 
     // ✅ Remove duplicates (final step)
     selectedComponents = selectedComponents.filter((value, index, self) =>
@@ -566,7 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
     
             // For component 14, validate only if 11 or 12 is selected.
-            if (componentId === "14" && !isComponentValue11Or12Selected) {
+            if ((componentId === "14" || componentId === "22") && !isComponentValue11Or12Selected) {
                 return; // Skip validation if neither 11 nor 12 is selected.
             }
     
@@ -731,47 +743,59 @@ function checkObjectAreaInput(selectedValue, componentID) {
     /**
      * JavaScript to show/hide components 12 and 13 based on selection of Variant 3 (ComponentValueID 29)
      */
-    function handleComponentSelection(inputElement, componentValueID) {
-        const selectedValueIDs = [28, 11, 12]; // IDs that trigger visibility
-        
-        // Show/Hide Entire Additional Components Section
-        const additionalComponentsSection = document.getElementById('additionalComponentsSection');
-        const anyChecked = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
-            .some(input => selectedValueIDs.includes(parseInt(input.value)));
+   /**
+ * JavaScript to show/hide additional components based on selected radio button values.
+ *
+ * - The 'additionalComponentsSection' is displayed when any radio button with a value of 28, 11, or 12 is selected.
+ * - Component 14 and Component 22 are shown when a radio button with a value of 11 or 12 is selected.
+ * - Component 12 and Component 15 are shown when a radio button with a value of 28 is selected.
+ */
+function handleComponentSelection(inputElement, componentValueID) {
+    const selectedValueIDs = [28, 11, 12]; // IDs that trigger visibility
     
-        // If we're hiding the entire additional section, clear its inputs
-        if (!anyChecked && additionalComponentsSection) {
-            clearInputs(additionalComponentsSection);
-        }
-    
+    // Show/Hide Entire Additional Components Section
+    const additionalComponentsSection = document.getElementById('additionalComponentsSection');
+    const anyChecked = Array.from(document.querySelectorAll('input[type="radio"]:checked'))
+        .some(input => selectedValueIDs.includes(parseInt(input.value)));
+
+    // If we're hiding the entire additional section, clear its inputs
+    if (!anyChecked && additionalComponentsSection) {
+        clearInputs(additionalComponentsSection);
+    }
+
+    if (additionalComponentsSection) {
         additionalComponentsSection.style.display = anyChecked ? 'block' : 'none';
-    
-        // Individual Component Handling
-        toggleComponentVisibility(14, [11, 12]); // Show Component 14 when ID 11 or 12 is selected
-        toggleComponentVisibility(12, [28]);     // Show Component 12 when ID 28 is selected
-        toggleComponentVisibility(15, [28]);     // Show Component 15 when ID 28 is selected
     }
     
-    // Function to Show/Hide Individual Components
-    function toggleComponentVisibility(componentID, triggerIDs) {
-        const componentSection = document.querySelector(`.component-section[data-component-id="${componentID}"]`);
-        console.log("Checking component", componentID, componentSection);
+    // Individual Component Handling
+    toggleComponentVisibility(14, [11, 12]); // Show Component 14 when radio button with value 11 or 12 is selected
+    toggleComponentVisibility(22, [11, 12]); // Show Component 22 when radio button with value 11 or 12 is selected
+    toggleComponentVisibility(12, [28]);     // Show Component 12 when radio button with value 28 is selected
+    toggleComponentVisibility(15, [28]);     // Show Component 15 when radio button with value 28 is selected
+}
+
+// Function to Show/Hide Individual Components
+function toggleComponentVisibility(componentID, triggerIDs) {
+    const componentSection = document.querySelector(`.component-section[data-component-id="${componentID}"]`);
+    console.log("Checking component", componentID, componentSection);
+    
+    if (componentSection) {
+        const checkedInputs = Array.from(document.querySelectorAll('input[type="radio"]:checked'));
+        console.log("Checked Inputs:", checkedInputs.map(input => input.value));
         
-        if (componentSection) {
-            const checkedInputs = Array.from(document.querySelectorAll('input[type="radio"]:checked'));
-            console.log("Checked Inputs:", checkedInputs.map(input => input.value));
-            
-            const isTriggered = checkedInputs.some(input => triggerIDs.includes(parseInt(input.value)));
-            console.log("isTriggered for component", componentID, ":", isTriggered);
+        const isTriggered = checkedInputs.some(input => triggerIDs.includes(parseInt(input.value)));
+        console.log("isTriggered for component", componentID, ":", isTriggered);
     
-            if (!isTriggered) {
-                clearInputs(componentSection);
-            }
-    
-            componentSection.style.display = isTriggered ? 'block' : 'none';
+        if (!isTriggered) {
+            clearInputs(componentSection);
         }
-    }
     
+        componentSection.style.display = isTriggered ? 'block' : 'none';
+    } else {
+        console.warn("Component with ID", componentID, "was not found in the DOM.");
+    }
+}
+
     
     // Helper function to clear all inputs in a hidden section
     function clearInputs(sectionElement) {

@@ -998,6 +998,145 @@ INSERT INTO Product (
     CURRENT_TIMESTAMP,
     CURRENT_TIMESTAMP
 );
+
+
+
+-- SQLite
+-- Insert sample data into the Product table Sequenzer Help Light
+INSERT INTO Product (
+    ProductID,
+    CategoryID,
+    ProductName,
+    ProductMiniDescription,
+    ProductDescription,
+    ProductPrice,
+    ProductCurrency,
+    ProductHomeImagePath,
+    ProductMultimediaPath,
+    created_at,
+    updated_at
+) VALUES (
+    '10',
+    '3',
+    '{
+    "en": {
+        "ProductName": "AVT EMC HELP"
+    },
+    "de": {
+        "ProductName": "AVT EMC HILFE"
+    }
+    
+    }',
+   '{
+    "en": {
+        "ProductMiniDescription": "Anti-panic LED light during powerloss for EMC halls,  measuring cabins and for all environments with special electromagnetic requirements."
+    },
+    "de": {
+        "ProductMiniDescription": "Anti-Panik-LED-Leuchte bei Stromausfall für EMV-Hallen, Messkabinen und für alle Umgebungen mit besonderen elektromagnetischen Anforderungen."
+    }
+}', 
+     
+     '{"en":{"Features":
+     [
+        "Highly Emmission-free Light during Powerloss (HELP)",
+        "Designed for EMC-laboratories and test fields with 5 W power",
+        "Selectable color rendering value Ra (CRI) between 65... 90 typ.",
+        "Selectable light signs or plates",
+        "Minimal EMC interference (noise level)",
+        "Selectable light color (2700 K - 5000 K)",
+        "Battery power for more than 1 hour during powerloss",
+        "Supply voltage 230 VAC (optional different)",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Extended battery power",
+        "Different power of LEDs",
+        "Various housing colors"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+
+    "Flyer Link": [
+        "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+    ]
+
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Hochemissionsfreies Licht bei Leistungsverlust (HELP)",
+        "Konzipiert für EMV-Labore und Testfelder mit 5 W Leistung",
+        "Wählbarer Farbwiedergabewert Ra (CRI) zwischen 65... 90 typ.",
+        "Wählbare Lichtzeichen oder Schilder",
+        "Minimale EMV-Störungen (Rauschpegel)",
+        "Auswählbare Lichtfarbe (2700 K - 5000 K)",
+        "Batterieleistung für mehr als 1 Stunde bei Stromausfall",
+        "Versorgungsspannung 230 VAC (optional anders)",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Erweiterte Batterieleistung",
+        "Unterschiedliche Leistung der LEDs",
+        "Verschiedene Gehäusefarben"
+
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+
+    "Flugblatt Link:": [
+        "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+    ]
+
+    }
+    }' ,
+    1000,
+    'EUR',
+    'Frontend/images/Help01.jpg',
+    '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\Help01.jpg",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\HELP_light5.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\HELP_light7a.png",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\Help01.jpg",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\HELP_light5.png",
+            "caption": "German caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\HELP_light7a.png",
+            "caption": "German caption"
+        }
+    }
+}',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
      /*('Thermocam', 7000, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('Lamp EMVLED 100', 1350, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('Lamp EMVLED 75', 1290, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -1423,6 +1562,12 @@ SET ProductPrice = '990'
 WHERE ProductID = 7;
 
 UPDATE Product
+SET ProductHomeImagePath =  'Frontend/images/HELP_light5.png'
+
+WHERE ProductID = 10;
+
+
+UPDATE Product
 SET ProductCurrency = 'EUR'
 
 WHERE ProductID = 5;
@@ -1529,6 +1674,53 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     }
 }',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('22','{
+    "en": {
+        "ComponentName": "Length of Cable Between Power Supply and Power Plug"
+    },
+    "de": {
+        "ComponentName": "Länge des Kabels zwischen Netzgerät und Netzstecker"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('23','{
+    "en": {
+        "ComponentName": "Help Light Color Temperature"
+    },
+    "de": {
+        "ComponentName": "Hilfe Licht Farbtemperatur"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('24','{
+    "en": {
+        "ComponentName": "Help Light Battery"
+    },
+    "de": {
+        "ComponentName": "Hilfe Licht Batterie"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('25','{
+    "en": {
+        "ComponentName": "Help Light Power supply"
+    },
+    "de": {
+        "ComponentName": "Hilfe Licht Stromversorgung"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
+
+
 
 
 
@@ -1544,6 +1736,59 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
     }
 }',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('31', '12','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('32', '12','{
+    "en": {
+        "ComponentValueName": "5m"
+    },
+    "de": {
+        "ComponentValueName": "5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('33', '13','{
+    "en": {
+        "ComponentValueName": "1.5m"
+    },
+    "de": {
+        "ComponentValueName": "1.5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('34', '13','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('35', '13','{
+    "en": {
+        "ComponentValueName": "4.5m"
+    },
+    "de": {
+        "ComponentValueName": "4.5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('23', '57','{
+    "en": {
+        "ComponentValueName": "2m"
+    },
+    "de": {
+        "ComponentValueName": "2m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('23', '12','{
     "en": {
         "ComponentValueName": "3m"
     },
@@ -1710,6 +1955,11 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
      ('2', '6',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
       INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('10', '23', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10', '24', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('10', '25',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+      INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
     ('3', '12', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('3', '13', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -1725,6 +1975,9 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
      ('29', '9','80°',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('30', '10','Variant 2',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('31', '10','Variant 3',NULL,'EUR',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+     
 
 
 DELETE FROM ComponentValue
@@ -1914,49 +2167,69 @@ WHERE ProductID = 2;
 
 
 UPDATE Product
-SET ProductDescription =  '{"en":{"Features":
-     [
-        "Control unit for AVT cameras in the visual and infrared wavelength range",
-        "Controls up to 2 AVT EMC 4K MiniCams or one 4K MiniCam and one ThermoCam or  2 ThermoCams with USB3 fiber line",
-        "Small housing in smart design (12,5 x10,5 x 5 cm)",
-        "Output to HDMI monitors with FullHD resolution (4K resolution option)",
-        "4.3 inch IPS touch display on device",
-        "LEDs for power and connected cameras (Cam 1, Cam 2)",
-        "Power connection via USB-C plug (5 V/2,5 A)",
-        "Automatic detection of connected cameras",
-        "Realization of camera functions (pan/tilt/zoom/resolution/ compression/brightness/contrast/temperature etc.)"
+SET ProductDescription =  '{
+  "en": {
+    "Features": [
+      "Highly Emmission-free Light during Powerloss (HELP)",
+      "Designed for EMC-laboratories and test fields with 5 W power",
+      "Selectable color rendering value Ra (CRI) between 65... 90 typ.",
+      "Selectable light signs or plates",
+      "Minimal EMC interference (noise level)",
+      "Selectable light color (2700 K - 5000 K)",
+      "Battery power for more than 1 hour during powerloss",
+      "Supply voltage 230 VAC (optional different)",
+      "Developed and manufactured in Germany"
     ],
     "Options": [
-        "Mouse and keyboard connection",
-        "Ethernet connection to PC or Laptop"
+      "Extended battery power",
+      "Different power of LEDs",
+      "Various housing colors"
     ],
-     "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
-    ]
+    "Additional services": [
+      "Cable extensions for LED lamps",
+      "Installation services",
+      "Planning and lighting calculations"
+    ],
+    "Warranty": [
+      "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+    "Flyer Link": {
+      "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
     }
-    , 
-    "de":{"Eigenschaften:":
-     [
-        "Steuergerät für AVT-Kameras im visuellen und infraroten Wellenlängenbereich",
-        "Steuert bis zu 2 AVT EMC 4K MiniCams oder eine 4K MiniCam und eine ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
-        "Kleines Gehäuse im eleganten Design (12,5 x10,5 x 5 cm)",
-        "Ausgabe an HDMI-Monitore mit FullHD-Auflösung (4K-Auflösung optional)",
-        "4,3 Zoll IPS-Touch-Display auf dem Gerät",
-        "LEDs für Stromversorgung und angeschlossene Kameras (Cam 1, Cam 2)",
-        "Stromanschluss über USB-C-Stecker (5 V/2,5 A)",
-        "Automatische Erkennung von angeschlossenen Kameras",
-        "Realisierung von Kamerafunktionen (Schwenken/Neigen/Zoomen/Auflösung/Komprimierung/Helligkeit/Kontrast/Temperatur usw.)"
+  },
+  "de": {
+    "Eigenschaften": [
+      "Hochemissionsfreies Licht bei Leistungsverlust (HELP)",
+      "Konzipiert für EMV-Labore und Testfelder mit 5 W Leistung",
+      "Wählbarer Farbwiedergabewert Ra (CRI) zwischen 65... 90 typ.",
+      "Wählbare Lichtzeichen oder Schilder",
+      "Minimale EMV-Störungen (Rauschpegel)",
+      "Auswählbare Lichtfarbe (2700 K - 5000 K)",
+      "Batterieleistung für mehr als 1 Stunde bei Stromausfall",
+      "Versorgungsspannung 230 VAC (optional anders)",
+      "Deutsches Produkt"
     ],
-    "Optionen:": [
-        "Anschluss von Maus und Tastatur",
-        "Ethernet-Anschluss an PC oder Laptop"
+    "Optionen": [
+      "Erweiterte Batterieleistung",
+      "Unterschiedliche Leistung der LEDs",
+      "Verschiedene Gehäusefarben"
     ],
-    "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
-    ]
+    "Zusätzliche Dienstleistungen": [
+      "Kabelverlängerungen für LED-Leuchten",
+      "Installationsdienstleistungen",
+      "Planung und Beleuchtungsberechnungen"
+    ],
+    "Garantie": [
+      "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+    "Flugblatt Link": {
+      "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
     }
-    }'
-WHERE ProductID = 9;
+  }
+}
+
+'
+WHERE ProductID = 10;
 
 
 UPDATE Product
@@ -2356,6 +2629,34 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
     },
     "de": {
         "ComponentValueName": "5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('55', '22','{
+    "en": {
+        "ComponentValueName": "1.5m"
+    },
+    "de": {
+        "ComponentValueName": "1.5m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('56', '22','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "3m"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('57', '22','{
+    "en": {
+        "ComponentValueName": "4.5m"
+    },
+    "de": {
+        "ComponentValueName": "4.5m"
     }
 }',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
