@@ -1146,7 +1146,7 @@ INSERT INTO Product (
 
 DROP TABLE IF EXISTS ComponentValue;
 
-DELETE FROM Product
+DELETE FROM ProductComponent
 WHERE ProductID IN('1');
 
 -- SQLite
@@ -1313,14 +1313,14 @@ WHERE ComponentValueID = 15;
      UPDATE Component
 SET ComponentName = '{
     "en": {
-        "ComponentName": "Reflector (opening angle)"
+        "ComponentName": "Power Supply (AC to 5VDC)"
     },
     "de": {
-        "ComponentName": "Reflektor (Öffnungswinkel)"
+        "ComponentName": "Stromversorgung (AC to 5VDC)"
     }
 }'
 
-WHERE ComponentID = 9;
+WHERE ComponentID = 3;
 
 
 
@@ -1562,7 +1562,7 @@ SET ProductPrice = '990'
 WHERE ProductID = 7;
 
 UPDATE Product
-SET ProductHomeImagePath =  'Frontend/images/HELP_light5.png'
+SET ProductHomeImagePath =  'Frontend/images/HelpLight.png'
 
 WHERE ProductID = 10;
 
@@ -1686,6 +1686,17 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('26','{
+    "en": {
+        "ComponentName": "ThermoCam Stromversorgung (AC to 5VDC)"
+    },
+    "de": {
+        "ComponentName": "ThermoCam Stromversorgung (AC to 5VDC)"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('23','{
     "en": {
         "ComponentName": "Help Light Color Temperature"
@@ -1725,6 +1736,31 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 
 
 
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('66', '26','{
+    "en": {
+        "ComponentValueName": "Hardened switching power supply"
+    },
+    "de": {
+        "ComponentValueName": "EMV-feste Schaltnetzteile"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('67', '26','{
+    "en": {
+        "ComponentValueName": "3m"
+    },
+    "de": {
+        "ComponentValueName": "EMV-feste Analognetzteile"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+ ('68', '26','{
+    "en": {
+        "ComponentValueName": "5m"
+    },
+    "de": {
+        "ComponentValueName": "Akkumulator innerhalb der Kamera"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
     ('30', '12','{
@@ -1779,55 +1815,75 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 
 
-INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
-    ('23', '57','{
-    "en": {
-        "ComponentValueName": "2m"
-    },
-    "de": {
-        "ComponentValueName": "2m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-     ('23', '12','{
-    "en": {
-        "ComponentValueName": "3m"
-    },
-    "de": {
-        "ComponentValueName": "3m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- ('32', '12','{
-    "en": {
-        "ComponentValueName": "5m"
-    },
-    "de": {
-        "ComponentValueName": "5m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- ('33', '13','{
-    "en": {
-        "ComponentValueName": "1.5m"
-    },
-    "de": {
-        "ComponentValueName": "1.5m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- ('34', '13','{
-    "en": {
-        "ComponentValueName": "3m"
-    },
-    "de": {
-        "ComponentValueName": "3m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
- ('35', '13','{
-    "en": {
-        "ComponentValueName": "4.5m"
-    },
-    "de": {
-        "ComponentValueName": "4.5m"
-    }
-}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO ComponentValue (ComponentValueID, ComponentID, ComponentValueName, ComponentValuePrice, ComponentValueCurrency, created_at, updated_at) VALUES
+    ('58', '23', '{
+        "en": {
+            "ComponentValueName": "2700 K"
+        },
+        "de": {
+            "ComponentValueName": "2700 K"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('59', '23', '{
+        "en": {
+            "ComponentValueName": "3000 K"
+        },
+        "de": {
+            "ComponentValueName": "3000 K"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('60', '23', '{
+        "en": {
+            "ComponentValueName": "3500 K"
+        },
+        "de": {
+            "ComponentValueName": "3500 K"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('61', '23', '{
+        "en": {
+            "ComponentValueName": "4000 K"
+        },
+        "de": {
+            "ComponentValueName": "4000 K"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('62', '23', '{
+        "en": {
+            "ComponentValueName": "5000 K"
+        },
+        "de": {
+            "ComponentValueName": "5000 K"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('63', '24', '{
+        "en": {
+            "ComponentValueName": "LE (Lead)"
+        },
+        "de": {
+            "ComponentValueName": "LE (Blei)"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('64', '24', '{
+        "en": {
+            "ComponentValueName": "LI (LiFePO4)"
+        },
+        "de": {
+            "ComponentValueName": "LI (LiFePO4)"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('65', '25', '{
+        "en": {
+            "ComponentValueName": "230 VAC (50 Hz)"
+        },
+        "de": {
+            "ComponentValueName": "230 VAC (50 Hz)"
+        }
+    }', NULL, 'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
+
 -- Sample json data insertion
 /*INSERT INTO Product (ProductMedia) VALUES
 ('{
@@ -1888,59 +1944,35 @@ INSERT INTO Category (CategoryID,CategoryName, created_at, updated_at) VALUES
 UPDATE Product
 SET ProductMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\CamControl02_003.png",
+            "path": "Frontend\\images\\HelpLight.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\CamControl01_002.png",
+            "path": "Frontend\\images\\HELP_light5.png",
             "caption": "English caption"
         },
         "image3": {
-            "path": "Frontend\\images\\CamControl01_003.png",
-            "caption": "English caption"
-        },
-        "image4": {
-            "path": "Frontend\\images\\CamControl02_001.png",
-            "caption": "English caption"
-        },
-        "image5": {
-            "path": "Frontend\\images\\CamControl02_002.png",
-            "caption": "English caption"
-        },
-        "video1": {
-            "path": "Frontend\\images\\CamControl01.mp4",
+            "path": "Frontend\\images\\HELP_light7a.png",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\CamControl02_003.png",
+            "path": "Frontend\\images\\HelpLight.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\CamControl01_002.png",
+            "path": "Frontend\\images\\HELP_light5.png",
             "caption": "German caption"
         },
         "image3": {
-            "path": "Frontend\\images\\CamControl01_003.png",
-            "caption": "English caption"
-        },
-        "image4": {
-            "path": "Frontend\\images\\CamControl02_001.png",
-            "caption": "English caption"
-        },
-        "image5": {
-            "path": "Frontend\\images\\CamControl02_002.png",
-            "caption": "English caption"
-        },
-        "video1": {
-            "path": "Frontend\\images\\CamControl01.mp4",
+            "path": "Frontend\\images\\HELP_light7a.png",
             "caption": "German caption"
         }
     }
 }'
-WHERE ProductID = 9;
+WHERE ProductID = 10;
 
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
@@ -2020,35 +2052,27 @@ PRAGMA integrity_check;
 UPDATE Component
 SET ComponentMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\4kminicam1.png",
+            "path": "Frontend\\images\\MiniCam_Packagewith_Akku.PNG",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\4kminicam3.png",
-            "caption": "English caption"
-        },
-        "video1": {
-            "path": "Frontend\\images\\avt_minicam_video.mp4",
+            "path": "Frontend\\images\\MiniCam_Package.PNG",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\4kminicam1.png",
+            "path": "Frontend\\images\\MiniCam_Packagewith_Akku.PNG",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\4kminicam3.png",
-            "caption": "German caption"
-        },
-        "video1": {
-            "path": "Frontend\\images\\avt_minicam_video.mp4",
+            "path": "Frontend\\images\\MiniCam_Package.PNG",
             "caption": "German caption"
         }
     }
 }'
-WHERE ComponentID = 1;
+WHERE ComponentID = 3;
 
 
 
@@ -2056,18 +2080,18 @@ UPDATE Component
 SET ComponentMultimediaPath = '{
   "en": {
     "image1": {
-      "path": "Frontend\\images\\opening_angle01.png",
+      "path": "Frontend\\images\\ThermoCamfocalen.png",
       "caption": "English caption"
     }
   },
   "de": {
     "image1": {
-      "path": "Frontend\\images\\opening_angle01.png"
+      "path": "Frontend\\images\\ThermoCamfocalde.png"
     }
   }
 }'
 
-WHERE ComponentID = 1;
+WHERE ComponentID = 7;
 
 
 
@@ -2167,17 +2191,17 @@ WHERE ProductID = 2;
 
 
 UPDATE Product
-SET ProductDescription =  '{
+SET ProductDescription = '{
   "en": {
     "Features": [
-      "Highly Emmission-free Light during Powerloss (HELP)",
-      "Designed for EMC-laboratories and test fields with 5 W power",
-      "Selectable color rendering value Ra (CRI) between 65... 90 typ.",
+      "Highly emission-free light during power loss (HELP)",
+      "Designed for EMC laboratories and test fields with 5 W power",
+      "Selectable color rendering value (Ra/CRI) between 65 and 90 (typ.)",
       "Selectable light signs or plates",
       "Minimal EMC interference (noise level)",
       "Selectable light color (2700 K - 5000 K)",
-      "Battery power for more than 1 hour during powerloss",
-      "Supply voltage 230 VAC (optional different)",
+      "Battery power for more than 1 hour during power loss",
+      "Supply voltage: 230 VAC (optional alternative)",
       "Developed and manufactured in Germany"
     ],
     "Options": [
@@ -2193,43 +2217,42 @@ SET ProductDescription =  '{
     "Warranty": [
       "Standard: 2 years; optionally extendable by 1 year each"
     ],
-    "Flyer Link": {
-      "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
-    }
+    "Flyer Link": [
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+    ]
   },
   "de": {
-    "Eigenschaften": [
+    "Eigenschaften:": [
       "Hochemissionsfreies Licht bei Leistungsverlust (HELP)",
       "Konzipiert für EMV-Labore und Testfelder mit 5 W Leistung",
-      "Wählbarer Farbwiedergabewert Ra (CRI) zwischen 65... 90 typ.",
+      "Wählbarer Farbwiedergabewert Ra (CRI) zwischen 65 und 90 (typ.)",
       "Wählbare Lichtzeichen oder Schilder",
       "Minimale EMV-Störungen (Rauschpegel)",
       "Auswählbare Lichtfarbe (2700 K - 5000 K)",
       "Batterieleistung für mehr als 1 Stunde bei Stromausfall",
-      "Versorgungsspannung 230 VAC (optional anders)",
+      "Versorgungsspannung: 230 VAC (optional anders)",
       "Deutsches Produkt"
     ],
-    "Optionen": [
+    "Optionen:": [
       "Erweiterte Batterieleistung",
       "Unterschiedliche Leistung der LEDs",
       "Verschiedene Gehäusefarben"
     ],
-    "Zusätzliche Dienstleistungen": [
+    "Zusätzliche Dienstleistungen:": [
       "Kabelverlängerungen für LED-Leuchten",
       "Installationsdienstleistungen",
       "Planung und Beleuchtungsberechnungen"
     ],
-    "Garantie": [
-      "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    "Garantie:": [
+      "Standard: 2 Jahre; optional verlängerbar um je 1 Jahr"
     ],
-    "Flugblatt Link": {
-      "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
-    }
+    "Flugblatt Link:": [
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+    ]
   }
-}
-
-'
+}'
 WHERE ProductID = 10;
+
 
 
 UPDATE Product
@@ -2486,6 +2509,10 @@ SET ProductDescription =
         "Variants of fiber cable length 10 m / 20 m / 30 m / 50 m / 70 m / 100 m",
         "High interference immunity > 200 V/m",
         "Developed and manufactured in Germany"
+    ],
+
+    "Flyer Link": [
+        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvusb_converter_en_v1_1.pdf"
     ]
 
     }
@@ -2502,6 +2529,9 @@ SET ProductDescription =
         "Varianten der LWL-Längen 10 m / 20 m / 30 m / 50 m / 70 m / 100 m",
         "Hohe Störfestigkeit > 200 V/m",
         "Deutsches Produkt"
+    ],
+    "Flugblatt Link:": [
+        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvusb_converter_de_v1_1.pdf"
     ]
     }
     }'
@@ -2560,7 +2590,141 @@ SET ProductDescription =
     }'
 WHERE ProductID = 6;
 
+UPDATE Product
+SET ProductDescription =  
+     '{"en":{"Features":
+     [
+        "Control unit for AVT cameras in the visual and infrared wavelength range",
+        "Controls up to 2 AVT EMC 4K MiniCams or one 4K MiniCam and one ThermoCam or 2 ThermoCams with USB3 fiber line",
+        "Small housing in smart design (12,5 x10,5 x 5 cm)",
+        "Output to HDMI monitors with FullHD resolution (4K resolution option)",
+        "4.3 inch IPS touch display on device",
+        "LEDs for power and connected cameras (Cam 1, Cam 2)",
+        "Power connection via USB-C plug (5 A)",
+        "Automatic detection of connected cameras",
+        "Realization of camera functions (pan/tilt/zoom/resolution/ compression/brightness/contrast/temperature etc.)"
+    ],
+    "Options": [
+        "Mouse and keyboard connection",
+        "Ethernet connection to PC or Laptop"
+    ],
+     "Flyer Link": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+    ]
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Steuergerät für AVT-Kameras im visuellen und infraroten Wellenlängenbereich",
+        "Steuert bis zu 2 AVT EMC 4K MiniCams oder eine 4K MiniCam und eine ThermoCam oder 2 ThermoCams mit USB3-Faserleitung",
+        "Kleines Gehäuse im eleganten Design (12,5 x10,5 x 5 cm)",
+        "Ausgabe an HDMI-Monitore mit FullHD-Auflösung (4K-Auflösung optional)",
+        "4,3 Zoll IPS-Touch-Display auf dem Gerät",
+        "LEDs für Stromversorgung und angeschlossene Kameras (Cam 1, Cam 2)",
+        "Stromanschluss über USB-C-Stecker (5 A)",
+        "Automatische Erkennung von angeschlossenen Kameras",
+        "Realisierung von Kamerafunktionen (Schwenken/Neigen/Zoomen/Auflösung/Komprimierung/Helligkeit/Kontrast/Temperatur usw.)"
+    ],
+    "Optionen:": [
+        "Anschluss von Maus und Tastatur",
+        "Ethernet-Anschluss an PC oder Laptop"
+    ],
+    
+   
+    "Flugblatt Link:": [
+        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+    ]
+    }
+    }'
+WHERE ProductID = 9;
 
+
+
+
+
+
+UPDATE Product
+SET ProductMultimediaPath = '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\MiniCam0211.png",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\MiniCam0211_01.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\MiniCam0237.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\MiniCam0237_01.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\MinicamAnimation.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\MiniCam0211.png",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\MiniCam0211_01.png",
+            "caption": "German caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\MiniCam0237.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\MiniCam0237_01.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\MinicamAnimation.mp4",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ProductID = 1;
+
+
+UPDATE Product
+SET ProductMultimediaPath =  '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\thermocam_1000-768x488.jpg",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\thermocam2.pdf.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\ThermoCamAnimation.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\thermocam_1000-768x488.jpg",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\thermocam2.pdf.png",
+            "caption": "German caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\ThermoCamAnimation.mp4",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ProductID = 2;
 
 
 DROP TABLE IF EXISTS OrderItem;

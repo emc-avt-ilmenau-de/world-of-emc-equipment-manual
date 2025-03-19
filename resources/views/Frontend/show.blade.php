@@ -44,9 +44,17 @@
             <h3>{{ __($section) }}</h3>
             <ul>
                 @foreach ($product->description[$section] as $item)
-                @if (filter_var($item, FILTER_VALIDATE_URL))
+                @if (is_array($item) && isset($item['path']))
+                <li>
+                    <a href="{{ asset(str_replace('\\', '/', $item['path'])) }}" target="_blank">{{ __('Download Flyer') }}</a>
+                </li>
+                @elseif (filter_var($item, FILTER_VALIDATE_URL))
                 <!-- Check if it's a URL -->
                 <li><a href="{{ $item }}" target="_blank">{{ __('Download Flyer') }}</a></li>
+                @elseif (is_string($item) && strpos($item, '.pdf') !== false)
+                <li>
+                    <a href="{{ asset(str_replace('\\', '/', $item)) }}" target="_blank">{{ __('Download Flyer') }}</a>
+                </li>
                 @else
                 <li>{{ $item }}</li>
                 @endif
@@ -54,6 +62,7 @@
             </ul>
             @endif
             @endforeach
+
 
         </div>
 
