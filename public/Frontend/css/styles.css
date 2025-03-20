@@ -483,23 +483,30 @@ a:hover {
 
 /* Popup container - hidden by default */
 .popup-slide {
-    display: none; /* All slides hidden by default */
-    text-align: center;
+  display: none; /* All slides hidden by default */
+  text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
-.popup-slide img, .popup-slide video {
-    max-width: 100%;
-    max-height: 100%;
+/* Ensure media fits correctly */
+.popup-slide img, 
+.popup-slide video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures media fills the space without distortion */
 }
+
+/* Popup component styles */
 .popup-component {
   display: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px; /* Fixed width */
-  height: 600px; /* Fixed height */
-  max-width: 90%; /* Prevents too large popups */
+  width: auto; /* Adjust width dynamically */
+  height: auto; /* Adjust height dynamically */
+  max-width: 90%;
   max-height: 90%;
   background: white;
   overflow: hidden;
@@ -507,39 +514,48 @@ a:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
 /* Navigation buttons */
 .popup-prev,
 .popup-next {
-  position: absolute;
-  top: 50%;
-  font-size: 30px;
-  color: white;
-  padding: 16px;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  user-select: none;
+position: absolute;
+top: 50%;
+font-size: 30px;
+color: white;
+padding: 16px;
+cursor: pointer;
+background-color: rgba(0, 0, 0, 0.5);
+border-radius: 50%;
+user-select: none;
+transform: translateY(-50%);
 }
 
 .popup-prev {
-  left: 0;
+left: 20px;
 }
 
 .popup-next {
-  right: 0;
+right: 20px;
 }
 
 /* Close button */
 .popup-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 30px;
-  cursor: pointer;
+position: absolute;
+top: 10px;
+right: 10px;
+font-size: 30px;
+cursor: pointer;
+background: rgba(0, 0, 0, 0.5);
+color: white;
+padding: 5px 10px;
+border-radius: 50%;
 }
+
 
 .variant-options {
   display: flex; /* Changed from position: flex; */

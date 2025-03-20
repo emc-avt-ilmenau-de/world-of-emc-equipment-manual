@@ -1313,10 +1313,10 @@ WHERE ComponentValueID = 15;
      UPDATE Component
 SET ComponentName = '{
     "en": {
-        "ComponentName": "Power Supply (AC to 5VDC)"
+        "ComponentName": "4K MiniCam Power Supply (AC to 5VDC)"
     },
     "de": {
-        "ComponentName": "Stromversorgung (AC to 5VDC)"
+        "ComponentName": "4K MiniCam Stromversorgung (AC to 5VDC)"
     }
 }'
 
@@ -1471,6 +1471,9 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
 
     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
     ('2', '21', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+    INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    ('2', '26', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- SQLite
 -- Insert sample data into the ComponentValue table
 INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
@@ -1509,14 +1512,14 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 UPDATE Category
 SET CategoryName = '{
     "en": {
-        "CategoryName": "Other"
+        "CategoryName": "Audio Visual Equipment"
     },
     "de": {
-        "CategoryName": "Weitere"
+        "CategoryName": "Audio Visuelle System"
     }
 }'
 
-WHERE CategoryID = 3;
+WHERE CategoryID = 1;
 
      
      UPDATE ComponentValue
@@ -1747,7 +1750,7 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 }',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('67', '26','{
     "en": {
-        "ComponentValueName": "3m"
+        "ComponentValueName": "Hardened nonswitching power supply "
     },
     "de": {
         "ComponentValueName": "EMV-feste Analognetzteile"
@@ -1755,7 +1758,7 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 }',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
  ('68', '26','{
     "en": {
-        "ComponentValueName": "5m"
+        "ComponentValueName": "Accumulator/chargeable batterie inside camera "
     },
     "de": {
         "ComponentValueName": "Akkumulator innerhalb der Kamera"
@@ -1974,6 +1977,65 @@ SET ProductMultimediaPath = '{"en":{
 }'
 WHERE ProductID = 10;
 
+
+
+UPDATE Product
+SET ProductMultimediaPath =  '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\CamControl02_003.png",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\CamControl01_002.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\CamControl02.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\CamControl02_003.png",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\CamControl01_002.png",
+            "caption": "German caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\CamControl01_003.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\CamControl02_001.png",
+            "caption": "English caption"
+        },
+        "image5": {
+            "path": "Frontend\\images\\CamControl02_002.png",
+            "caption": "English caption"
+        },
+        "video1": {
+            "path": "Frontend\\images\\CamControl02.mp4",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ProductID = 9;
+
 INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
     ('7','Thermocam Lens',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -2052,27 +2114,46 @@ PRAGMA integrity_check;
 UPDATE Component
 SET ComponentMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\MiniCam_Packagewith_Akku.PNG",
+            "path": "Frontend\\images\\MiniCam_Akku-versions.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\MiniCam_Package.PNG",
+            "path": "Frontend\\images\\Netzteil01.png",
             "caption": "English caption"
         }
     },
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\MiniCam_Packagewith_Akku.PNG",
+            "path": "Frontend\\images\\MiniCam_Akku-versions.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\MiniCam_Package.PNG",
+            "path": "Frontend\\images\\Netzteil01.png",
             "caption": "German caption"
         }
     }
 }'
 WHERE ComponentID = 3;
+
+UPDATE Component
+SET ComponentMultimediaPath = '{"en":{
+       
+        "image1": {
+            "path": "Frontend\\images\\Netzteil01.png",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        
+        "image1": {
+            "path": "Frontend\\images\\Netzteil01.png",
+            "caption": "German caption"
+        }
+    }
+}'
+WHERE ComponentID = 26;
 
 
 
@@ -2080,13 +2161,13 @@ UPDATE Component
 SET ComponentMultimediaPath = '{
   "en": {
     "image1": {
-      "path": "Frontend\\images\\ThermoCamfocalen.png",
+      "path": "Frontend\\images\\ThermoCam_Lens.png",
       "caption": "English caption"
     }
   },
   "de": {
     "image1": {
-      "path": "Frontend\\images\\ThermoCamfocalde.png"
+      "path": "Frontend\\images\\ThermoCam_Lens.png"
     }
   }
 }'
@@ -2218,7 +2299,7 @@ SET ProductDescription = '{
       "Standard: 2 years; optionally extendable by 1 year each"
     ],
     "Flyer Link": [
-      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
     ]
   },
   "de": {
@@ -2247,7 +2328,7 @@ SET ProductDescription = '{
       "Standard: 2 Jahre; optional verlängerbar um je 1 Jahr"
     ],
     "Flugblatt Link:": [
-      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_00.pdf"
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
     ]
   }
 }'
@@ -2539,6 +2620,76 @@ WHERE ProductID = 7;
 
 UPDATE Product
 SET ProductDescription =  
+     
+     '{"en":{"Features":
+     [
+        "Highly Emmission-free Light during Powerloss (HELP)",
+        "Designed for EMC-laboratories and test fields with 5 W power",
+        "Selectable color rendering value Ra (CRI) between 65... 90 typ.",
+        "Selectable light signs or plates",
+        "Minimal EMC interference (noise level)",
+        "Selectable light color (2700 K - 5000 K)",
+        "Battery power for more than 1 hour during powerloss",
+        "Supply voltage 230 VAC (optional different)",
+        "Developed and manufactured in Germany"
+    ],
+    "Options": [
+        "Extended battery power",
+        "Different power of LEDs",
+        "Various housing colors"
+    ],
+    "Additional services":[
+        "Cable extensions for LED lamps",
+        "Installation services",
+        "Planning and lighting calculations"   
+    ],
+    "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+
+    "Flyer Link": [
+        "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
+    ]
+
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Hochemissionsfreies Licht bei Leistungsverlust (HELP)",
+        "Konzipiert für EMV-Labore und Testfelder mit 5 W Leistung",
+        "Wählbarer Farbwiedergabewert Ra (CRI) zwischen 65... 90 typ.",
+        "Wählbare Lichtzeichen oder Schilder",
+        "Minimale EMV-Störungen (Rauschpegel)",
+        "Auswählbare Lichtfarbe (2700 K - 5000 K)",
+        "Batterieleistung für mehr als 1 Stunde bei Stromausfall",
+        "Versorgungsspannung 230 VAC (optional anders)",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Erweiterte Batterieleistung",
+        "Unterschiedliche Leistung der LEDs",
+        "Verschiedene Gehäusefarben"
+
+    ],
+    "Zusätzliche Dienstleistungen:": [
+        "Kabelverlängerungen für LED-Leuchten",
+        "Installationsdienstleistungen",
+        "Planung und Beleuchtungsberechnungen"    
+    ],
+    "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+
+    "Flugblatt Link:": [
+        "path": "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
+    ]
+
+    }
+    }'
+WHERE ProductID = 10;
+
+UPDATE Product
+SET ProductDescription =  
      '{"en":{"Features":
      [
         "Driver power 70 W",
@@ -2646,21 +2797,15 @@ WHERE ProductID = 9;
 UPDATE Product
 SET ProductMultimediaPath = '{"en":{
         "image1": {
-            "path": "Frontend\\images\\MiniCam0211.png",
+            "path": "Frontend\\images\\4kminicam1.png",
             "caption": "English caption"
         },
         "image2": {
-            "path": "Frontend\\images\\MiniCam0211_01.png",
+            "path": "Frontend\\images\\4kminicam3.png",
             "caption": "English caption"
         },
-        "image3": {
-            "path": "Frontend\\images\\MiniCam0237.png",
-            "caption": "English caption"
-        },
-        "image4": {
-            "path": "Frontend\\images\\MiniCam0237_01.png",
-            "caption": "English caption"
-        },
+        
+        
         "video1": {
             "path": "Frontend\\images\\MinicamAnimation.mp4",
             "caption": "English caption"
@@ -2669,21 +2814,14 @@ SET ProductMultimediaPath = '{"en":{
     
     "de": {
         "image1": {
-            "path": "Frontend\\images\\MiniCam0211.png",
+            "path": "Frontend\\images\\4kminicam1.png",
             "caption": "German caption"
         },
         "image2": {
-            "path": "Frontend\\images\\MiniCam0211_01.png",
+            "path": "Frontend\\images\\4kminicam3.png",
             "caption": "German caption"
         },
-        "image3": {
-            "path": "Frontend\\images\\MiniCam0237.png",
-            "caption": "English caption"
-        },
-        "image4": {
-            "path": "Frontend\\images\\MiniCam0237_01.png",
-            "caption": "English caption"
-        },
+       
         "video1": {
             "path": "Frontend\\images\\MinicamAnimation.mp4",
             "caption": "German caption"
@@ -2950,6 +3088,6 @@ INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,Comp
 
 
 
-
-
+DELETE FROM ProductComponent
+WHERE ProductID = 2 AND ComponentID = 3;
 

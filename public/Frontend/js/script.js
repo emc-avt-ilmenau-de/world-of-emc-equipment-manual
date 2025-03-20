@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Clear previous slides
                 popup_comp_div.innerHTML = "";
 
+                let slideCount = 0; // Track the number of slides
+
                 // Iterate over multimedia data to create slides
                 Object.values(multimediaData).forEach((media, index) => {
                     const slide = document.createElement("div");
@@ -151,33 +153,30 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <source src="${normalizedPath}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
-                            <!-- Caption commented out -->
-                            <!-- <div class="text"><strong>${media.caption || ""}</strong></div> -->
                         `;
                     } else {
                         slide.innerHTML = `
                             <img src="${normalizedPath}" alt="Slide ${index + 1}" style="width: 80%;">
-                            <!-- Caption commented out -->
-                            <!-- <div class="text"><strong>${media.caption || ""}</strong></div> -->
                         `;
                     }
-                    
 
                     popup_comp_div.appendChild(slide);
+                    slideCount++; // Increment slide count
                 });
 
-                // Add navigation buttons dynamically
-                if (!popup_comp_div.querySelector(".popup-close")) {
+                // Add close button
+                popup_comp_div.innerHTML += `<button class="popup-close">✖</button>`;
+
+                // Add navigation buttons only if there are multiple slides
+                if (slideCount > 1) {
                     popup_comp_div.innerHTML += `
-                        <button class="popup-close">✖</button>
                         <button class="popup-prev">◀</button>
                         <button class="popup-next">▶</button>
-
                     `;
                 }
 
                 // Scope variables to this popup
-                let popupSlideIndex = 0; // Isolated slide index
+                let popupSlideIndex = 0;
                 const slides = popup_comp_div.getElementsByClassName("popup-slide");
                 const closeBtn = popup_comp_div.querySelector(".popup-close");
                 const nextBtn = popup_comp_div.querySelector(".popup-next");
@@ -203,15 +202,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 popup_comp_div.style.display = "block";
 
                 // Navigation buttons
-                nextBtn.addEventListener("click", () => {
-                    popupSlideIndex++;
-                    showPopupSlides(popupSlideIndex);
-                });
+                if (slideCount > 1) {
+                    nextBtn.addEventListener("click", () => {
+                        popupSlideIndex++;
+                        showPopupSlides(popupSlideIndex);
+                    });
 
-                prevBtn.addEventListener("click", () => {
-                    popupSlideIndex--;
-                    showPopupSlides(popupSlideIndex);
-                });
+                    prevBtn.addEventListener("click", () => {
+                        popupSlideIndex--;
+                        showPopupSlides(popupSlideIndex);
+                    });
+                }
 
                 closeBtn.addEventListener("click", () => {
                     popup_comp_div.style.display = "none";
@@ -560,7 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Check if a radio with value "11" or "12" is selected (for component 14)
         const isComponentValue11Or12Selected = Array.from(
             document.querySelectorAll('input[type="radio"]:checked')
-        ).some((input) => input.value === "11" || input.value === "12");
+        ).some((input) => input.value === "11" || input.value === "12" || input.value === "66" || input.value === "67");
     
         // Loop through each component section for validation
         document.querySelectorAll(".component-section").forEach((section) => {
@@ -751,7 +752,7 @@ function checkObjectAreaInput(selectedValue, componentID) {
  * - Component 12 and Component 15 are shown when a radio button with a value of 28 is selected.
  */
 function handleComponentSelection(inputElement, componentValueID) {
-    const selectedValueIDs = [28, 11, 12]; // IDs that trigger visibility
+    const selectedValueIDs = [28, 11, 12,66,67]; // IDs that trigger visibility
     
     // Show/Hide Entire Additional Components Section
     const additionalComponentsSection = document.getElementById('additionalComponentsSection');
@@ -768,8 +769,8 @@ function handleComponentSelection(inputElement, componentValueID) {
     }
     
     // Individual Component Handling
-    toggleComponentVisibility(14, [11, 12]); // Show Component 14 when radio button with value 11 or 12 is selected
-    toggleComponentVisibility(22, [11, 12]); // Show Component 22 when radio button with value 11 or 12 is selected
+    toggleComponentVisibility(14, [11, 12,66,67]); // Show Component 14 when radio button with value 11 or 12 is selected
+    toggleComponentVisibility(22, [11, 12,66,67]); // Show Component 22 when radio button with value 11 or 12 is selected
     toggleComponentVisibility(12, [28]);     // Show Component 12 when radio button with value 28 is selected
     toggleComponentVisibility(15, [28]);     // Show Component 15 when radio button with value 28 is selected
 }
@@ -841,3 +842,6 @@ function toggleComponentVisibility(componentID, triggerIDs) {
             });
         });
     });
+
+
+    

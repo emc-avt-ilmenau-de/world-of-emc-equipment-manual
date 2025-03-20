@@ -98,7 +98,7 @@ class ProductController extends Controller
                 if ($values->ComponentValueID == 28) {
                     $showComponent12 = true;
                 }
-                if (in_array($values->ComponentValueID, [11, 12])) {
+                if (in_array($values->ComponentValueID, [11, 12, 66, 67])) {
                     $showComponent14 = true;
                 }
             }
@@ -186,12 +186,12 @@ class ProductController extends Controller
                 foreach ($values as $value) {
                     $this->addComponentValue($component, $value, $selectedComponents, $request, $totalPrice);
                     if ($value == 28) $showAdditionalComponents = true;
-                    if (in_array($value, [11, 12])) $showComponent14 = true;
+                    if (in_array($value, [11, 12, 66, 67])) $showComponent14 = true;
                 }
             } else {
                 $this->addComponentValue($component, $values, $selectedComponents, $request, $totalPrice);
                 if ($values == 28) $showAdditionalComponents = true;
-                if (in_array($values, [11, 12])) $showComponent14 = true;
+                if (in_array($values, [11, 12, 66, 67])) $showComponent14 = true;
             }
             // Special handling for object area (component ID 1)
             if ($componentId == 1 && $request->has("object_area.$componentId")) {

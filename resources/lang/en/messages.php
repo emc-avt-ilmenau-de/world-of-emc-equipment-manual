@@ -54,13 +54,13 @@ return [
     'Conditions_of_use' => 'Conditions of use',
     'about-content' => 'We are your partner for',
     'about-content1' => [
+        "<strong>EMC products (camera, lighting)</strong>",
         "<strong>Electronic development</strong>",
         "<strong>FPGA Design</strong>",
         "<strong>IP-Core development</strong>",
         "<strong>Image processing</strong>",
         "<strong>High-quality special lighting (museums, castles, churches)</strong>",
         "<strong>Development of special solutions</strong>",
-        "<strong>EMC products (camera, lighting)</strong>",
         "<strong>Consulting and training courses</strong>"
     ],
 

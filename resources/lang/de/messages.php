@@ -54,13 +54,13 @@ return [
     'Copyright' => 'Copyright',
     'Conditions_of_use' => 'Nutzungsbedingungen',
     'about-content1' =>  [
+        "<strong>EMV-Produkte (Kamera, Beleuchtung)</strong>",
         "<strong>Elektronikentwicklung</strong>",
         "<strong>FPGA Design</strong>",
         "<strong>IP-Core Entwicklung</strong>",
         "<strong>Bildverarbeitung</strong>",
         "<strong>Hochwertige Sonderbeleuchtungen (Museen, Schlösser, Kirchen)</strong>",
         "<strong>Entwicklung von Speziallösungen</strong>",
-        "<strong>EMV-Produkte (Kamera, Beleuchtung)</strong>",
         "<strong>Seminare & Schulungen</strong>"
     ],
     'impressum' => [
