@@ -327,6 +327,149 @@ INSERT INTO Product (
     CURRENT_TIMESTAMP
 );
 
+
+-- SQLite
+-- Insert sample data into the Product table Intercom
+INSERT INTO Product (
+    ProductID,
+    CategoryID,
+    ProductName,
+    ProductMiniDescription,
+    ProductDescription,
+    ProductPrice,
+    ProductCurrency,
+    ProductHomeImagePath,
+    ProductMultimediaPath,
+    created_at,
+    updated_at
+) VALUES (
+    '11',
+    '1',
+    '{
+    "en": {
+        "ProductName": "Intercom"
+    },
+    "de": {
+        "ProductName": "Intercom"
+    }
+}',
+   '{
+    "en": {
+        "ProductMiniDescription": "AVT EMC Intercom 2-way audio communication for EMC halls,  measuring cabins and for all environments with special electromagnetic requirements."
+    },
+    "de": {
+        "ProductMiniDescription": "AVT EMC Gegensprechanlage 2-Wege Audiokommunikation für EMV-Hallen, Messkabinen und für alle Umgebungen mit besonderen elektromagnetischen Anforderungen."
+    }
+}', 
+    '{"en":{"Features":
+     [
+        "Intercom system between test lab and control room",
+        "Designed for EMC-laboratories and test fields",
+        "Microfon frequency range: 150 Hz... 6.8 kHz",
+        "Transfer frequency range: 150 Hz... 15 kHz",
+        "Dynamic equalizer for communication",
+        "Duplex audio and echo cancellation",
+        "High battery power for long working time",
+        "Controlled by PC, Laptop or AVT CamControl",
+        "German product"
+    ],
+    "Options": [
+        "Extended battery power",
+        "Various housing colors",
+        "Various fiber optic length"
+    ],
+
+       "Warranty":[
+        "Standard: 2 years; optionally extendable by 1 year each"
+    ],
+    
+     "Flyer Link": [
+      "Frontend\\flayers\\AVT_EMC_Intercom-Flyer_en_v1_00.pdf"
+    ]
+
+    }
+    , 
+    "de":{"Eigenschaften:":
+     [
+        "Gegensprechanlage zwischen Testlabor und Kontrollraum",
+        "Konzipiert für EMV-Laboratorien und Testfelder",
+        "Mikrofon-Frequenzbereich: 150 Hz... 6,8 kHz",
+        "Übertragungsfrequenzbereich: 150 Hz... 15 kHz",
+        "Dynamischer Equalizer für die Kommunikation",
+        "Duplex-Audio und Echounterdrückung",
+        "Hohe Batterieleistung für lange Arbeitszeiten",
+        "Gesteuert durch PC, Laptop oder AVT CamControl",
+        "Deutsches Produkt"
+    ],
+    "Optionen:": [
+        "Erweiterte Batterieleistung",
+        "Verschiedene Gehäusefarben",
+        "Verschiedene Lichtwellenleiterlängen"
+    ],
+     "Garantie:":[
+        "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
+    ],
+
+    "Flugblatt Link:": [
+      "Frontend\\flayers\\AVT_EMC_Intercom-Flyer_en_v1_00.pdf"
+    ]
+    }
+    }' ,
+    00,
+    'EUR',
+    'Frontend/images/Intercom0222_01.png',
+    '{"en":{
+        "image1": {
+            "path": "Frontend\\images\\Intercom0222_01.png",
+            "caption": "English caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\Intercom0198_01.png",
+            "caption": "English caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\Intercom0222.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\Intercom0198.png",
+            "caption": "English caption"
+        },
+       
+        "video1": {
+            "path": "Frontend\\images\\IntercomAnimation.mp4",
+            "caption": "English caption"
+        }
+    },
+    
+    "de": {
+        "image1": {
+            "path": "Frontend\\images\\Intercom0222_01.png",
+            "caption": "German caption"
+        },
+        "image2": {
+            "path": "Frontend\\images\\Intercom0198_01.png",
+            "caption": "German caption"
+        },
+        "image3": {
+            "path": "Frontend\\images\\Intercom0222.png",
+            "caption": "English caption"
+        },
+        "image4": {
+            "path": "Frontend\\images\\Intercom0198.png",
+            "caption": "English caption"
+        },
+       
+        "video1": {
+            "path": "Frontend\\images\\IntercomAnimation.mp4",
+            "caption": "German caption"
+        }
+    }
+}',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
+);
+
 -- SQLite
 -- Insert sample data into the Product table Lamp EMVLED 100
 
@@ -1455,6 +1598,12 @@ INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VAL
      ('5', '9',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
      ('5', '13',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+     
+     INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
+    
+     ('11', '27', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('11', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
      INSERT INTO ProductComponent (ProductID,ComponentID, created_at, updated_at) VALUES
     
      ('7', '18', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -1560,9 +1709,9 @@ SET ComponentValueName = '{
 WHERE ComponentValueID = 46;
 
 UPDATE Product
-SET ProductPrice = '990'
+SET ProductPrice = '2000'
 
-WHERE ProductID = 7;
+WHERE ProductID = 11;
 
 UPDATE Product
 SET ProductHomeImagePath =  'Frontend/images/HelpLight.png'
@@ -1732,6 +1881,35 @@ INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
 
 
 
+
+INSERT INTO Component (ComponentID,ComponentName, created_at, updated_at) VALUES
+    ('27','{
+    "en": {
+        "ComponentName": "Intercom Power supply"
+    },
+    "de": {
+        "ComponentName": "Intercom Stromversorgung"
+    }
+}',  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+INSERT INTO ComponentValue (ComponentValueID,ComponentID,ComponentValueName,ComponentValuePrice,ComponentValueCurrency,created_at,updated_at) VALUES
+    ('69', '27','{
+    "en": {
+        "ComponentValueName": "M: mains supply"
+    },
+    "de": {
+        "ComponentValueName": "M: Netzversorgung"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+     ('70', '27','{
+    "en": {
+        "ComponentValueName": "B: battery powered"
+    },
+    "de": {
+        "ComponentValueName": "B: batteriebetrieben"
+    }
+}',NULL,'EUR', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
 
@@ -2196,7 +2374,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Optic lens for different angles"
     ],
      "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC4K_MiniCam_Flyer_en_v1_02.pdf"
+        "Frontend\\flayers\\AVT_EMC4K_MIniCam_Flyer_en_v1_3.pdf"
     ]
     }
     , 
@@ -2217,7 +2395,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Andere Brennweiten der Objektive"
     ],
     "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC4K_MiniCam_Flyer_de_v1_03.pdf"
+        "Frontend\\flayers\\AVT_EMC4K_MIniCam_Flyer_de_v1_3.pdf"
     ]
     }
     }'
@@ -2243,7 +2421,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Optic lens for different angles"
     ],
      "Flyer Link": [
-        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvthermocam_t01_en_v1_2.pdf"
+        "Frontend\\flayers\\AVT_EMCThermoCam_Flyer_en_v1_3.pdf"
     ]
     }
     , 
@@ -2264,7 +2442,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Andere Brennweiten der Objektive"
     ],
     "Flugblatt Link:": [
-        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvthermocam_t01_de_v1_2.pdf"
+        "Frontend\\flayers\\AVT_EMCThermoCam_Flyer_de_v1_3.pdf"
     ]
     }
     }'
@@ -2299,7 +2477,7 @@ SET ProductDescription = '{
       "Standard: 2 years; optionally extendable by 1 year each"
     ],
     "Flyer Link": [
-      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_02.pdf"
     ]
   },
   "de": {
@@ -2328,7 +2506,7 @@ SET ProductDescription = '{
       "Standard: 2 Jahre; optional verlängerbar um je 1 Jahr"
     ],
     "Flugblatt Link:": [
-      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_01.pdf"
+      "Frontend\\flayers\\AVT_EMC_HELP-Flyer_en_v1_02.pdf"
     ]
   }
 }'
@@ -2362,7 +2540,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Standard: 2 years; optionally extendable by 1 year each"
     ],
      "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED100-Flyer_de_v1_05.pdf"
+        "Frontend\\flayers\\AVT_EMCLED100-Flyer_de_v1_6.pdf"
     ]
     }
     , 
@@ -2391,7 +2569,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
     ],
     "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED100-Flyer_de_v1_05.pdf"
+        "Frontend\\flayers\\AVT_EMCLED100-Flyer_de_v1_6.pdf"
     ]
     }
     }'
@@ -2426,7 +2604,7 @@ SET ProductDescription =  '{"en":{"Features":
     ]
 ,
      "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED75-Flyer_de_v1_05.pdf"
+        "Frontend\\flayers\\AVT_EMCLED75-Flyer_de_v1_1.pdf"
     ]
     }
     , 
@@ -2456,7 +2634,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
     ],
     "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED75-Flyer_de_v1_05.pdf"
+        "Frontend\\flayers\\AVT_EMCLED75-Flyer_de_v1_1.pdf"
     ]
     }
     }'
@@ -2488,7 +2666,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Standard: 2 years; optionally extendable by 1 year each"
     ],
      "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED024_40-Flyer_en_v1_00.pdf"
+        "Frontend\\flayers\\AVT_EMCLED024_40-Flyer_en_v1_1.pdf"
     ]
     }
     , 
@@ -2517,7 +2695,7 @@ SET ProductDescription =  '{"en":{"Features":
         "Standard: 2 Jahre; optional verlängerbar um je 1 Jahre"
     ],
     "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMCLED024_40-Flyer_en_v1_00.pdf"
+        "Frontend\\flayers\\AVT_EMCLED024_40-Flyer_en_v1_1.pdf"
     ]
     }
     }'
@@ -2593,7 +2771,7 @@ SET ProductDescription =
     ],
 
     "Flyer Link": [
-        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvusb_converter_en_v1_1.pdf"
+        "Frontend\\flayers\\AVT_EMVUSB_Converter-Flyer_en_v1_2.pdf"
     ]
 
     }
@@ -2612,7 +2790,7 @@ SET ProductDescription =
         "Deutsches Produkt"
     ],
     "Flugblatt Link:": [
-        "https://avt-ilmenau.de/wp-content/uploads/2022/07/avt_emvusb_converter_de_v1_1.pdf"
+        "Frontend\\flayers\\AVT_EMVUSB_Converter-Flyer_de_v1_2.pdf"
     ]
     }
     }'
@@ -2760,7 +2938,7 @@ SET ProductDescription =
         "Ethernet connection to PC or Laptop"
     ],
      "Flyer Link": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+        "Frontend\\flayers\\AVT_EMC_CamControl_Flyer_en_v1_1.pdf"
     ]
     }
     , 
@@ -2783,7 +2961,7 @@ SET ProductDescription =
     
    
     "Flugblatt Link:": [
-        "https://www.avt-ilmenau.de/wp-content/uploads/2024/03/AVT_EMC_CamControl_Flyer_en_v.pdf"
+        "Frontend\\flayers\\AVT_EMC_CamControl_Flyer_en_v1_1.pdf"
     ]
     }
     }'
