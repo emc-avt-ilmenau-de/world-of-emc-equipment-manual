@@ -1456,14 +1456,14 @@ WHERE ComponentValueID = 15;
      UPDATE Component
 SET ComponentName = '{
     "en": {
-        "ComponentName": "4K MiniCam Power Supply (AC to 5VDC)"
+        "ComponentName": "Color Temperature"
     },
     "de": {
-        "ComponentName": "4K MiniCam Stromversorgung (AC to 5VDC)"
+        "ComponentName": "Farbtemperatur"
     }
 }'
 
-WHERE ComponentID = 3;
+WHERE ComponentID = 8;
 
 
 
