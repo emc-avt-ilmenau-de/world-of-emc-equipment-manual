@@ -53,7 +53,7 @@ env:
 
 jobs:
   build-project:
-    name: build emc-web
+    name: build world-of-emc-equipment
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -74,7 +74,7 @@ jobs:
         uses: ionos-deploy-now/template-renderer-action@v2
         id: template
         with:
-          input-directory: .deploy-now/emc-web
+          input-directory: .deploy-now/world-of-emc-equipment
           output-directory: ${{ env.DEPLOYMENT_FOLDER }}
           intermediate-data-file: ${{ env.DEPLOYMENT_FOLDER }}/.template-renderer-data
 
