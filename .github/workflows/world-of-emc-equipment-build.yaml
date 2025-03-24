@@ -1,0 +1,126 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: ./
+  APP_NAME: "World of EMC Equipment"
+  APP_ENV: production
+  APP_KEY: base64:VL5p0lKQPZ9ri+BqAifvaBOcX0HVgIav2v8u6Kh261w=
+  APP_DEBUG: false
+  APP_TIMEZONE: "Europe/Berlin"
+  APP_URL: "https://world-of-emc-equipment.com"
+
+  # Force SQLite Database Configuration
+  DB_CONNECTION: sqlite
+  DB_DATABASE: /tmp/database.sqlite
+
+  # Session & Cache Configuration
+  SESSION_DRIVER: file
+  SESSION_LIFETIME: 120
+  CACHE_STORE: database
+  CACHE_DRIVER: array
+
+  # Redis Configuration
+  REDIS_CLIENT: phpredis
+  REDIS_HOST: 127.0.0.1
+  REDIS_PASSWORD: null
+  REDIS_PORT: 6379
+
+  # Mail Configuration
+  MAIL_MAILER: smtp
+  MAIL_HOST: smtp.office365.com
+  MAIL_PORT: 587
+  MAIL_USERNAME: "emc@avt-ilmenau.de"
+  MAIL_PASSWORD: "Avt+2025-emv"
+  MAIL_ENCRYPTION: tls
+  MAIL_FROM_ADDRESS: "emc@avt-ilmenau.de"
+
+  # Other Services
+  SCOUT_DRIVER: meilisearch
+  MEILISEARCH_HOST: http://meilisearch:7700
+
+jobs:
+  build-project:
+    name: build emc-web
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Fetch Latest Changes
+        run: |
+          git fetch --all
+          git reset --hard origin/main
+
+      - name: Render Templates
+        uses: ionos-deploy-now/template-renderer-action@v2
+        id: template
+        with:
+          input-directory: .deploy-now/emc-web
+          output-directory: ${{ env.DEPLOYMENT_FOLDER }}
+          intermediate-data-file: ${{ env.DEPLOYMENT_FOLDER }}/.template-renderer-data
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3.8'
+          tools: composer:2.7.7
+          extensions: mbstring, pdo_sqlite
+
+      - name: Clear GitHub Actions Cache
+        run: |
+          rm -rf vendor composer.lock
+          composer clear-cache
+
+      - name: Run Composer Install
+        run: composer install --optimize-autoloader --no-dev
+
+      - name: Create SQLite Database
+        run: |
+          mkdir -p /tmp
+          touch /tmp/database.sqlite
+
+      - name: Debug Environment Variables
+        run: cat .env
+
+      - name: Clear Laravel Cache
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+          php artisan config:cache
+
+      - name: Debug Laravel Database Connection
+        run: php artisan tinker --execute="dump(config('database'))"
+
+      - name: Generate Application Key
+        run: php artisan key:generate --force -n
+
+      - name: Store Deployment Content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-eu.ionos.space
+          project-id: d66a5e8e-a24a-4fc2-bb23-7304dc392ae6
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/emc-web/config.yaml
+          action: upload
