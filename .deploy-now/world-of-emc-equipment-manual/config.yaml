@@ -21,6 +21,8 @@ deploy:
       - php artisan storage:link
       - php artisan optimize
       - php artisan up
+      composer install --no-dev --optimize-autoloader
+
 
   # configuration part, which is taken at ALL FURTHER deployments of this branch
   recurring:
@@ -46,6 +48,8 @@ deploy:
       - php artisan storage:link
       - php artisan optimize
       - php artisan up
+      composer install --no-dev --optimize-autoloader
+
 
 # uncomment the following lines to configure cron jobs
 #runtime:
