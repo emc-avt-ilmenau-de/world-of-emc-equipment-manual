@@ -46,6 +46,24 @@ jobs:
           action: update-status
           status: in_progress
 
+
+          # Step 1: Checkout your code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Install FTP Action
+      - name: Rename .htaccess file via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4
+        with:
+          ftp-server: ftp://your-ftp-server
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./  # Local directory containing your project
+          remote-dir: /path/to/htdocs/public/public  # Remote directory
+          actions: "rename"  # You can use 'rename' action to rename the file
+          remote-file: .htaccess  # The file to rename
+          remote-file-renamed: .htaccess.bak  # New name of the file
+
       - name: Retrieve stored deployment
         uses: ionos-deploy-now/artifact-action@v1
         with:
