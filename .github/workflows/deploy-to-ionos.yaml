@@ -2,7 +2,7 @@
 # More information under https://docs.ionos.space/docs/github-actions-customization/
 # version: 2022-07-21
 
-name: "Deploy Now: Deploy to IONOS"
+name: "Deploy to IONOS"
 
 on:
   workflow_dispatch:
@@ -22,8 +22,6 @@ on:
   push:
     paths:
       - ./.github/workflows/deploy-to-ionos.yaml
-
-concurrency: ${{ github.ref }}
 
 jobs:
   deploy-to-ionos:
@@ -77,14 +75,15 @@ jobs:
           output-directory: deployment
           intermediate-data-file: deployment/.template-renderer-data
 
-      - name: Render real site-url to all files
+      - name: Test SSH Connection to IONOS
         run: |
-          for file in `grep -rl 'https://IONOS_DEPLOY_NOW_SITE_URL' .`; do
-            sed -i $file -e 's|https://IONOS_DEPLOY_NOW_SITE_URL|${{ fromJson(steps.deployment.outputs.info).site-url }}|g'
-          done
-
-      - name: Render SSH user secret name
-        run: echo SSH_USERNAME_SECRET=IONOS_DEPLOYMENT_`echo ${{ matrix.deployment-id }} | tr '[:lower:]' '[:upper:]' | tr '-' '_'`_SSH_USERNAME >> $GITHUB_ENV
+          mkdir -p ~/.ssh
+          echo "$IONOS_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan access-5017534069.app-ionos.space >> ~/.ssh/known_hosts
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.IONOS_SSH_USER }}@access-5017534069.app-ionos.space "echo SSH Connection Successful"
+        env:
+          IONOS_SSH_KEY: ${{ secrets.IONOS_SSH_KEY }}
 
       - name: Deploy to IONOS
         uses: ionos-deploy-now/deploy-to-ionos-action@v2
@@ -97,29 +96,3 @@ jobs:
           deployment-info: ${{ steps.deployment.outputs.info }}
           ssh-user: ${{ secrets.IONOS_SSH_USER }}
           ssh-key: ${{ secrets.IONOS_SSH_KEY }}
-
-      - name: Update deployment status
-        if: ${{ always() }}
-        uses: ionos-deploy-now/project-action@v1
-        with:
-          api-key: ${{ secrets.IONOS_API_KEY }}
-          service-host: api-eu.ionos.space
-          project-id: ${{ inputs.project-id }}
-          branch-id: ${{ inputs.branch-id }}
-          deployment-id: ${{ matrix.deployment-id }}
-          action: update-status
-          status: ${{ job.status }}
-
-  notify-deployment-finished:
-    needs: deploy-to-ionos
-    if: ${{ github.event_name == 'workflow_dispatch' && always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify all deployments finished
-        uses: ionos-deploy-now/project-action@v1
-        with:
-          api-key: ${{ secrets.IONOS_API_KEY }}
-          service-host: api-eu.ionos.space
-          project-id: ${{ inputs.project-id }}
-          branch-id: ${{ inputs.branch-id }}
-          action: set-deployments-finished
