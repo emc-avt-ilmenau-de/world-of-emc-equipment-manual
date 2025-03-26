@@ -1,4 +1,4 @@
-@extends('FrontEnd.layouts.main')
+@extends('Frontend.layouts.main')
 
 @section('main-container')
 <div class="products">
