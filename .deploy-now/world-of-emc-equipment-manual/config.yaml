@@ -13,16 +13,16 @@ deploy:
       - storage
       - .env
     post-deployment-remote-commands:
-      - chmod -R 775 storage bootstrap/cache
-      - php artisan storage:link
-      - php artisan config:clear
-      - php artisan cache:clear
-      - php artisan route:clear
-      - php artisan view:clear
-      - php artisan config:cache
-      - php artisan route:cache
-      - php artisan view:cache
-      - php artisan migrate --force
+  - mkdir -p database
+  - touch database/database.sqlite
+  - chmod -R 775 storage bootstrap/cache
+  - php artisan storage:link
+  - php artisan config:clear
+  - php artisan config:cache
+  - php artisan route:cache
+  - php artisan view:cache
+  - php artisan migrate --force
+
 
   recurring:
     excludes:
@@ -35,15 +35,13 @@ deploy:
       - .env
     pre-deployment-remote-commands:
       - php artisan down
-    post-deployment-remote-commands:
-      - chmod -R 775 storage bootstrap/cache
-      - php artisan storage:link
-      - php artisan config:clear
-      - php artisan cache:clear
-      - php artisan route:clear
-      - php artisan view:clear
-      - php artisan config:cache
-      - php artisan route:cache
-      - php artisan view:cache
-      - php artisan migrate --force
-      - php artisan up
+   post-deployment-remote-commands:
+  - mkdir -p database
+  - touch database/database.sqlite
+  - chmod -R 775 storage bootstrap/cache
+  - php artisan storage:link
+  - php artisan config:clear
+  - php artisan config:cache
+  - php artisan route:cache
+  - php artisan view:cache
+  - php artisan migrate --force
