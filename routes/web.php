@@ -59,7 +59,7 @@ Route::get('{locale?}', function ($locale = null) {
 
     // Fetch products using the controller
     $ProductController = new ProductController();
-    return $productController->index();
+    return $ProductController->index();
 })->name('home')->where('locale', 'en|de');
 
 // Other routes without locale constraints
