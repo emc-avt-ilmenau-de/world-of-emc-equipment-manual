@@ -1,6 +1,6 @@
 # The basic structure remains the same but with minor optimizations:
 
- version: 1.0
+version: 1.0
 
 deploy:
   bootstrap:
@@ -12,15 +12,14 @@ deploy:
       - output.log
       - .env
     post-deployment-remote-commands:
-  - chmod -R 775 storage bootstrap/cache
-  - chmod -R 775 storage/logs
-  - php artisan storage:link
-  - php artisan config:clear
-  - php artisan config:cache
-  - php artisan route:cache
-  - php artisan view:cache
-  - php artisan migrate --force
-
+      - chmod -R 775 storage bootstrap/cache
+      - chmod -R 775 storage/logs
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
 
   recurring:
     excludes:
@@ -32,12 +31,12 @@ deploy:
       - .env
     pre-deployment-remote-commands:
       - php artisan down
-   post-deployment-remote-commands:
-  - chmod -R 775 storage bootstrap/cache
-  - chmod -R 775 storage/logs
-  - php artisan storage:link
-  - php artisan config:clear
-  - php artisan config:cache
-  - php artisan route:cache
-  - php artisan view:cache
-  - php artisan migrate --force
+    post-deployment-remote-commands:
+      - chmod -R 775 storage bootstrap/cache
+      - chmod -R 775 storage/logs
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
