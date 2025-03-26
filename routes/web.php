@@ -58,7 +58,7 @@ Route::get('{locale?}', function ($locale = null) {
     $categories = DB::table('Category')->get();
 
     // Fetch products using the controller
-    $productController = new ProductController();
+    $ProductController = new ProductController();
     return $productController->index();
 })->name('home')->where('locale', 'en|de');
 
