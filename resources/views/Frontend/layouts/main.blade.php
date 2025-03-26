@@ -11,13 +11,13 @@
 </head>
 
 <body>
-    @include('FrontEnd.layouts.header') <!-- Include header -->
+    @include('Frontend.layouts.header') <!-- Include header -->
 
     <div class="container">
         @yield('main-container') <!-- Main content will be injected here -->
     </div>
 
-    @include('FrontEnd.layouts.footer') <!-- Include footer -->
+    @include('Frontend.layouts.footer') <!-- Include footer -->
 </body>
 
 </html>
