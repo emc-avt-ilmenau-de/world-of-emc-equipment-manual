@@ -1,8 +1,8 @@
 # The basic structure remains the same but with minor optimizations:
-version: 1.0
+
+ version: 1.0
 
 deploy:
-  # This section is used for the FIRST deployment of each branch
   bootstrap:
     excludes:
       - tests
@@ -12,22 +12,18 @@ deploy:
       - output.log
       - storage
       - .env
-      - vendor
-
     post-deployment-remote-commands:
-     
-  - chmod -R 775 storage bootstrap/cache
-  - php artisan storage:link
-  - php artisan config:clear
-  - php artisan cache:clear
-  - php artisan route:clear
-  - php artisan view:clear
-  - php artisan config:cache
-  - php artisan route:cache
-  - php artisan view:cache
-  - php artisan migrate --force
+      - chmod -R 775 storage bootstrap/cache
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan cache:clear
+      - php artisan route:clear
+      - php artisan view:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
 
-  # This section is used for ALL further deployments
   recurring:
     excludes:
       - tests
@@ -37,18 +33,17 @@ deploy:
       - output.log
       - storage
       - .env
-      - vendor
-
     pre-deployment-remote-commands:
       - php artisan down
-post-deployment-remote-commands:
-  - chmod -R 775 storage bootstrap/cache
-  - php artisan storage:link
-  - php artisan config:clear
-  - php artisan cache:clear
-  - php artisan route:clear
-  - php artisan view:clear
-  - php artisan config:cache
-  - php artisan route:cache
-  - php artisan view:cache
-  - php artisan migrate --force
+    post-deployment-remote-commands:
+      - chmod -R 775 storage bootstrap/cache
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan cache:clear
+      - php artisan route:clear
+      - php artisan view:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
+      - php artisan up
