@@ -18,9 +18,8 @@ use App\Http\Controllers\FrontEnd\lamp24controller;
 use App\Http\Controllers\FrontEnd\emcusbcontroller;
 use App\Http\Controllers\FrontEnd\leddrivercontroller;
 use App\Http\Controllers\FrontEnd\sequenzercontroller;
-use App\Http\Controllers\Productcontroller;
 use App\Http\Controllers\LanguageController;
-use App\Http\Controllers\Basketcontroller;
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\Ordercontroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
@@ -79,20 +78,20 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     Route::get('/leddriver', [LeddriverController::class, 'index']);
     Route::get('/sequenzer', [SequenzerController::class, 'index']);
     Route::get('/about', [aboutcontroller::class, 'index'])->name('about');
-    Route::get('/product/{id}', [Productcontroller::class, 'show'])->name('product.show');
-    Route::post('/product/{id}/submit', [Productcontroller::class, 'submit'])->name('product.submit');
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::post('/product/{id}/submit', [ProductController::class, 'submit'])->name('product.submit');
 
     Route::prefix('basket')->group(function () {
-        Route::get('/', [Basketcontroller::class, 'show'])->name('basket.show');
-        Route::post('/add/{id}', [Basketcontroller::class, 'add'])->name('basket.add');
-        Route::put('/update/{productId}', [Basketcontroller::class, 'update'])->name('basket.update');
-        Route::delete('/remove/{productId}', [Basketcontroller::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
+        Route::get('/', [BasketController::class, 'show'])->name('basket.show');
+        Route::post('/add/{id}', [BasketController::class, 'add'])->name('basket.add');
+        Route::put('/update/{productId}', [BasketController::class, 'update'])->name('basket.update');
+        Route::delete('/remove/{productId}', [BasketController::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
     });
 
     // New order submission routes
     Route::post('/order/submit', [Ordercontroller::class, 'submit'])->name('order.submit');
-    Route::get('/order/customer-form', [Productcontroller::class, 'showCustomerForm'])->name('order.customerForm');
-    Route::post('/order/customer-submit', [Productcontroller::class, 'submitCustomerDetails'])->name('order.customerSubmit');
+    Route::get('/order/customer-form', [ProductController::class, 'showCustomerForm'])->name('order.customerForm');
+    Route::post('/order/customer-submit', [ProductController::class, 'submitCustomerDetails'])->name('order.customerSubmit');
 
 
     // Other routes...
