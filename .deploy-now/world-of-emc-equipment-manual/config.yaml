@@ -1,5 +1,6 @@
 # The basic structure remains the same but with minor optimizations:
-version: 1.0
+
+ version: 1.0
 
 deploy:
   bootstrap:
@@ -9,15 +10,20 @@ deploy:
       - DOCKER_ENV
       - docker_tag
       - output.log
+      - storage
+      - .env
     post-deployment-remote-commands:
-      - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
-      - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
-      - chmod -R o+w storage bootstrap/cache
-      - php artisan migrate --force
-      - php artisan optimize:clear
-      - php artisan storage:link
-      - php artisan optimize
-      - php artisan up
+  - mkdir -p database
+  - touch database/database.sqlite
+  - chmod -R 775 storage bootstrap/cache
+  - chmod -R 775 storage/logs
+  - php artisan storage:link
+  - php artisan config:clear
+  - php artisan config:cache
+  - php artisan route:cache
+  - php artisan view:cache
+  - php artisan migrate --force
+
 
   recurring:
     excludes:
@@ -27,19 +33,17 @@ deploy:
       - docker_tag
       - output.log
       - storage
+      - .env
     pre-deployment-remote-commands:
       - php artisan down
-    post-deployment-remote-commands:
-      - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
-      - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
-      - chmod -R o+w storage bootstrap/cache
-      - php artisan migrate --force
-      - php artisan optimize:clear
-      - php artisan storage:link
-      - php artisan optimize
-      - php artisan up
-
-runtime:
-  cron-jobs:
-    - command: php /home/your-path-to-app/artisan schedule:run  # Example Laravel cron job
-      schedule: 0 5 * * *  # Run every day at 5:00 AM
+   post-deployment-remote-commands:
+  - mkdir -p database
+  - touch database/database.sqlite
+  - chmod -R 775 storage bootstrap/cache
+  - chmod -R 775 storage/logs
+  - php artisan storage:link
+  - php artisan config:clear
+  - php artisan config:cache
+  - php artisan route:cache
+  - php artisan view:cache
+  - php artisan migrate --force
