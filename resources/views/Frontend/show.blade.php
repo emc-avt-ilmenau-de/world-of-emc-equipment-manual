@@ -1,5 +1,5 @@
 <!-- resources/views/FrontEnd/product/show.blade.php -->
-@extends('FrontEnd.layouts.main')
+@extends('Frontend.layouts.main')
 
 
 @section('main-container')
