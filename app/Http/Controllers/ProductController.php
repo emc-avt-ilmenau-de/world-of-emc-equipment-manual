@@ -42,6 +42,7 @@ class ProductController extends Controller
         }
 
         // Process products
+        // Process products
         $products = $productsQuery->get()->map(function ($product) use ($locale) {
             $product->ProductName = $this->decodeJson($product->ProductName) ?? [];
             $product->ProductMiniDescription = $this->decodeJson($product->ProductMiniDescription) ?? [];
@@ -59,7 +60,7 @@ class ProductController extends Controller
             return $product;
         });
 
-        return view('FrontEnd.index', compact('products', 'categories'));
+        return view('Frontend.index', compact('products', 'categories'));
     }
 
     // Product Page - Display the selected product and its components
@@ -151,7 +152,7 @@ class ProductController extends Controller
 
         Log::info('Final Additional Components:', $additionalComponents->toArray());
 
-        return view('FrontEnd.show', compact('product', 'additionalComponents', 'showComponent12', 'showComponent14', 'categories'));
+        return view('Frontend.show', compact('product', 'additionalComponents', 'showComponent12', 'showComponent14', 'categories'));
     }
 
     public function submit(Request $request, $id)
