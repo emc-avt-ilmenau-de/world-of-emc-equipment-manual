@@ -2,6 +2,7 @@
 version: 1.0
 
 deploy:
+  # This section is used for the FIRST deployment of each branch
   bootstrap:
     excludes:
       - tests
@@ -9,16 +10,24 @@ deploy:
       - DOCKER_ENV
       - docker_tag
       - output.log
-    post-deployment-remote-commands:
-      - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
-      - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
-      - chmod -R o+w storage bootstrap/cache
-      - php artisan migrate --force
-      - php artisan optimize:clear
-      - php artisan storage:link
-      - php artisan optimize
-      - php artisan up
+      - storage
+      - .env
+      - vendor
 
+    post-deployment-remote-commands:
+      - composer install --no-dev --optimize-autoloader
+      - chmod -R 775 storage bootstrap/cache
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan cache:clear
+      - php artisan route:clear
+      - php artisan view:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
+
+  # This section is used for ALL further deployments
   recurring:
     excludes:
       - tests
@@ -27,19 +36,22 @@ deploy:
       - docker_tag
       - output.log
       - storage
+      - .env
+      - vendor
+
     pre-deployment-remote-commands:
       - php artisan down
-    post-deployment-remote-commands:
-      - find $(pwd) -type f -not -path "$(pwd)/logs/*" -exec chmod 664 {} \;
-      - find $(pwd) -type d -not -name "logs" -exec chmod 775 {} \;
-      - chmod -R o+w storage bootstrap/cache
-      - php artisan migrate --force
-      - php artisan optimize:clear
-      - php artisan storage:link
-      - php artisan optimize
-      - php artisan up
 
-runtime:
-  cron-jobs:
-    - command: php /home/your-path-to-app/artisan schedule:run  # Example Laravel cron job
-      schedule: 0 5 * * *  # Run every day at 5:00 AM
+    post-deployment-remote-commands:
+      - composer install --no-dev --optimize-autoloader
+      - chmod -R 775 storage bootstrap/cache
+      - php artisan storage:link
+      - php artisan config:clear
+      - php artisan cache:clear
+      - php artisan route:clear
+      - php artisan view:clear
+      - php artisan config:cache
+      - php artisan route:cache
+      - php artisan view:cache
+      - php artisan migrate --force
+      - php artisan up
