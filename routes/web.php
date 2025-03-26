@@ -23,6 +23,8 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Basketcontroller;
 use App\Http\Controllers\Ordercontroller;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProductController;
+
 
 
 // Locale switching route
@@ -58,8 +60,8 @@ Route::get('{locale?}', function ($locale = null) {
     $categories = DB::table('Category')->get();
 
     // Fetch products using the controller
-    $Productcontroller = new Productcontroller();
-    return $Productcontroller->index();
+    $Productcontroller = new ProductController();
+    return $ProductController->index();
 })->name('home')->where('locale', 'en|de');
 
 // Other routes without locale constraints
