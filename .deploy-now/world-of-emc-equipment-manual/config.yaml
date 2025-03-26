@@ -10,11 +10,8 @@ deploy:
       - DOCKER_ENV
       - docker_tag
       - output.log
-      - storage
       - .env
     post-deployment-remote-commands:
-  - mkdir -p database
-  - touch database/database.sqlite
   - chmod -R 775 storage bootstrap/cache
   - chmod -R 775 storage/logs
   - php artisan storage:link
@@ -32,13 +29,10 @@ deploy:
       - DOCKER_ENV
       - docker_tag
       - output.log
-      - storage
       - .env
     pre-deployment-remote-commands:
       - php artisan down
    post-deployment-remote-commands:
-  - mkdir -p database
-  - touch database/database.sqlite
   - chmod -R 775 storage bootstrap/cache
   - chmod -R 775 storage/logs
   - php artisan storage:link
