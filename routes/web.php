@@ -98,8 +98,12 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
 });
 
 
-Route::get('/debug-log', function () {
-    return response()->file(storage_path('logs/laravel.log'));
+Route::get('/debug-test', function () {
+    try {
+        return response()->file(storage_path('logs/test.log'));
+    } catch (\Exception $e) {
+        return 'Error accessing test log file: ' . $e->getMessage();
+    }
 });
 
 
