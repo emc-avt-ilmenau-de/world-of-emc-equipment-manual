@@ -21,6 +21,8 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
+      -php artisan dump-autoload -o
+      
 
 
   recurring:
@@ -43,4 +45,5 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
+      -php artisan dump-autoload -o
 
