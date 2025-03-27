@@ -8,7 +8,7 @@ class PartnerController extends Controller
 {
     public function index()
     {
-        $title = "Partnet";      // set page title
+        $title = "Partner";      // set page title
         // hard coded pdf and bit file for downloading
         # $ex_pdf = Storage::download('file.jpg');
         # $ex_bitfile = Storage::download('file.jpg');
