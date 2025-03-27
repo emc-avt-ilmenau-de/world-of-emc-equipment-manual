@@ -112,7 +112,9 @@ Route::get('/debug-test', function () {
 });
 
 
-
+Route::get('/test', function () {
+    return 'Test route works!';
+});
 
 /*// Default Route Handling
 Route::get('/{any}', function () {
