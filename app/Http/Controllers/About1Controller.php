@@ -8,6 +8,10 @@ class About1Controller extends Controller
 {
     public function index()
     {
-        return "About page works!";
+        $title = "About Us";      // set page title
+        // hard coded pdf and bit file for downloading
+        # $ex_pdf = Storage::download('file.jpg');
+        # $ex_bitfile = Storage::download('file.jpg');
+        return view('Frontend.about', compact('title'));
     }
 }
