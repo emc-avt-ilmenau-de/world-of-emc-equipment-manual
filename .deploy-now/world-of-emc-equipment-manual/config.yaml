@@ -1,5 +1,4 @@
 # The basic structure remains the same but with minor optimizations:
-
 version: 1.0
 
 deploy:
@@ -21,9 +20,7 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
-      -php artisan dump-autoload -o
-      
-
+      - php artisan dump-autoload -o
 
   recurring:
     excludes:
@@ -45,5 +42,5 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
-      -php artisan dump-autoload -o
+      - php artisan dump-autoload -o
 
