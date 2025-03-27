@@ -6,6 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\About1Controller' => $baseDir . '/app/Http/Controllers/About1Controller.php',
     'App\\Http\\Controllers\\BasketController' => $baseDir . '/app/Http/Controllers/BasketController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\FrontEnd\\downloadscontroller' => $baseDir . '/app/Http/Controllers/FrontEnd/downloadscontroller.php',
