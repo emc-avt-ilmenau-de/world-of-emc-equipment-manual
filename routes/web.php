@@ -97,6 +97,10 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     // Other routes...
 });
 
+Route::get('/debug-log', function () {
+    return response()->file(storage_path('logs/laravel.log'));
+});
+
 
 /*// Default Route Handling
 Route::get('/{any}', function () {
