@@ -2,7 +2,11 @@
 # More information under https://docs.ionos.space/docs/github-actions-customization/
 # version: 2022-07-21
 
-name: "Deploy Now: Deploy to IONOS"
+
+      
+
+     
+     name: "Deploy Now: Deploy to IONOS"
 
 on:
   workflow_dispatch:
@@ -26,9 +30,32 @@ on:
 concurrency: ${{ github.ref }}
 
 jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Dump optimized Composer autoload
+        run: composer dump-autoload -o
+
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment
+          path: .
 
   deploy-to-ionos:
+    needs: build-and-upload
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
@@ -37,29 +64,11 @@ jobs:
       matrix:
         deployment-id: ${{ fromJson(inputs.deployment-ids) }}
     steps:
-      - name: Update deployment status
-        uses: ionos-deploy-now/project-action@v1
+      - name: Download built artifact
+        uses: actions/download-artifact@v3
         with:
-          api-key: ${{ secrets.IONOS_API_KEY }}
-          service-host: api-eu.ionos.space
-          project-id: ${{ inputs.project-id }}
-          branch-id: ${{ inputs.branch-id }}
-          deployment-id: ${{ matrix.deployment-id }}
-          action: update-status
-          status: in_progress
-
-
-        
-
-      - name: Retrieve stored deployment
-        uses: ionos-deploy-now/artifact-action@v1
-        with:
-          api-key: ${{ secrets.IONOS_API_KEY }}
-          service-host: api-eu.ionos.space
-          project-id: ${{ inputs.project-id }}
-          branch-id: ${{ inputs.branch-id }}
-          version: ${{ inputs.version }}
-          action: download
+          name: deployment
+          path: deployment
 
       - name: Fetch deployment info
         uses: ionos-deploy-now/project-action@v1
