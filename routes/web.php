@@ -23,6 +23,7 @@ use App\Http\Controllers\BasketController;
 use App\Http\Controllers\Ordercontroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\About1Controller;
 
 
 
@@ -77,7 +78,7 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
     Route::get('/emcusb', [EmcusbController::class, 'index']);
     Route::get('/leddriver', [LeddriverController::class, 'index']);
     Route::get('/sequenzer', [SequenzerController::class, 'index']);
-    Route::get('/about', [aboutcontroller::class, 'index'])->name('about');
+    Route::get('/about', [About1Controller::class, 'index'])->name('about');
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
     Route::post('/product/{id}/submit', [ProductController::class, 'submit'])->name('product.submit');
 
