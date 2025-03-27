@@ -20,7 +20,7 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
-      - composer dump-autoload -o
+
 
       
 
@@ -44,7 +44,7 @@ deploy:
       - php artisan view:cache
       - php artisan migrate --force
       - cat storage/logs/laravel.log || echo "No Laravel log found"
-      - composer dump-autoload -o
+     
 
    
 
