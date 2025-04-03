@@ -1,21 +1,24 @@
 
 <?php
 
+use App\Http\Controllers\aboutcontroller;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\FrontEnd\MinicamController;
-use App\Http\Controllers\FrontEnd\DownloadsController;
-use App\Http\Controllers\FrontEnd\ThermocamController;
-use App\Http\Controllers\FrontEnd\Lamp100Controller;
-use App\Http\Controllers\FrontEnd\Lamp75Controller;
-use App\Http\Controllers\FrontEnd\Lamp24Controller;
-use App\Http\Controllers\FrontEnd\EmcusbController;
-use App\Http\Controllers\FrontEnd\LeddriverController;
-use App\Http\Controllers\FrontEnd\SequenzerController;
+use Illuminate\Support\Facades\View;
+
+use App\Http\Controllers\FrontEnd\minicamcontroller;
+use App\Http\Controllers\FrontEnd\downloadscontroller;
+use App\Http\Controllers\FrontEnd\thermocamcontroller;
+use App\Http\Controllers\FrontEnd\lamp100controller;
+use App\Http\Controllers\FrontEnd\lamp75controller;
+use App\Http\Controllers\FrontEnd\lamp24controller;
+use App\Http\Controllers\FrontEnd\emcusbcontroller;
+use App\Http\Controllers\FrontEnd\leddrivercontroller;
+use App\Http\Controllers\FrontEnd\sequenzercontroller;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\Ordercontroller;
@@ -23,45 +26,49 @@ use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\About1Controller;
 
-// Locale switching
+
+
+// Locale switching route
 Route::get('/set-locale/{locale}', function ($locale) {
     if (in_array($locale, config('app.available_locales'))) {
-        session()->put('locale', $locale);
-        App::setLocale($locale);
-        Cookie::queue('locale', $locale, 60 * 24 * 30);
+        session()->put('locale', $locale); // Set the locale in the session
+        App::setLocale($locale); // Set the locale for the current request
+        Cookie::queue('locale', $locale, 60 * 24 * 30); // Set the locale cookie for 30 days
         Log::info('Locale changed to: ' . $locale);
     } else {
-        Log::warning('Invalid locale attempted: ' . $locale);
+        Log::warning('Attempted to set invalid locale: ' . $locale);
     }
-    return redirect()->back();
+    return redirect()->back(); // Redirect back to the previous page
 })->name('set.locale');
 
-// Home route with locale setup (moved locale logic to middleware)
-Route::get('{locale?}', [ProductController::class, 'index'])
-    ->name('home')
-    ->where('locale', 'en|de')
-    ->middleware(function ($request, $next) {
-        $locale = $request->route('locale');
-        $available = config('app.available_locales');
+// Homepage route
+Route::get('{locale?}', function ($locale = null) {
+    $availableLocales = config('app.available_locales');
 
-        if ($locale && in_array($locale, $available)) {
-            App::setLocale($locale);
-            session()->put('locale', $locale);
-            Cookie::queue('locale', $locale, 60 * 24 * 30);
-        } else {
-            $locale = session('locale', Cookie::get('locale', config('app.fallback_locale')));
-            if (!in_array($locale, $available)) {
-                $locale = config('app.fallback_locale');
-            }
-            App::setLocale($locale);
+    if ($locale && in_array($locale, $availableLocales)) {
+        App::setLocale($locale);
+        session()->put('locale', $locale);
+        Cookie::queue('locale', $locale, 60 * 24 * 30);
+    } else {
+        $locale = session('locale', Cookie::get('locale', config('app.fallback_locale')));
+        if (!in_array($locale, $availableLocales)) {
+            $locale = config('app.fallback_locale');
         }
+        App::setLocale($locale);
+    }
 
-        Log::info('Request Locale: ' . App::getLocale());
-        return $next($request);
-    });
+    Log::info('Request Locale: ' . App::getLocale());
+    $categories = DB::table('Category')->get();
 
-// All remaining routes
+    // Fetch products using the controller
+    $productcontroller = new ProductController();
+    return $productcontroller->index();
+})->name('home')->where('locale', 'en|de');
+
+// Other routes without locale constraints
+// Middleware applied to all routes
 Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(function () {
+
     Route::get('/minicam', [MinicamController::class, 'index']);
     Route::get('/downloads', [DownloadsController::class, 'index']);
     Route::get('/partner', [PartnerController::class, 'index']);
@@ -80,13 +87,18 @@ Route::middleware(['web', \App\Http\Middleware\LocaleMiddleware::class])->group(
         Route::get('/', [BasketController::class, 'show'])->name('basket.show');
         Route::post('/add/{id}', [BasketController::class, 'add'])->name('basket.add');
         Route::put('/update/{productId}', [BasketController::class, 'update'])->name('basket.update');
-        Route::delete('/remove/{productId}', [BasketController::class, 'remove'])->name('basket.remove');
+        Route::delete('/remove/{productId}', [BasketController::class, 'remove'])->name('basket.remove');  // Keep this route inside the group
     });
 
+    // New order submission routes
     Route::post('/order/submit', [Ordercontroller::class, 'submit'])->name('order.submit');
     Route::get('/order/customer-form', [ProductController::class, 'showCustomerForm'])->name('order.customerForm');
     Route::post('/order/customer-submit', [ProductController::class, 'submitCustomerDetails'])->name('order.customerSubmit');
+
+
+    // Other routes...
 });
+
 
 Route::get('/debug-test', function () {
     try {
@@ -101,6 +113,35 @@ Route::get('/debug-test', function () {
     }
 });
 
+
 Route::get('/test', function () {
     return 'Test route works!';
 });
+
+/*// Default Route Handling
+Route::get('/{any}', function () {
+    return view('Frontend.index');
+})->where('any', '.*');
+
+*/
+/*Route::get('/switch-language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'de'])) {
+        Session::put('locale', $locale);  // Store the locale in session
+    }
+    return redirect()->back();  // Redirect to the previous page
+})->name('switchLang');
+
+*/
+
+/*Route::get('lang/{locale}', function ($locale) {
+    // Ensure the locale exists in your supported locales
+    if (! in_array($locale, ['en', 'de'])) {
+        abort(400);
+    }
+
+    // Store the selected locale in session
+    session(['locale' => $locale]);
+
+    // Redirect back to the previous page
+    return redirect()->back();
+});*/ 
