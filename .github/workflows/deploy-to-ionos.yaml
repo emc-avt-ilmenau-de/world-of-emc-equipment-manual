@@ -101,10 +101,11 @@ jobs:
       - name: Render SSH user secret name
         run: echo SSH_USERNAME_SECRET=IONOS_DEPLOYMENT_`echo ${{ matrix.deployment-id }} | tr '[:lower:]' '[:upper:]' | tr '-' '_'`_SSH_USERNAME >> $GITHUB_ENV
 
-        - name: Copy .env file into deployment folder
-            run: cp .env deployment/.env
+      - name: Ensure deployment folder exists
+        run: mkdir -p deployment
 
-        
+      - name: Copy .env file into deployment folder
+        run: cp .env deployment/.env
 
       - name: Deploy to IONOS
         uses: ionos-deploy-now/deploy-to-ionos-action@v2
