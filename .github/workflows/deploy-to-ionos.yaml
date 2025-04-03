@@ -102,7 +102,7 @@ jobs:
         run: echo SSH_USERNAME_SECRET=IONOS_DEPLOYMENT_`echo ${{ matrix.deployment-id }} | tr '[:lower:]' '[:upper:]' | tr '-' '_'`_SSH_USERNAME >> $GITHUB_ENV
 
         - name: Copy .env file into deployment folder
-          run: cp .env deployment/.env
+            run: cp .env deployment/.env
 
         
 
