@@ -13,6 +13,7 @@ deploy:
     post-deployment-remote-commands:
       - echo "Starting bootstrap post-deployment commands..."
       - chmod -R 775 storage bootstrap/cache
+      - chmod -R 775 storage bootstrap/cache database
       - chmod -R 775 storage/logs
       - php artisan storage:link
       - php artisan config:clear
@@ -37,6 +38,7 @@ deploy:
     post-deployment-remote-commands:
       - echo "Starting recurring post-deployment commands..."
       - chmod -R 775 storage bootstrap/cache
+      - chmod -R 775 storage bootstrap/cache database
       - chmod -R 775 storage/logs
       - php artisan storage:link
       - php artisan config:clear
