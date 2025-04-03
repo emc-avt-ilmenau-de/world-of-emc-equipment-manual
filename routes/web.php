@@ -1,5 +1,4 @@
 
-
 <?php
 
 use App\Http\Controllers\aboutcontroller;
@@ -143,4 +142,6 @@ Route::get('/{any}', function () {
     // Store the selected locale in session
     session(['locale' => $locale]);
 
-    // Redirect back to the previous page 
+    // Redirect back to the previous page
+    return redirect()->back();
+});*/ 
